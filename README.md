@@ -6,6 +6,7 @@ To develop a Sudoku game having the following specifications:
 * SPA using MEAN (MongoDB, Express, Angular 4, NodeJS)
 * RESTful API
 * Have an algorithm to solve the Sudoku game
+
 Optional:
 * TDD (Test Driven Development)
 * Deployed in [Heroku](https://www.heroku.com/) 
