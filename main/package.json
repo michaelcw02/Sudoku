@@ -1,0 +1,22 @@
+{
+  "name": "node-rest",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CarlosLoriaSaenz/node-rest"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "loriacarlos@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.0.0",
+    "express-favicon": "^2.0.0",
+    "mongoose": "^4.0.0",
+    "morgan": "^1.0.0",
+    "node-fetch": "^1.7.2"
+  }
+}
