@@ -47,10 +47,10 @@ router.get('/', (req, res) => {
 // ----------------------------------------------------
 // ***** Notice the "callback hell" *****
 //-----------------------------------------------------
-router.route('/bears')
-	// create a bear (accessed at POST http://localhost:8080/bears)
+router.route('/sudoku')
+	// create a bear (accessed at POST http://localhost:8080/sudoku)
 	.post( (req, res) => {
-				console.log('POST requested: ' + req.body.name);
+				console.log('POST requested: ' + req.body.sudoku);
 				let sudoku = new Sudoku();		// create a new instance of the sudoku model
 				// Extract data from request
 				console.log('Post body ' + JSON.stringify(req.body))
@@ -65,13 +65,13 @@ router.route('/bears')
 				});	
 	})
 
-	// get all the bears (accessed at GET http://localhost:8080/api/bears)
+	// get all the sudokus (accessed at GET http://localhost:8080/api/sudoku)
 	.get( (req, res) => {
 		console.log('GET requested');
 		Sudoku.find( (err, sudokus) => {
 			        if (err)
 				       res.send(err);
-			        res.json(bears);
+			        res.json(sudokus);
 		});
 	});
 
