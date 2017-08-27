@@ -23,6 +23,18 @@ class Sudoku {
 		this.grid[i][j].value = value
 	}
 
+	setSpot(i, j, value, def = true) {
+      this.grid[i][j].value = value;
+      this.grid[i][j].default = def;
+  }
+
+    clean(){
+    	this.grid.forEach( (x, i) => { x.forEach( (elem, j) => {
+        	elem.value = 0;
+        	elem.default = false;
+   		 } )} );
+  	}
+
 	load(sudoku) { //Loads from json
 		range(this.rows).map((x, i) => {
 			range(this.cols).map( (y, j) => this.grid[i][j] = new Spot(i, j, sudoku[i][j]) )

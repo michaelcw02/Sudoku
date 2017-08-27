@@ -7,12 +7,24 @@ let canvas;
 let clicked = false;
 let cursor = { x : 0, y : 0}
 let options = []; //Move to generators please
+let sudokuGenerator;
 
 $(function(){
     $("#solution").click(function () { //Jquery
         solve()
     });
 });
+
+$(function(){
+    $("#generate").click(function () { //Jquery
+  generate();  
+    });
+});
+
+function generate(){
+  sudoku.clean();
+  return sudokuGenerator.generate(sudoku);
+}
 
 function preload(){
   jsonData = loadJSON('../javascripts/sudokuCases.json');
@@ -27,6 +39,7 @@ function setup() {
   sudoku.load(easySudoku.hard); //Loads the sudoku from JSON
   sudokuHelper = new SudokuHelper();
   sudokuHelper.generateNeighbors(sudoku);
+  sudokuGenerator = new SudokuGenerator();
   sudokuSolver = new SudokuSolver();
   painter = new Painter(60); //Each square is 60 pixels
   painter.paintSudoku(sudoku);
