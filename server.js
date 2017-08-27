@@ -10,20 +10,25 @@ const mongoose     = require('mongoose')
 const path         = require('path')
 const http         = require('http')
 
+const sudokuRouter = require('./server/routes/sudokuRouter')
+
 const app          = express()
 
-const sudokuRouter = require('./routes/sudokuRouter')
-
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded( {extended: false} ))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded( {extended: false} ))
 
 const port         = process.env.PORT || 9090;
 
+//this one is the last one to build
+app.use(express.static( path.join(__dirname, 'dist') ))
+
 app.use('/sudoku', sudokuRouter)
 
-//this one is the last one to build
-app.use('/sudoku', express.static( path.join(__dirname, 'dist/') ))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'))
+} )
+
 
 app.set('port', port)
 const server = http.createServer(app)
