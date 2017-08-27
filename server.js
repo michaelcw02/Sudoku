@@ -12,17 +12,14 @@ const http         = require('http')
 
 const sudokuRouter = require('./server/routes/sudokuRouter')
 
+const port         = process.env.PORT || 9090;
 const app          = express()
 
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded( {extended: false} ))
 
-const port         = process.env.PORT || 9090;
-
-//this one is the last one to build
 app.use(express.static( path.join(__dirname, 'dist') ))
-
 app.use('/sudoku', sudokuRouter)
 
 app.get('*', (req, res) => {
