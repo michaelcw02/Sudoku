@@ -28,6 +28,7 @@ class Spot {
     this.setSubMatrixNeighbors(subMatrix);
   }
 
+
   setRowNeighbors(sudoku) {
     range(sudoku.rows).forEach( (x, i) => {
       if (i <= 8 && i !== this.row) this.rowNeighbors.push(sudoku.getSpot(i, this.col))
