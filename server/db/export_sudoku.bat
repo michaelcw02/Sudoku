@@ -1,1 +1,1 @@
-mongoexport -d sudoku --fields name -c sudoku --out sudoku.json
+mongoexport -d sudoku --fields grid level -c sudoku --out sudoku.json
