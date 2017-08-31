@@ -20,7 +20,7 @@ export class Painter{ //This class wil be in charge of paint in the matrix
     for(let i = 0; i < sudoku.rows; i++)
       for(let j = 0; j < sudoku.cols; j++)
         if(sudoku.getValue(i, j) !== 0)
-          this.paintNumber(sudoku.getValue(i, j), i, j,sudoku.getSpot(i, j).default);
+          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
   }
 
   paintNumber(number, i, j, def = false){
@@ -29,7 +29,7 @@ export class Painter{ //This class wil be in charge of paint in the matrix
       this.lib.fill(255, 0, 0);
     else
       this.lib.fill(0, 102, 153);
-    text(number, j * this.dimension + 20,  ( i + 1) * this.dimension - 10);
+    this.lib.text(number, j * this.dimension + 20,  ( i + 1) * this.dimension - 10);
   }
 
   paintBorderLines(row, col){

@@ -1,18 +1,19 @@
 export class Option {
 
-  constructor(x, y, value) {
+  constructor(x, y, value, lib) {
     this.value = value; //The idea is when a spot has value 0 will be a empty square
     this.x = x;
     this.y = y;
     this.original = { x : this.x, y : this.y}
+    this.lib = lib;
   }
 
   show(){
-    textSize(24);
-    fill(0, 102, 153); 
-    ellipse( this.x, this.y, 30, 30); 
-    fill(255); 
-    text(this.value, this.x - 5, this.y + 10);
+    this.lib.textSize(24);
+    this.lib.fill(0, 102, 153); 
+    this.lib.ellipse( this.x, this.y, 30, 30); 
+    this.lib.fill(255); 
+    this.lib.text(this.value, this.x - 5, this.y + 10);
   }
 
   restart(){
@@ -21,7 +22,7 @@ export class Option {
   }
 
   collides(x, y){
-    if(dist(this.x, this.y, x, y) < 30)
+    if(this.lib.dist(this.x, this.y, x, y) < 30)
       return true;
     return false;
   }

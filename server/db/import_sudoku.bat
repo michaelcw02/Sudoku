@@ -1,1 +1,1 @@
-mongoimport --db sudoku --collection sudoku --drop --file sudoku.json
+mongoimport --db sudokus --collection sudokus --drop --file sudokus.json

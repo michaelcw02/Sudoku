@@ -1,1 +1,1 @@
-mongoexport -d sudoku --fields grid level -c sudoku --out sudoku.json
+mongoexport -d sudokus --fields grid level -c sudokus --out sudokus.json

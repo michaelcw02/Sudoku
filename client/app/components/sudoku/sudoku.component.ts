@@ -39,25 +39,26 @@ export class SudokuComponent implements OnInit {
 
       p.preload = () => {
         console.log('preload');
-        this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
+        jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
+        //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
       p.setup = () => {
         canvas = p.createCanvas(700, 545);
         canvas.parent('screen');
         p.background(255);
-        //let easySudoku = jsonData.cases[0];
-        sudoku.load(this.jsonSudoku);
+        let easySudoku = jsonData.cases[0];
+        sudoku.load(easySudoku.easy);
         sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);
         for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores
-          options.push(new Option(p.width - 80, i * 60 - 30, i));
+          options.push(new Option(p.width - 80, i * 60 - 30, i, p));
       }
 
       p.draw = () => {
         p.background(255);
         painter.paintSudoku(sudoku);
-        //drawOptions();
+        drawOptions();
       }
 
       function solve() {
@@ -68,23 +69,23 @@ export class SudokuComponent implements OnInit {
         options.forEach((x) => x.show());
       }
 
-      /*function mouseDragged(){
+      p.mouseDragged = () => {
         for(let i = 0; i < options.length; i++)
-          if(options[i].collides(mouseX, mouseY)){
-            options[i].x = mouseX;
-            options[i].y = mouseY;
+          if(options[i].collides(p.mouseX, p.mouseY)){
+            options[i].x = p.mouseX;
+            options[i].y = p.mouseY;
           }
       }
       
-      function mouseReleased(){
+      p.mouseReleased = () => {
         for(let i = 0; i < options.length; i++)
-          if(options[i].collides(mouseX, mouseY)){
-            let mapX = Math.floor(map(mouseX, 0, 545, 0, 9));
-            let mapY = Math.floor(map(mouseY, 0, height, 0, 9));  
+          if(options[i].collides(p.mouseX, p.mouseY)){
+            let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
+            let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));  
             sudoku.setValue(mapY, mapX, options[i].value)
             options[i].restart();
           }
-      }*/
+      }
 
     }
 
