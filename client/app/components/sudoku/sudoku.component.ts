@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }      from '@angular/core';
+
+import { LoadSudokuJsonService }  from '../../services/load-sudoku-json.service'
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -6,6 +8,7 @@ import { Painter } from '../../../assets/js/painter';
 import { SudokuGenerator } from '../../../assets/js/sudokuGenerator';
 import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
+import { range } from '../../../assets/js/utils';
 
 declare var p5: any;
 
@@ -15,8 +18,10 @@ declare var p5: any;
   styleUrls: ['./sudoku.component.css']
 })
 export class SudokuComponent implements OnInit {
+  
+  jsonSudoku: any
 
-  constructor() { }
+  constructor(private loadSudokuService: LoadSudokuJsonService) { }
 
   ngOnInit() {
 
@@ -34,7 +39,7 @@ export class SudokuComponent implements OnInit {
 
       p.preload = () => {
         console.log('preload');
-        //jsonData = loadJSON('sudokuCases.json');
+        this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
       p.setup = () => {
@@ -42,8 +47,8 @@ export class SudokuComponent implements OnInit {
         canvas.parent('screen');
         p.background(255);
         //let easySudoku = jsonData.cases[0];
-        //sudoku.load(easySudoku.hard);
-        //sudokuHelper.generateNeighbors(sudoku);
+        sudoku.load(this.jsonSudoku);
+        sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);
         for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores
           options.push(new Option(p.width - 80, i * 60 - 30, i));

@@ -6,4 +6,4 @@ let SudokuSchema = new Schema( {
     grid: [[]]
 } );
 
-module.exports = mongoose.model('Sudoku', SudokuSchema);
+module.exports = mongoose.model('sudoku', SudokuSchema);
