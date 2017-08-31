@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 let port     = process.env.PORT || 8080; // set  port (default 8080)
 ///////////////////////////////////////////////////////////////////////////////
 // CONNECT TO DB
-mongoose.connect('mongodb://localhost/sudoku',
+mongoose.connect('mongodb://localhost/sudokus',
                  {
 					 useMongoClient: true
 				 } // See http://mongoosejs.com/docs/connections.html#use-mongo-client
@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
 // ----------------------------------------------------
 // ***** Notice the "callback hell" *****
 //-----------------------------------------------------
-router.route('/sudoku')
+router.route('/sudokus')
 	// create a bear (accessed at POST http://localhost:8080/sudoku)
 	.post( (req, res) => {
 				console.log('POST requested: ' + req.body.sudoku);
@@ -77,7 +77,7 @@ router.route('/sudoku')
 
 // ON /bears/:bear_id
 // ----------------------------------------------------
-router.route('/sudoku/:sudoku_id')
+router.route('/sudokus/:sudoku_id')
 
 	// GET
 	.get( (req, res) => {
