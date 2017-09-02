@@ -1,0 +1,1 @@
+mongoimport --db sudokus --collection sudokus --drop --file sudokus.json

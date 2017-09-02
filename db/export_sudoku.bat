@@ -1,1 +1,0 @@
-mongoexport -d sudoku --fields name -c sudoku --out sudoku.json
