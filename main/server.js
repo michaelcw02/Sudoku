@@ -75,7 +75,7 @@ router.route('/sudokus')
 		});
 	});
 
-// ON /bears/:bear_id
+// ON /bears/:sudoku_id
 // ----------------------------------------------------
 router.route('/sudokus/:sudoku_id')
 

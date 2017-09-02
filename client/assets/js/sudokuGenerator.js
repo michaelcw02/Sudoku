@@ -1,11 +1,4 @@
-<<<<<<< HEAD:main/public/javascripts/sudokuGenerator.js
-class SudokuGenerator { 
-=======
 export class SudokuGenerator { 
- constructor(){
-  this.sudokuHelper = new SudokuHelper();
- }
->>>>>>> abf61c125bad54dce78b4b841b68701c81a19621:client/assets/js/sudokuGenerator.js
 
   constructor(){
     this.sudokuHelper = new SudokuHelper();
