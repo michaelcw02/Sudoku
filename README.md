@@ -29,8 +29,14 @@ Optional:
 * **Use of 4 spaces for identations.**
 * **Use of PascalCasing for Classes.**
 * **Use of UPPERCASE for Constants.**
-* **Use of _camelCase for Variables.**
-* **DO NOT ¡GIT MERGE! ONLY GIT REBASE** 
+* **Use of camelCase for Variables.**
+* **ONLY PULL REQUESTS** 
+
+## How to Set Up
+
+    npm install 
+    ng build
+    npm start
 
 ![alt tag](http://forthebadge.com/images/badges/built-with-love.svg) 
 ![alt tag](http://forthebadge.com/images/badges/built-by-developers.svg)
