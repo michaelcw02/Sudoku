@@ -51,7 +51,7 @@ export class SudokuComponent implements OnInit {
         p.background(255);
         let easySudoku = jsonData.cases[0];
         sudoku.load(easySudoku.easy);
-        this.saveSudokuService.saveSudoku(sudoku.grid);
+        this.saveSudokuService.saveSudoku(sudoku);
         sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);
         for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores

@@ -11,7 +11,10 @@ export class SaveSudokuService {
 
     saveSudoku(sudoku) {
         console.log("Trying to save");
-        return this.http.post(`/api/sudoku`,sudoku)
-                .map( data => console.log(data) );
+        this.http.post(`api/sudoku`,sudoku)
+                .subscribe( 
+                    res => console.log(res),
+                    err => console.log(err)
+                )
     }
 }
