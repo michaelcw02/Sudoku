@@ -1,6 +1,7 @@
 import { Component, OnInit }      from '@angular/core';
 
-import { LoadSudokuJsonService }  from '../../services/load-sudoku-json.service'
+import { LoadSudokuJsonService }  from '../../services/load-sudoku-json.service';
+import { SaveSudokuService }  from '../../services/save-sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -21,7 +22,7 @@ export class SudokuComponent implements OnInit {
   
   jsonSudoku: any
 
-  constructor(private loadSudokuService: LoadSudokuJsonService) { }
+  constructor(private saveSudokuService: SaveSudokuService) { }
 
   ngOnInit() {
 
@@ -41,6 +42,7 @@ export class SudokuComponent implements OnInit {
         console.log('preload');
         jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
         //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
+        console.log('preload');
       }
 
       p.setup = () => {

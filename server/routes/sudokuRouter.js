@@ -13,8 +13,8 @@ router.route('/')
  .post( (req, res) => {
     console.log(`Requested a POST of ${req.body}`)
     let sudoku = new Sudoku();
-    sudoku.grid = req.body.sudoku;
-    sudoku.mode = req.body.mode;
+    sudoku.grid = req.body.grid;
+    sudoku.level = req.body.level;
     sudoku.save( (err) => {
         if (err)    res.json( {name: err.name, message: err.message, status: 666} )
         res.json( {name: "sudokuCreated", message: "sudoku Inserted into DB successfully", status: 69} )

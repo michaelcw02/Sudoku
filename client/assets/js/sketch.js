@@ -1,4 +1,5 @@
-let sudoko;
+//Ya esto no es necesario
+/*let sudoko;
 let painter;
 let jsonData;
 let sudokuSolver;
@@ -51,9 +52,9 @@ function draw() {
   background(255);
   painter.paintSudoku(sudoku);
   drawOptions();
-  /*if(clicked){
+  if(clicked){
     rect(cursor.x, cursor.y - 10, 2, 30)
-  }*/
+  }
 
 }
 
@@ -81,4 +82,4 @@ function mouseReleased(){
       sudoku.setValue(mapY, mapX, options[i].value)
       options[i].restart();
     }
-}
+}*/
