@@ -6,20 +6,24 @@ import { AppComponent }           from './app.component';
 import { UserComponent }          from './components/user/user.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 
-import { LoadSudokuJsonService }  from './services/load-sudoku-json.service'
+import { LoadSudokuJsonService }  from './services/load-sudoku-json.service';
+import { OptionsComponent } from './components/options/options.component';
+import { CommunicationService } from './communication.service'
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
-    SudokuComponent
+    SudokuComponent,
+    OptionsComponent
   ],
   imports: [
     BrowserModule,
     HttpModule
   ],
   providers: [
-    LoadSudokuJsonService
+    LoadSudokuJsonService,
+    CommunicationService
   ],
   bootstrap: [
     AppComponent
