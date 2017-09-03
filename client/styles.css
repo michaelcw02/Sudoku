@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.min.css";
+body {
+    align-content: center;
+    background-image: url("numbers.jpg");
+}
+
+#title {
+    text-align: center;
+    color: #286090;
+    font-size: 500%;
+}
+
+#options {
+    padding-top: 25px;
+    display: block;
+}
+
+#sudokuBox {
+    padding-top: 25px;
+    width: 65%;
+    align-content: center;
+}
+
+.input-group {
+    display: block;
+}

@@ -10,6 +10,7 @@ import { SudokuGenerator } from '../../../assets/js/sudokuGenerator';
 import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { range } from '../../../assets/js/utils';
+import { CommunicationService } from '../../communication.service'
 
 declare var p5: any;
 
@@ -22,7 +23,7 @@ export class SudokuComponent implements OnInit {
   
   jsonSudoku: any
 
-  constructor(private saveSudokuService: SaveSudokuService) { }
+  constructor(private loadSudokuService: LoadSudokuJsonService, private saveSudokuService: SaveSudokuService,private communicationService: CommunicationService) { }
 
   ngOnInit() {
 
@@ -33,6 +34,7 @@ export class SudokuComponent implements OnInit {
       let jsonData;
       let sudokuSolver = (<any>new SudokuSolver());
       let sudokuHelper = (<any>new SudokuHelper());
+      let sudokuGenerator = (<any>new SudokuGenerator(sudokuHelper));
       let canvas;
       let clicked = false;
       let cursor = { x: 0, y: 0 }
@@ -48,7 +50,7 @@ export class SudokuComponent implements OnInit {
       p.setup = () => {
         canvas = p.createCanvas(700, 545);
         canvas.parent('screen');
-        p.background(255);
+        p.background(220);
         let easySudoku = jsonData.cases[0];
         sudoku.load(easySudoku.easy);
         this.saveSudokuService.saveSudoku(sudoku);
@@ -59,13 +61,29 @@ export class SudokuComponent implements OnInit {
       }
 
       p.draw = () => {
-        p.background(255);
+        p.background(220);
         painter.paintSudoku(sudoku);
         drawOptions();
       }
 
+      this.communicationService.solve$.subscribe(
+        () => {
+          return solve();
+        }
+      );
+
       function solve() {
         return sudokuSolver.solve(sudoku);
+      }
+
+      this.communicationService.generate$.subscribe(
+        () => {
+          return generate();
+        }
+      );
+
+      function generate() {
+        return sudokuGenerator.generate();
       }
 
       function drawOptions() {
