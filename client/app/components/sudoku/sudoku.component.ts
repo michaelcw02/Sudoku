@@ -34,17 +34,15 @@ export class SudokuComponent implements OnInit {
       let jsonData;
       let sudokuSolver = (<any>new SudokuSolver());
       let sudokuHelper = (<any>new SudokuHelper());
-      let sudokuGenerator = (<any>new SudokuGenerator(sudokuHelper));
+      let sudokuGenerator = (<any>new SudokuGenerator());
       let canvas;
       let clicked = false;
       let cursor = { x: 0, y: 0 }
       let options = []; //Move to generators please
 
       p.preload = () => {
-        console.log('preload');
         jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
         //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
-        console.log('preload');
       }
 
       p.setup = () => {
@@ -53,7 +51,7 @@ export class SudokuComponent implements OnInit {
         p.background(220);
         let easySudoku = jsonData.cases[0];
         sudoku.load(easySudoku.easy);
-        this.saveSudokuService.saveSudoku(sudoku);
+        //this.saveSudokuService.saveSudoku(sudoku);
         sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);
         for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores
@@ -78,12 +76,15 @@ export class SudokuComponent implements OnInit {
 
       this.communicationService.generate$.subscribe(
         () => {
-          return generate();
+          sudoku.clean();
+           generate();
+           console.log("Generated");
         }
       );
 
       function generate() {
-        return sudokuGenerator.generate();
+         console.log("Genrating");
+         sudokuGenerator.generate(sudoku);
       }
 
       function drawOptions() {

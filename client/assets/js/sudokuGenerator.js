@@ -1,6 +1,9 @@
+import { Sudoku }             from './sudoku';
+import { SudokuHelper }             from './sudokuHelper';
+
 export class SudokuGenerator {
-    constructor(sudHelper) {
-        this.sudokuHelper = sudHelper;
+    constructor() {
+        this.sudokuHelper = new SudokuHelper();
     }
 
     solve(sudoku) {
@@ -36,7 +39,7 @@ export class SudokuGenerator {
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
         //HACER FUNCIONAL
         let newSudoku = new Sudoku(9, 9); // Se crea un sudoku vacío
-        sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
+        this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
         this.solve(newSudoku); //Se resuelve el newSudoku por completo
         let i = 0;
         while (i < 17) { //Para que asigne sólo 17 casillas por default
