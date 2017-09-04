@@ -2,6 +2,7 @@ import { Component, OnInit }      from '@angular/core';
 
 import { LoadSudokuJsonService }  from '../../services/load-sudoku-json.service';
 import { SaveSudokuService }  from '../../services/save-sudoku.service';
+import { CommunicationService } from '../../services/communication.service'
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -10,7 +11,6 @@ import { SudokuGenerator } from '../../../assets/js/sudokuGenerator';
 import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { range } from '../../../assets/js/utils';
-import { CommunicationService } from '../../communication.service'
 
 declare var p5: any;
 

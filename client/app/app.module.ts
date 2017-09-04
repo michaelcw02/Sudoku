@@ -7,10 +7,10 @@ import { UserComponent }          from './components/user/user.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 
 import { LoadSudokuJsonService }  from './services/load-sudoku-json.service';
+import { CommunicationService }   from './services/communication.service';
 
-import { OptionsComponent } from './components/options/options.component';
-import { CommunicationService } from './communication.service';
-import { SaveSudokuService }  from './services/save-sudoku.service';
+import { OptionsComponent }       from './components/options/options.component';
+import { SaveSudokuService }      from './services/save-sudoku.service';
 
 
 @NgModule({

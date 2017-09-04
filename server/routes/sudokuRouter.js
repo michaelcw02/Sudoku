@@ -2,7 +2,7 @@ const express = require('express')
 
 const router  = express.Router()
 
-const Sudoku  = require('../models/sudoku')
+const Sudoku  = require('../entity/sudoku')
 
 router.use( (req, res, next) => {
     console.log(`You are in the Sudoku Router at: ${Date.now()}`)

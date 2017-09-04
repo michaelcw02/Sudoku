@@ -14,7 +14,7 @@ export class CommunicationService {
 
   // Service message commands
   callSolve() {
-    this.solveCallSource.next();
+    this. solveCallSource.next();
   }
 
   callGenerate(){
