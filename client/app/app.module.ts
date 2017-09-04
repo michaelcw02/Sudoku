@@ -1,6 +1,9 @@
 import { BrowserModule }          from '@angular/platform-browser';
 import { NgModule }               from '@angular/core';
 import { HttpModule }             from '@angular/http';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent }           from './app.component';
 import { UserComponent }          from './components/user/user.component';
@@ -22,7 +25,10 @@ import { SaveSudokuService }  from './services/save-sudoku.service';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [
     LoadSudokuJsonService,

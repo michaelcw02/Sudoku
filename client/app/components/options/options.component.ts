@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
-import { CommunicationService } from '../../communication.service'
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { CommunicationService } from '../../communication.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-options',
@@ -9,7 +9,9 @@ import { CommunicationService } from '../../communication.service'
 })
 export class OptionsComponent implements OnInit {
 
-  constructor(private communicationService: CommunicationService) { }
+  public modalRef: BsModalRef;
+
+  constructor(private modalService: BsModalService, private communicationService: CommunicationService) { }
 
   ngOnInit() {
   }
@@ -20,6 +22,10 @@ export class OptionsComponent implements OnInit {
 
   generate = function() {
     this.communicationService.callGenerate();
+  }
+
+  public openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
 }

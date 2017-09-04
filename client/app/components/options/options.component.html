@@ -1,5 +1,5 @@
 <div id="save">
-    <button class="btn btn-primary btn-block" id="saveGame"> SAVE GAME </button>
+    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME </button>
 </div>
 <br>
 <div id="load">
@@ -24,4 +24,24 @@
 <br>
 
 <!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->
+<ng-template #template>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h4 class="modal-title" id="myModalTitle">SAVE THIS GAME</h4>
+    </div>
+
+    <div class="modal-body" id="myModalMessage">
+        <form role="form" onsubmit="return false;" id="formSaveGame">
+            <div class="form-group" id="groupUsername">
+                <label for="username">User name:</label>
+                <input type="text" class="form-control" id="username" autofocus="true" placeholder="Your name" maxlength="30" required/>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="send">SAVE <span class="glyphicon glyphicon-floppy-disk"></span></button>
+                <button type="reset" class="btn btn-danger" id="cancel">CANCEL <span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </form>
+    </div>
+</ng-template>
 
