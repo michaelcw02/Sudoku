@@ -34,6 +34,12 @@ router.route('/level/:level')
      let level = req.params.level;
      console.log(level)
      console.log(req.params)
+
+     Sudoku.count({level:'easy'}, (err, count) => {
+         console.log(`Count is ${count}`)
+         
+     } )
+
      res.json( {level: level, grid: "PLACEHOLDER"} )
  } )
 
