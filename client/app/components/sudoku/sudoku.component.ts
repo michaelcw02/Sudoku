@@ -23,7 +23,9 @@ export class SudokuComponent implements OnInit {
   
   jsonSudoku: any
 
-  constructor(private loadSudokuService: LoadSudokuJsonService, private saveSudokuService: SaveSudokuService,private communicationService: CommunicationService) { }
+  constructor(private loadSudokuService: LoadSudokuJsonService, 
+              private saveSudokuService: SaveSudokuService,
+              private communicationService: CommunicationService) { }
 
   ngOnInit() {
 
@@ -78,12 +80,10 @@ export class SudokuComponent implements OnInit {
         () => {
           sudoku.clean();
            generate();
-           console.log("Generated");
         }
       );
 
       function generate() {
-         console.log("Genrating");
          sudokuGenerator.generate(sudoku);
       }
 
@@ -110,7 +110,6 @@ export class SudokuComponent implements OnInit {
       }
 
     }
-
     let myP5 = new p5(sketch);
   }
 }
