@@ -31,16 +31,20 @@ router.route('/')
 
 router.route('/level/:level')
  .get( (req, res) => {
-     let level = req.params.level;
-     console.log(level)
-     console.log(req.params)
+    let level = req.params.level;
+    console.log(level)
+    console.log(req.params)
+    let filter = {level: 'easy'}
+    let fields = {grid}
 
-     Sudoku.count({level:'easy'}, (err, count) => {
-         console.log(`Count is ${count}`)
-         
-     } )
-
-     res.json( {level: level, grid: "PLACEHOLDER"} )
+    Sudoku.count(filter, (err, count) => {
+        console.log(`Count is ${count}`)
+        let options = {limit: count}
+        Sudoku.findRandom(filter, fields, options, (err, data) => {
+            console.log(data)
+            res.json( data )
+        })
+    } )
  } )
 
 
