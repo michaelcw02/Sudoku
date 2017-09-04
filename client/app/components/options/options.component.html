@@ -1,5 +1,5 @@
 <div id="save">
-    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME </button>
+    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME <span class="glyphicon glyphicon-floppy-disk"></span></button>
 </div>
 <br>
 <div id="load">
@@ -38,9 +38,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="send">SAVE <span class="glyphicon glyphicon-floppy-disk"></span></button>
-                <button type="reset" class="btn btn-danger" id="cancel">CANCEL <span class="glyphicon glyphicon-remove"></span></button>
-            </div>
+                <button type="submit" class="btn btn-primary" id="send">SAVE <span class="glyphicon glyphicon-floppy-disk"></span></button>            </div>
         </form>
     </div>
 </ng-template>
