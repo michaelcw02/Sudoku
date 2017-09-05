@@ -7,7 +7,7 @@ const User    = require('../models/user')
 
 let saveUser = ( (user, sudo_id) => { user.games.push(sudo_id); return user.save() }); //Trying to return a promise
 let insertSudoku = ( (req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; return sudoku.save()}); //Trying to return a promise
-let findUser = ( req => {return User.find( { name: req.body.name} )} );
+//let findUser = ( req => {return User.find( { name: req.body.name} )} );
 let countUser = ( (req) => {return findUser(req).count()});
 let updateUser = ( (req, sudo_id) => User.findAndModify( {query: {name: req.body.name}, update: { $push: {games : sudo_id} }, upsert: true, new: true} ));
 
