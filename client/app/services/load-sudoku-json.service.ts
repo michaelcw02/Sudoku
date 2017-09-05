@@ -11,6 +11,7 @@ export class LoadSudokuJsonService {
 
     getSudoku(level) {
         return this.http.get(`/api/level/${level}`)
-                .map( res => res.json() );
+                .map( res => res.json() )
+                .map( res => res);
     }
 }
