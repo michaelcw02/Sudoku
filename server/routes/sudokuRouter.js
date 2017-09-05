@@ -40,10 +40,11 @@ router.route('/')
 router.route('/level/:level')
  .get( (req, res) => {
     let level = req.params.level;
+    level = level.toLowerCase();
     let filter = {level: level};
     Sudoku.findOneRandom(filter, (err, data) => {
         if(err)     res.json( {name: err.name, message: err.message, status: 666} )
-        console.log({grid: data.grid});
+        console.log({grid: data});
         res.json({grid: data.grid})
     } )
  } )

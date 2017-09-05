@@ -2,7 +2,7 @@ import { Component, OnInit }      from '@angular/core';
 
 import { LoadSudokuService }  from '../../services/load-sudoku.service';
 import { SaveSudokuService }  from '../../services/save-sudoku.service';
-import { CommunicationService } from '../../services/communication.service'
+import { CommunicationService } from '../../services/communication.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -21,74 +21,59 @@ declare var p5: any;
 })
 export class SudokuComponent implements OnInit {
   
+  sudoku: Sudoku
+  painter: Painter
+  sudokuSolver: SudokuSolver
+  sudokuHelper: SudokuHelper
+  sudokuGenerator: SudokuGenerator
+  canvas: any
   jsonSudoku: any
-
+  
   constructor(private loadSudokuService: LoadSudokuService, 
-              private saveSudokuService: SaveSudokuService,
-              private communicationService: CommunicationService) { }
+              private saveSudokuService: SaveSudokuService, 
+              private communicationService: CommunicationService){
+                
+    this.sudoku = new Sudoku(9, 9);
+    this.sudokuSolver = new SudokuSolver();
+    this.sudokuHelper = new SudokuHelper();
+    this.sudokuGenerator = new SudokuGenerator();
+    this.communicationService.solve$.subscribe( () => this.solve() );
+    this.communicationService.generate$.subscribe( () => {
+                                                            this.sudoku.clean();
+                                                            this.generate();
+                                                          } ); 
+    this.communicationService.changeDifficulty$.subscribe( (difficulty) => this.changeDifficulty(difficulty) );
+  }
 
   ngOnInit() {
 
     const sketch = (p) => {
-
-      let sudoku = (<any>new Sudoku(9, 9));
-      let painter = (<any>new Painter(60, p));
-      let jsonData;
-      let sudokuSolver = (<any>new SudokuSolver());
-      let sudokuHelper = (<any>new SudokuHelper());
-      let sudokuGenerator = (<any>new SudokuGenerator());
-      let canvas;
+      this.painter = new Painter(60, p);
       let clicked = false;
-      let cursor = { x: 0, y: 0 }
-      let options = []; //Move to generators please
-
+      let options = []
+      
       p.preload = () => {
         //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
-        this.loadSudokuService.getSudoku('easy', (err, data) => {
-          sudoku.load(JSON.parse(data._body).grid);
-          sudokuHelper.generateNeighbors(sudoku);
-          painter.paintSudoku(sudoku);
-        });
+        this.changeDifficulty('easy');
         //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
       p.setup = () => {
-        canvas = p.createCanvas(700, 545);
-        canvas.parent('screen');
+        this.canvas = p.createCanvas(700, 545);
+        this.canvas.parent('screen');
         p.background(220);
         //sudoku.load(jsonData.grid);
         //this.saveSudokuService.saveSudoku(sudoku);
         //sudokuHelper.generateNeighbors(sudoku);
-        painter.paintSudoku(sudoku);
-        for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores
+        this.painter.paintSudoku(this.sudoku);
+        for (let i = 1; i <= this.sudoku.rows; i++) //Pasar a generadores
           options.push(new Option(p.width - 80, i * 60 - 30, i, p));
       }
 
       p.draw = () => {
         p.background(220);
-        painter.paintSudoku(sudoku);
+        this.painter.paintSudoku(this.sudoku);
         drawOptions();
-      }
-
-      this.communicationService.solve$.subscribe(
-        () => {
-          return solve();
-        }
-      );
-
-      function solve() {
-        return sudokuSolver.solve(sudoku);
-      }
-
-      this.communicationService.generate$.subscribe(
-        () => {
-          sudoku.clean();
-           generate();
-        }
-      );
-
-      function generate() {
-         sudokuGenerator.generate(sudoku);
       }
 
       function drawOptions() {
@@ -108,7 +93,7 @@ export class SudokuComponent implements OnInit {
           if(options[i].collides(p.mouseX, p.mouseY)){
             let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
             let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));  
-            sudoku.setValue(mapY, mapX, options[i].value)
+            this.sudoku.setValue(mapY, mapX, options[i].value)
             options[i].restart();
           }
       }
@@ -116,4 +101,23 @@ export class SudokuComponent implements OnInit {
     }
     let myP5 = new p5(sketch);
   }
+
+  solve() {
+    return this.sudokuSolver.solve(this.sudoku);
+  }
+  generate() {
+    this.sudokuGenerator.generate(this.sudoku);
+  }
+  getDifficulty() {
+    return this.communicationService.callGetDifficulty();
+  }
+
+  changeDifficulty(level) {
+    this.loadSudokuService.getSudoku(level, (err, data) => {
+      this.sudoku.load(JSON.parse(data._body).grid);
+      this.sudokuHelper.generateNeighbors(this.sudoku);
+      this.painter.paintSudoku(this.sudoku);
+    });
+  }
+
 }
