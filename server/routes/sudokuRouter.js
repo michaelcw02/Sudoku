@@ -10,7 +10,8 @@ let insertSudoku = ( (req, sudoku) => { sudoku.grid = req.body.grid; sudoku.leve
 let findUser = ( req => {return User.find( { name: req.body.name} )} );
 let createUser = ( (req, user) => {user.name = req.body.name; return user.save()}); //Create an user
 let countUser = ( (req) => {return findUser(req).count()});
-let updateUser = ( (req, res) => {let user = findUser(req); return saveUser(user, res._id)});
+//let updateUser = ( (req, sudo_id) => {return findUser(req).then( (user) => saveUser(user, sudo_id))});
+let updateUser = ( (req, sudo_id) => User.findAndModify( {query: {name: req.body.name}, update: { $push: {games : sudo_id} }, upsert: true, new: true} ));
 
 router.use( (req, res, next) => {
     console.log(`You are in the Sudoku Router at: ${Date.now()}`)
@@ -22,19 +23,12 @@ router.route('/')
     console.log(`Requested a POST of ${req.body}`)
     let user = new User();
     let sudoku = new Sudoku();
+    user.name = req.body.name;
     insertSudoku(req, sudoku)
-    .then( (res, req) => countUser(req) === 0 ? console.log("No hay nadie") : console.log("Si hay gente"))
-    //.then( res => console.log("Operacion realizada"))
-    .catch( err => console.log("Hubo un error"));
-
-    /*user.name = "Michael";
-    
-    sudoku.grid = req.body.grid;
-    sudoku.level = req.body.level;
-    sudoku.save( (err) => {
-        if (err)    res.json( {name: err.name, message: err.message, status: 666} )
-        res.json( {name: "sudokuCreated", message: "sudoku Inserted into DB successfully", status: 69} )
-    } ).then( (res) => insertUser(res._id, user)).then( (res) => console.log(res));*/
+    .then( (res) => countUser(req))
+    .then( (res) => {return res === 0 ? saveUser(user, sudoku._id) : updateUser(req, sudoku._id)})
+    .then( (user) => res.json({ message: 'Sudoku Created!', "user name" : user.name, "_id" : user._id}))
+    .catch( (err) => res.send(err) );
  } )
  .get( (req, res) => {
     console.log(`Requested a GET of ${req.body}`)
