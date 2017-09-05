@@ -11,7 +11,7 @@ export class SaveSudokuService {
 
     saveSudoku(sudoku) {
         console.log("Trying to save");
-        this.http.post(`api/sudoku`,sudoku)
+        this.http.post(`api/sudoku`, sudoku)
                 .subscribe( 
                     res => console.log(res),
                     err => console.log(err)

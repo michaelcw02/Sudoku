@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map'
 
 @Injectable()
-export class LoadSudokuJsonService {
+export class LoadSudokuService {
 
     constructor(public http: Http) {
         console.log('Sudoku Loader Service Up')
@@ -11,6 +11,6 @@ export class LoadSudokuJsonService {
 
     getSudoku(level) {
         return this.http.get(`/api/level/${level}`)
-                .map( res => res.json() );
+                .map( res => console.log(res) );
     }
 }
