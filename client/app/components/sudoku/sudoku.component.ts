@@ -44,7 +44,11 @@ export class SudokuComponent implements OnInit {
 
       p.preload = () => {
         //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
-        jsonData = this.loadSudokuService.getSudoku('easy');
+        this.loadSudokuService.getSudoku('easy', (err, data) => {
+          sudoku.load(JSON.parse(data._body).grid);
+          sudokuHelper.generateNeighbors(sudoku);
+          painter.paintSudoku(sudoku);
+        });
         //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
@@ -52,9 +56,9 @@ export class SudokuComponent implements OnInit {
         canvas = p.createCanvas(700, 545);
         canvas.parent('screen');
         p.background(220);
-        sudoku.load(jsonData.grid);
+        //sudoku.load(jsonData.grid);
         //this.saveSudokuService.saveSudoku(sudoku);
-        sudokuHelper.generateNeighbors(sudoku);
+        //sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);
         for (let i = 1; i <= sudoku.rows; i++) //Pasar a generadores
           options.push(new Option(p.width - 80, i * 60 - 30, i, p));

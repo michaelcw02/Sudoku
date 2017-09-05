@@ -9,13 +9,14 @@ export class LoadSudokuService {
         console.log('Sudoku Loader Service Up')
     }
 
-    getSudoku(level) {
-        return this.http.get(`/api/level/${level}`)
-<<<<<<< HEAD:client/app/services/load-sudoku-json.service.ts
-                .map( res => res.json() )
-                .map( res => res);
-=======
-                .map( res => console.log(res) );
->>>>>>> 98358458abc5a42851648d37d4fcec8a3ef3c924:client/app/services/load-sudoku.service.ts
+    getSudoku(level, callback) {
+        this.http.get(`api/sudoku/level/${level}`)
+            .subscribe(
+                res => callback(undefined, res),
+                err  => callback(err)
+            )
+            /*
+        return this.http.get(`api/sudoku/level/${level}`)
+            .map( data => data.json() )*/
     }
 }
