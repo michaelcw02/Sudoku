@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 
 import { CommunicationService } from '../../services/communication.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
