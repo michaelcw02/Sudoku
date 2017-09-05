@@ -1,6 +1,6 @@
 import { Component, OnInit }      from '@angular/core';
 
-import { LoadSudokuJsonService }  from '../../services/load-sudoku-json.service';
+import { LoadSudokuService }  from '../../services/load-sudoku.service';
 import { SaveSudokuService }  from '../../services/save-sudoku.service';
 import { CommunicationService } from '../../services/communication.service'
 
@@ -23,7 +23,7 @@ export class SudokuComponent implements OnInit {
   
   jsonSudoku: any
 
-  constructor(private loadSudokuService: LoadSudokuJsonService, 
+  constructor(private loadSudokuService: LoadSudokuService, 
               private saveSudokuService: SaveSudokuService,
               private communicationService: CommunicationService) { }
 
@@ -43,7 +43,8 @@ export class SudokuComponent implements OnInit {
       let options = []; //Move to generators please
 
       p.preload = () => {
-        jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
+        //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
+        jsonData = this.loadSudokuService.getSudoku('easy');
         //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
@@ -51,8 +52,7 @@ export class SudokuComponent implements OnInit {
         canvas = p.createCanvas(700, 545);
         canvas.parent('screen');
         p.background(220);
-        let easySudoku = jsonData.cases[0];
-        sudoku.load(easySudoku.easy);
+        sudoku.load(jsonData.grid);
         //this.saveSudokuService.saveSudoku(sudoku);
         sudokuHelper.generateNeighbors(sudoku);
         painter.paintSudoku(sudoku);

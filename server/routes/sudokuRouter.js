@@ -32,18 +32,11 @@ router.route('/')
 router.route('/level/:level')
  .get( (req, res) => {
     let level = req.params.level;
-    console.log(level)
-    console.log(req.params)
-    let filter = {level: 'easy'}
-    let fields = {grid}
-
-    Sudoku.count(filter, (err, count) => {
-        console.log(`Count is ${count}`)
-        let options = {limit: count}
-        Sudoku.findRandom(filter, fields, options, (err, data) => {
-            console.log(data)
-            res.json( data )
-        })
+    let filter = {level: level};
+    Sudoku.findOneRandom(filter, (err, data) => {
+        if(err)     res.json( {name: err.name, message: err.message, status: 666} )
+        console.log({grid: data.grid});
+        res.json({grid: data.grid})
     } )
  } )
 
