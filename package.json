@@ -32,6 +32,8 @@
     "mongoose": "^4.11.8",
     "mongoose-simple-random": "^0.4.1",
     "morgan": "^1.8.2",
+    "ngx-bootstrap": "^1.9.1",
+    "nodemon": "^1.11.0",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
   },
