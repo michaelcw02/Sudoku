@@ -7,9 +7,12 @@ const User    = require('../entity/user')
 
 let saveUser = ( (user, sudo_id) => { user.games.push(sudo_id); return user.save() }); //Trying to return a promise
 let insertSudoku = ( (req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; return sudoku.save()}); //Trying to return a promise
-//let findUser = ( req => {return User.find( { name: req.body.name} )} );
+let findUser = ( req => {return User.find( { name: req.body.name} )} );
 let countUser = ( (req) => {return findUser(req).count()});
-let updateUser = ( (req, sudo_id) => User.findAndModify( {query: {name: req.body.name}, update: { $push: {games : sudo_id} }, upsert: true, new: true} ));
+let updateUser = ( (req, sudo_id) => User.findOneAndUpdate( {name: req.body.name}, 
+                                                            { $push: {games : sudo_id} }, 
+                                                            {upsert: true, new: true }
+                                                        ));
 
 router.use( (req, res, next) => {
     console.log(`You are in the Sudoku Router at: ${Date.now()}`)
@@ -17,6 +20,7 @@ router.use( (req, res, next) => {
 } )
 
 router.route('/')
+
  .post( (req, res) => {
     console.log(`Requested a POST of ${req.body}`)
     let user = new User();
@@ -28,6 +32,7 @@ router.route('/')
     .then( (user) => res.json({ message: 'Sudoku Created!', "user name" : user.name, "_id" : user._id}))
     .catch( (err) => res.send(err) );
  } )
+
  .get( (req, res) => {
     console.log(`Requested a GET of ${req.body}`)
     Sudoku.find( (err, data) => {
@@ -38,6 +43,7 @@ router.route('/')
  } )
 
 router.route('/level/:level')
+
  .get( (req, res) => {
     let level = req.params.level;
     level = level.toLowerCase();
@@ -51,6 +57,7 @@ router.route('/level/:level')
 
 
 router.route('/modify/:sudokuId/:sudokuGrid?')
+
  .get( (req, res) => {
     let id = req.params.sudoku__id;
     Sudoku.findById( id, (err, data) => {
@@ -58,6 +65,7 @@ router.route('/modify/:sudokuId/:sudokuGrid?')
         res.json( data );
     })
  } )
+
  .put( (req, res) => {
     let id = req.params.sudoku__id;
     Sudoku.findByIdAndUpdate( id, (err, data) => {
@@ -65,6 +73,7 @@ router.route('/modify/:sudokuId/:sudokuGrid?')
             res.json( {name: "sudokuUpdated", message: "sudoku has been successfully updated", status: 69} )
     } )
  } )
+ 
  .delete( (req, res) => {
     let id = req.params.sudoku__id;
     Sudoku.remove( id, (err) => {

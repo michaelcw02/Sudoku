@@ -80,6 +80,12 @@ export class SudokuComponent implements OnInit {
         options.forEach((x) => x.show());
       }
 
+      function saveSudoku(user){
+        console.log("Estoy en sudoku componet");
+        console.log(user);
+        //return saveSudokuService.saveSudoku(user,sudoku);
+      }
+
       p.mouseDragged = () => {
         for(let i = 0; i < options.length; i++)
           if(options[i].collides(p.mouseX, p.mouseY)){

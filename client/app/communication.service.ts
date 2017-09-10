@@ -7,15 +7,11 @@ export class CommunicationService {
   // Observable string sources
   private solveCallSource = new Subject<any>();
   private generateCallSource = new Subject<any>();
-  private getDifficultyCallSource = new Subject<any>();
-  private changeDifficultyCallSource = new Subject<any>();
   private saveSudokuCallSource= new Subject<any>();
-
+  
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
   generate$ = this.generateCallSource.asObservable();
-  getDifficulty$ = this.getDifficultyCallSource.asObservable();
-  changeDifficulty$ = this.changeDifficultyCallSource.asObservable();
   saveSudoku$ = this.saveSudokuCallSource.asObservable();
 
   // Service message commands
@@ -24,18 +20,12 @@ export class CommunicationService {
   }
 
   callGenerate(){
+    console.log("Generating");
     this.generateCallSource.next();
   }
 
-  callGetDifficulty() {
-    this.getDifficultyCallSource.next();
-  }
-
-  callChangeDifficulty(difficulty) {
-    this.changeDifficultyCallSource.next(difficulty);
-  }
-
   callSaveSudoku(userName){
+    console.log("Llegue a comunication.service.ts");
     this.saveSudokuCallSource.next(userName);
   }
 

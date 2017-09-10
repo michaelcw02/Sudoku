@@ -9,9 +9,10 @@ export class SaveSudokuService {
         console.log('Sudoku Saver Service Up')
     }
 
-    saveSudoku(sudoku) {
-        console.log("Trying to save");
-        this.http.post(`api/sudoku`, sudoku)
+    saveSudoku(user,sudoku) {
+        console.log("Trying to save from save-sudoku.service.ts");
+        let data = { name : user , grid : sudoku.grid, level : sudoku.level};
+        this.http.post(`api/sudoku`,data)
                 .subscribe( 
                     res => console.log(res),
                     err => console.log(err)

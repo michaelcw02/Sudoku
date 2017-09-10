@@ -40,6 +40,12 @@ export class OptionsComponent implements OnInit {
     return $('#difficulty option:selected').val()
   }
 
+  saveSudoku(){
+    let userName = $('#username').val()
+    this.communicationService.callSaveSudoku(userName);
+    this.modalRef.hide()
+  }
+
   public openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
