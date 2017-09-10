@@ -11,11 +11,22 @@ export class SaveSudokuService {
 
     saveSudoku(user,sudoku) {
         console.log("Trying to save from save-sudoku.service.ts");
-        let data = { name : user , grid : sudoku.grid, level : sudoku.level};
+        let gridmin = this.minifyJsonGrid(sudoku.grid);
+        let data = { name : user , grid : gridmin, level : sudoku.level};
         this.http.post(`api/sudoku`, data)
                 .subscribe( 
                     res => console.log(res),
                     err => console.log(err)
                 )
+    }
+
+    minifyJsonGrid(grid) {
+        let obj = grid.map(x => x);
+        let result = Array.from(new Array(9), (x, i) => {
+            return Array.from(new Array(9), (x, j) => {
+                return { value: obj[i][j].value, default: obj[i][j].default }
+            })
+        })
+        return result;
     }
 }

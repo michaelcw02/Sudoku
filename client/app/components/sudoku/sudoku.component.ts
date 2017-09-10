@@ -108,6 +108,7 @@ export class SudokuComponent implements OnInit {
   }
   generate() {
     this.sudokuGenerator.generate(this.sudoku);
+    this.sudokuHelper.generateNeighbors(this.sudoku);    
   }
   getDifficulty() {
     return this.communicationService.callGetDifficulty();
