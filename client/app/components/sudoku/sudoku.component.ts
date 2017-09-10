@@ -43,6 +43,7 @@ export class SudokuComponent implements OnInit {
                                                             this.generate();
                                                           } ); 
     this.communicationService.changeDifficulty$.subscribe( (difficulty) => this.changeDifficulty(difficulty) );
+    this.communicationService.saveSudoku$.subscribe( (username) => this.saveSudoku(username) );
   }
 
   ngOnInit() {
@@ -78,12 +79,6 @@ export class SudokuComponent implements OnInit {
 
       function drawOptions() {
         options.forEach((x) => x.show());
-      }
-
-      function saveSudoku(user){
-        console.log("Estoy en sudoku componet");
-        console.log(user);
-        //return saveSudokuService.saveSudoku(user,sudoku);
       }
 
       p.mouseDragged = () => {
@@ -124,6 +119,12 @@ export class SudokuComponent implements OnInit {
       this.sudokuHelper.generateNeighbors(this.sudoku);
       this.painter.paintSudoku(this.sudoku);
     });
+  }
+
+  saveSudoku(user) {     
+    console.log("Estoy en sudoku componet");     
+    console.log(user);     
+    this.saveSudokuService.saveSudoku(user, this.sudoku);
   }
 
 }
