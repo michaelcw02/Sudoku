@@ -1,0 +1,56 @@
+<div id="save">
+    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME <span class="glyphicon glyphicon-floppy-disk"></span></button>
+</div>
+<br>
+<div id="load">
+    <button class="btn btn-info btn-block" id="loadGame" (click)="generate() "> GENERATE GAME </button></div>
+<br>
+<div class="input-group">
+    <select class="form-control " id="difficulty">
+                        <option selected>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+    <div id="level ">
+        <button class="btn btn-primary btn-block " id="selectDifficulty" (click)="openModal(resignModal)"> SELECT DIFFICULTY </button>
+    </div>
+</div>
+<br>
+<div id="solution ">
+    <button class="btn btn-success btn-block " id="showSolution " (click)="solve() "> SHOW SOLUTION </button>
+</div>
+<br>
+
+<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->
+<ng-template #template>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h4 class="modal-title" id="myModalTitle">SAVE THIS GAME</h4>
+    </div>
+
+    <div class="modal-body" id="myModalMessage">
+        <form role="form" onsubmit="return false;" id="formSaveGame">
+            <div class="form-group" id="groupUsername">
+                <label for="username">User name:</label>
+                <input type="text" class="form-control" id="username" autofocus="true" placeholder="Your name" maxlength="30" required/>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="send">SAVE<span class="glyphicon glyphicon-floppy-disk"></span></button>            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+<ng-template #resignModal>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h4 class="modal-title" id="myModalTitle">ARE YOU SURE YOU WANT TO RESIGN?</h4>
+    </div>
+
+    <div class="modal-body" id="myModalMessage">
+        <button id="btnConfirm" class="btn btn-primary" (click)="changeDifficulty()">Yes, I want to resign</button>
+        <button id="btnCancel"  class="btn btn-warning"  (click)="modalRef.hide()">No, I will keep struggling</button>
+    </div>
+</ng-template>
+

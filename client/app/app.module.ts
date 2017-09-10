@@ -1,25 +1,37 @@
 import { BrowserModule }          from '@angular/platform-browser';
 import { NgModule }               from '@angular/core';
 import { HttpModule }             from '@angular/http';
+import { BsDropdownModule }       from 'ngx-bootstrap/dropdown';
+import { TooltipModule }          from 'ngx-bootstrap/tooltip';
+import { ModalModule }            from 'ngx-bootstrap/modal';
 
 import { AppComponent }           from './app.component';
 import { UserComponent }          from './components/user/user.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
+import { OptionsComponent }       from './components/options/options.component';
 
-import { LoadSudokuJsonService }  from './services/load-sudoku-json.service'
+import { LoadSudokuService }      from './services/load-sudoku.service';
+import { SaveSudokuService }      from './services/save-sudoku.service';
+import { CommunicationService }   from './services/communication.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
-    SudokuComponent
+    SudokuComponent,
+    OptionsComponent
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [
-    LoadSudokuJsonService
+    LoadSudokuService,
+    SaveSudokuService,
+    CommunicationService
   ],
   bootstrap: [
     AppComponent

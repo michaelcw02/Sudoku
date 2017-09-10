@@ -25,7 +25,7 @@ app.use(express.static( path.join(__dirname, 'dist') ))
 app.use('/api/sudoku', sudokuRouter)
 
 app.use('/api', (req, res) => {
-    res.json( {message: 'This is working dude'} )
+    res.json( {message: 'This is working'} )
 } )
 
 app.get('*', (req, res) => {
