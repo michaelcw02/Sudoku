@@ -16,7 +16,8 @@ export class OptionsComponent implements OnInit {
   public modalRef: BsModalRef;
 
   constructor(private modalService: BsModalService, private communicationService: CommunicationService) { 
-    this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() );
+    this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() )
+    this.communicationService.loadGames$.subscribe( () => this.loadGames() )
   }
 
   ngOnInit() {
@@ -41,9 +42,17 @@ export class OptionsComponent implements OnInit {
   }
 
   saveSudoku(){
+    console.log("Estoy en options components")
     let userName = $('#username').val()
     this.communicationService.callSaveSudoku(userName);
     this.modalRef.hide()
+  }
+
+  loadGames(){
+    let userName = $('#loadUserName').val()
+    console.log("Estoy en optinos component ts con user", userName)
+    let data = this.communicationService.callLoadSudoku(userName)
+    console.log("Estoy en optinos component ts", data)
   }
 
   public openModal(template: TemplateRef<any>) {
