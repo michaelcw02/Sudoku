@@ -17,7 +17,6 @@ export class OptionsComponent implements OnInit {
 
   constructor(private modalService: BsModalService, private communicationService: CommunicationService) { 
     this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() )
-    this.communicationService.loadGames$.subscribe( () => this.loadGames() )
   }
 
   ngOnInit() {

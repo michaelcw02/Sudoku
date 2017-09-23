@@ -44,6 +44,7 @@ export class SudokuComponent implements OnInit {
                                                           } ); 
     this.communicationService.changeDifficulty$.subscribe( (difficulty) => this.changeDifficulty(difficulty) );
     this.communicationService.saveSudoku$.subscribe( (username) => this.saveSudoku(username) );
+    this.communicationService.loadGames$.subscribe( (username) => this.loadGames(username) )
   }
 
   ngOnInit() {
@@ -126,6 +127,14 @@ export class SudokuComponent implements OnInit {
     console.log("Estoy en sudoku componet");     
     console.log(user);     
     this.saveSudokuService.saveSudoku(user, this.sudoku);
+  }
+
+  loadGames(userName){
+    console.log("Estoy en sudoku componet con", userName);
+    return this.loadSudokuService.getGames(userName, (err, data) => {
+      console.log("Data es", data)
+      return data;
+    })     
   }
 
 }
