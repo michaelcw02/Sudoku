@@ -47,7 +47,6 @@ export class OptionsComponent implements OnInit {
   }
 
   saveSudoku(){
-    console.log("Estoy en options components")
     let userName = $('#username').val()
     this.communicationService.callSaveSudoku(userName);
     this.modalRef.hide()
@@ -55,7 +54,6 @@ export class OptionsComponent implements OnInit {
 
   loadGames(){
     let userName = $('#loadUserName').val()
-    console.log("Estoy en optinos component ts con user", userName)
     this.loadSudokuService.getGames(userName, (err, data) => {
       this.renderGames(JSON.parse(data._body).matches);
     })
@@ -63,7 +61,15 @@ export class OptionsComponent implements OnInit {
   }
 
   renderGames(data){
-      console.log("Estoy en render games a punto de renderear :", data)
+      data.forEach( x => $('#games').append($('<div class="loadMatchPanel">'+
+                         "<p class='info'> ID of your saved game: " + x._id + " </p>" +
+                         "<p class='info'> Date when you saved the game: " + x.date + " </p>" +
+                         "</div>").click( () => this.renderSavedGame(x.grid))
+      ))
+  }
+
+  renderSavedGame(grid){
+    console.log("Estoy listo para renderear el grid, me llego", grid)
   }
 
   public openModal(template: TemplateRef<any>) {
