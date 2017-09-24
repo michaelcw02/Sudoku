@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 
+import { LoadSudokuService }  from '../../services/load-sudoku.service';
 import { CommunicationService } from '../../services/communication.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -15,8 +16,13 @@ export class OptionsComponent implements OnInit {
 
   public modalRef: BsModalRef;
 
-  constructor(private modalService: BsModalService, private communicationService: CommunicationService) { 
+  constructor(private modalService: BsModalService, 
+              private communicationService: CommunicationService,
+              private loadSudokuService: LoadSudokuService) {
+
     this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() )
+    this.communicationService.loadGames$.subscribe( () => this.loadGames() )
+  
   }
 
   ngOnInit() {
@@ -50,8 +56,14 @@ export class OptionsComponent implements OnInit {
   loadGames(){
     let userName = $('#loadUserName').val()
     console.log("Estoy en optinos component ts con user", userName)
-    let data = this.communicationService.callLoadSudoku(userName)
-    console.log("Estoy en optinos component ts", data)
+    this.loadSudokuService.getGames(userName, (err, data) => {
+      this.renderGames(JSON.parse(data._body).matches);
+    })
+
+  }
+
+  renderGames(data){
+      console.log("Estoy en render games a punto de renderear :", data)
   }
 
   public openModal(template: TemplateRef<any>) {

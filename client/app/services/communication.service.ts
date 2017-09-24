@@ -44,8 +44,6 @@ export class CommunicationService {
 
   callLoadSudoku(userName){
     let data = this.loadGamesCallSource.next(userName)
-    console.log("Estoy en comunication service", data)
-    return data
   }
 
 }
