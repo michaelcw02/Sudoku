@@ -11,6 +11,7 @@ export class CommunicationService {
   private changeDifficultyCallSource = new Subject<any>();
   private saveSudokuCallSource= new Subject<any>();
   private loadGamesCallSource= new Subject<any>();
+  private renderGameCallSource = new Subject<any>();
 
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
@@ -19,6 +20,7 @@ export class CommunicationService {
   changeDifficulty$ = this.changeDifficultyCallSource.asObservable();
   saveSudoku$ = this.saveSudokuCallSource.asObservable();
   loadGames$ = this.loadGamesCallSource.asObservable();
+  renderGame$ = this.renderGameCallSource.asObservable();
 
   // Service message commands
   callSolve() {
@@ -38,12 +40,15 @@ export class CommunicationService {
   }
 
   callSaveSudoku(userName){
-    console.log("Estoy en comunication service")
     this.saveSudokuCallSource.next(userName);
   }
 
   callLoadSudoku(userName){
-    let data = this.loadGamesCallSource.next(userName)
+    this.loadGamesCallSource.next(userName)
+  }
+
+  callRenderGame(grid){
+    this.renderGameCallSource.next(grid);
   }
 
 }

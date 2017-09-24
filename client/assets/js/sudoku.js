@@ -49,6 +49,17 @@ export class Sudoku {
 		});
 	}
 
+	loadSavedMatch(sudoku){
+		range(this.rows).map((x, i) => {
+			range(this.cols).map( (y, j) => this.grid[i][j] = new Spot(i, j, sudoku[i][j].value) )
+		});
+		range(this.rows).map((x, i) => {
+			range(this.cols).map( (y, j) => {
+				this.grid[i][j].default = sudoku[i][j].default
+			} )
+		});
+	}
+
 }
 
 /*module.exports = { //Remove this at working with p5
