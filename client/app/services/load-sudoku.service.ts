@@ -18,7 +18,7 @@ export class LoadSudokuService {
     }
 
     getGames(userName, callback) {
-        console.log("Estoy en ")
+        console.log("Estoy en loadSudoku")
         this.http.get(`api/sudoku/games/${userName}`)
             .subscribe(
                 res => callback(undefined, res),

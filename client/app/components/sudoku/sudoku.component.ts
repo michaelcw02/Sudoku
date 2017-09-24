@@ -133,7 +133,8 @@ export class SudokuComponent implements OnInit {
     console.log("Estoy en sudoku componet con", userName);
     return this.loadSudokuService.getGames(userName, (err, data) => {
       console.log("Data es", data)
-      return data;
+      console.log("Data games", JSON.parse(data._body).matches)
+      return JSON.parse(data._body).matches;
     })     
   }
 

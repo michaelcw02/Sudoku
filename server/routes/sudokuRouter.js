@@ -60,10 +60,13 @@ router.route('/games/:userName')
 
     .get((req, res) => {
         console.log("Estoy en el server con userName", req.params.userName)
-        let userName = req.params.sudoku__id;
-        User.find({namme : userName})
-            .then(data => res.json({ message: 'Games loaded!', "games": data.games }))
-            .catch(err => res.send(err))
+        let userName = req.params.userName;
+        User.find({name : userName}, {games : 1, _id : 0})
+            .then(data => Sudoku.find({ _id: { $in : data[0].games}}))
+            .then(console.log)
+            .catch( err => console.log("ERROR", err))
+            /*.then(data => res.json({ message: 'Games loaded!', matches : data[0].games}))
+            .catch(err => res.send(err))*/
     })
 
  /*.put( (req, res) => {
