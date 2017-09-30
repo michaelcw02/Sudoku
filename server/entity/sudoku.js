@@ -5,7 +5,8 @@ let Schema   = mongoose.Schema;
 
 let SudokuSchema = new Schema( {
     level: String,
-    grid: [[]]
+    grid: [[]],
+    date: Date
 } );
 SudokuSchema.plugin(random)
 

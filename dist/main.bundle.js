@@ -248,8 +248,13 @@ var OptionsComponent = (function () {
         var _this = this;
         data.forEach(function (x) { return __WEBPACK_IMPORTED_MODULE_4_jquery__('#games').append(__WEBPACK_IMPORTED_MODULE_4_jquery__('<div class="loadMatchPanel">' +
             "<p class='info'> ID of your saved game: " + x._id + " </p>" +
-            "<p class='info'> Date when you saved the game: " + x.date + "</p>" +
+            "<p class='info'> Date when you saved the game: " + _this.beautifyDate(x.date) + "</p>" +
             "</div>").click(function () { return _this.renderSavedGame(x.grid); })); });
+    };
+    OptionsComponent.prototype.beautifyDate = function (date) {
+        date = new Date(date);
+        return date ? " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
+            : "Date not available";
     };
     OptionsComponent.prototype.renderSavedGame = function (grid) {
         console.log("Estoy listo para renderear el grid, me llego", grid);
