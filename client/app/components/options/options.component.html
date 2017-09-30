@@ -3,7 +3,11 @@
 </div>
 <br>
 <div id="load">
-    <button class="btn btn-info btn-block" id="loadGame" (click)="generate() "> GENERATE GAME </button></div>
+    <button class="btn btn-primary btn-block" id="loadGame" (click)="openModal(loadModal)"> LOAD GAME <span class="glyphicon glyphicon-open"></span></button>
+</div>
+<br>
+<div id="generate">
+    <button class="btn btn-info btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button></div>
 <br>
 <div class="input-group">
     <select class="form-control " id="difficulty">
@@ -54,3 +58,26 @@
     </div>
 </ng-template>
 
+<ng-template #loadModal>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h4 class="modal-title" id="myModalTitle">LOAD YOUR GAMES</h4>
+    </div>
+
+    <div class="modal-body" id="myModalMessage">
+        <form role="form" onsubmit="return false;" id="formLoadGame">
+            <div class="form-group" id="groupUsername">
+                <label for="loadUserName">User name:</label>
+                <input type="text" class="form-control" id="loadUserName" autofocus="true" placeholder="Your name" maxlength="30" required/>
+            </div>
+
+            <div class="form-group" id="games">
+                
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="load" (click)="loadGames()">LOAD GAMES <span class="glyphicon glyphicon-open"></span></button>
+            </div>
+        </form>
+    </div>
+</ng-template>

@@ -43,7 +43,8 @@ export class SudokuComponent implements OnInit {
                                                             this.generate();
                                                           } ); 
     this.communicationService.changeDifficulty$.subscribe( (difficulty) => this.changeDifficulty(difficulty) );
-    this.communicationService.saveSudoku$.subscribe( (username) => this.saveSudoku(username) );
+    this.communicationService.saveSudoku$.subscribe( (username) => this.saveSudoku(username))
+    this.communicationService.renderGame$.subscribe( (grid) => this.renderGame(grid))
   }
 
   ngOnInit() {
@@ -116,16 +117,24 @@ export class SudokuComponent implements OnInit {
 
   changeDifficulty(level) {
     this.loadSudokuService.getSudoku(level, (err, data) => {
+      console.log("Cambiando DIFICULTAD llego", JSON.parse(data._body).grid)
       this.sudoku.load(JSON.parse(data._body).grid);
       this.sudokuHelper.generateNeighbors(this.sudoku);
       this.painter.paintSudoku(this.sudoku);
     });
   }
 
+  renderGame(grid){
+    console.log("llegue a renderear el juego y llego", grid)
+    this.sudoku.loadSavedMatch(grid)
+    this.sudokuHelper.generateNeighbors(this.sudoku)
+    this.painter.paintSudoku(this.sudoku)
+  }
+
   saveSudoku(user) {     
     console.log("Estoy en sudoku componet");     
     console.log(user);     
-    this.saveSudokuService.saveSudoku(user, this.sudoku);
+    this.saveSudokuService.saveSudoku(user, this.sudoku)
   }
 
 }

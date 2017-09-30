@@ -10,6 +10,8 @@ export class CommunicationService {
   private getDifficultyCallSource = new Subject<any>();
   private changeDifficultyCallSource = new Subject<any>();
   private saveSudokuCallSource= new Subject<any>();
+  private loadGamesCallSource= new Subject<any>();
+  private renderGameCallSource = new Subject<any>();
 
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
@@ -17,6 +19,8 @@ export class CommunicationService {
   getDifficulty$ = this.getDifficultyCallSource.asObservable();
   changeDifficulty$ = this.changeDifficultyCallSource.asObservable();
   saveSudoku$ = this.saveSudokuCallSource.asObservable();
+  loadGames$ = this.loadGamesCallSource.asObservable();
+  renderGame$ = this.renderGameCallSource.asObservable();
 
   // Service message commands
   callSolve() {
@@ -37,6 +41,14 @@ export class CommunicationService {
 
   callSaveSudoku(userName){
     this.saveSudokuCallSource.next(userName);
+  }
+
+  callLoadSudoku(userName){
+    this.loadGamesCallSource.next(userName)
+  }
+
+  callRenderGame(grid){
+    this.renderGameCallSource.next(grid);
   }
 
 }

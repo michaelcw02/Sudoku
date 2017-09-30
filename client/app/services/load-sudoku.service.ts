@@ -15,8 +15,14 @@ export class LoadSudokuService {
                 res => callback(undefined, res),
                 err  => callback(err)
             )
-            /*
-        return this.http.get(`api/sudoku/level/${level}`)
-            .map( data => data.json() )*/
+    }
+
+    getGames(userName, callback) {
+        console.log("Estoy en loadSudokuService")
+        this.http.get(`api/sudoku/games/${userName}`)
+            .subscribe(
+                res => callback(undefined, res),
+                err  => callback(err)
+            )
     }
 }
