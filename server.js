@@ -16,6 +16,8 @@ const port         = process.env.PORT || 9090;
 const app          = express()
 
 mongoose.connect('mongodb://admin:admin@ds147454.mlab.com:47454/sudoku', {useMongoClient: true})
+
+//'mongodb://localhost/sudokus //for local deployment
 //mongodb://admin:admin@ds147454.mlab.com:47454/sudoku //for heroku
 
 app.use(morgan('dev'))
