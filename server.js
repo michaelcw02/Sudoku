@@ -15,7 +15,8 @@ const sudokuRouter = require('./server/routes/sudokuRouter')
 const port         = process.env.PORT || 9090;
 const app          = express()
 
-mongoose.connect('mongodb://localhost/sudokus', {useMongoClient: true})
+mongoose.connect('mongodb://admin:admin@ds147454.mlab.com:47454/sudoku', {useMongoClient: true})
+//mongodb://admin:admin@ds147454.mlab.com:47454/sudoku //for heroku
 
 app.use(morgan('dev'))
 app.use(bodyParser.json())
@@ -29,7 +30,7 @@ app.use('/api', (req, res) => {
 } )
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+    res.sendFile(path.join(__dirname, 'dist/index.html'))
 } )
 
 
