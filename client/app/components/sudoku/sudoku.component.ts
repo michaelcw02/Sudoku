@@ -113,8 +113,13 @@ export class SudokuComponent implements OnInit {
   }
 
   solveByNakedSingle(){
-    console.log("Solving by naked single")
-    return this.nakedSingleSolver.solve(this.sudoku)
+    let interval = setInterval( () => {
+      console.log("Interval")
+      if(this.nakedSingleSolver.solve(this.sudoku))
+        clearInterval(interval)
+      else
+        console.log("Still solving")
+    }, 1000)
   }
 
   generate() {

@@ -24,11 +24,12 @@ export class Spot {
   getPossibilities() {
     let possibilities = this.getAllNeighbors()
     possibilities = possibilities.map( x => x.value)
-    return range(1, 10).filter( x => !(possibilities.includes(x) && x != this.value))
+    return range(1, 10).filter( x => !possibilities.includes(x))
   }
 
   countPossibilities(){
-    return this.getPossibilities().length
+    let poss = this.getPossibilities()
+    return poss.length
   }
 
 

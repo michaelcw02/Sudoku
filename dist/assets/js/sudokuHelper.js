@@ -33,8 +33,8 @@ export class SudokuHelper { //This class will help in some operations, to separa
 		let grid = sudoku.grid;
 		
 		return grid.reduce( (z, x) =>
-			x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z )
-		, []);
+			   x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z ), [])
+			   .filter( x => x.value == 0)
 	}
 
 	generateSubMatrix(sudoku){ //Cambiar por generadores, que acepten intervalos

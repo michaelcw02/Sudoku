@@ -178,7 +178,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/options/options.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-info btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button></div>\r\n<br>\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                        <option selected>Easy</option>\r\n                        <option>Medium</option>\r\n                        <option>Hard</option>\r\n                    </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE TECHNIQUE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">SAVE THIS GAME</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"username\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">LOAD YOUR GAMES</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n                \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>"
+module.exports = "<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-info btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button></div>\r\n<br>\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                        <option selected>Easy</option>\r\n                        <option>Medium</option>\r\n                        <option>Hard</option>\r\n                    </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">SAVE THIS GAME</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"username\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">LOAD YOUR GAMES</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n                \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -418,8 +418,14 @@ var SudokuComponent = (function () {
         return this.sudokuSolver.solve(this.sudoku);
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
-        console.log("Solving by naked single");
-        return this.nakedSingleSolver.solve(this.sudoku);
+        var _this = this;
+        var interval = setInterval(function () {
+            console.log("Interval");
+            if (_this.nakedSingleSolver.solve(_this.sudoku))
+                clearInterval(interval);
+            else
+                console.log("Still solving");
+        }, 1000);
     };
     SudokuComponent.prototype.generate = function () {
         this.sudokuGenerator.generate(this.sudoku);
@@ -714,8 +720,10 @@ class NakedSingleSolver {
             return true;
         else{
             let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
+            if(!uniques.length) //Ya no se puede seguir usando naked single
+                return true
             uniques.forEach( x => x.value = x.getPossibilities().shift())
-            return false;//ELIMINAR
+            return false;
         }
 	}
 
@@ -863,11 +871,12 @@ class Spot {
   getPossibilities() {
     let possibilities = this.getAllNeighbors()
     possibilities = possibilities.map( x => x.value)
-    return range(1, 10).filter( x => !(possibilities.includes(x) && x != this.value))
+    return range(1, 10).filter( x => !possibilities.includes(x))
   }
 
   countPossibilities(){
-    return this.getPossibilities().length
+    let poss = this.getPossibilities()
+    return poss.length
   }
 
 
@@ -1096,8 +1105,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 		let grid = sudoku.grid;
 		
 		return grid.reduce( (z, x) =>
-			x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z )
-		, []);
+			   x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z ), [])
+			   .filter( x => x.value == 0)
 	}
 
 	generateSubMatrix(sudoku){ //Cambiar por generadores, que acepten intervalos
