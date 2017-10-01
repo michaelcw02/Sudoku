@@ -469,7 +469,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  user works!\r\n</p>\r\n"
+module.exports = "<p>\n  user works!\n</p>\n"
 
 /***/ }),
 
