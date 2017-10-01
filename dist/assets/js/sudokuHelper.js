@@ -65,4 +65,20 @@ export class SudokuHelper { //This class will help in some operations, to separa
 		subMatrix.push(sudoku.getSpot(i + 1, j - 1));
 		return subMatrix;
 	}
+
+	validOption({sudoku, row, col, value}){
+		let current = sudoku.getSpot(row, col)
+		if(current){
+			return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
+		}	
+	}
+
+	handleException(current, value){ //Returns if the row or column or subMatrix is blocking
+		if(current.rowNeighbors.some( x => x.value == value))
+			return "rowException"
+		if(current.colNeighbors.some( x => x.value == value))
+			return "columnException"
+		if(current.subMatrixNeighbors.some( x => x.value == value))
+			return "subMatrixException"
+	}
 }

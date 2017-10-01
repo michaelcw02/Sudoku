@@ -403,13 +403,19 @@ var SudokuComponent = (function () {
                     }
             };
             p.mouseReleased = function () {
-                for (var i = 0; i < options.length; i++)
-                    if (options[i].collides(p.mouseX, p.mouseY)) {
+                options.forEach(function (x) {
+                    if (x.collides(p.mouseX, p.mouseY)) {
                         var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
                         var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
-                        _this.sudoku.setValue(mapY, mapX, options[i].value);
-                        options[i].restart();
+                        var data = { sudoku: _this.sudoku, row: mapY, col: mapX, value: x.value };
+                        var result = _this.sudokuHelper.validOption(data);
+                        if (result == "allowed")
+                            _this.sudoku.setValue(mapY, mapX, x.value);
+                        else
+                            result == undefined ? result : alert(result);
+                        x.restart();
                     }
+                });
             };
         };
         var myP5 = new p5(sketch);
@@ -420,11 +426,8 @@ var SudokuComponent = (function () {
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
         var interval = setInterval(function () {
-            console.log("Interval");
             if (_this.nakedSingleSolver.solve(_this.sudoku))
                 clearInterval(interval);
-            else
-                console.log("Still solving");
         }, 1000);
     };
     SudokuComponent.prototype.generate = function () {
@@ -759,7 +762,7 @@ class Option {
   show(){
     this.lib.textSize(24);
     this.lib.fill(0, 102, 153); 
-    this.lib.ellipse( this.x, this.y, 30, 30); 
+    this.lib.ellipse( this.x, this.y, 50, 50); 
     this.lib.fill(255); 
     this.lib.text(this.value, this.x - 5, this.y + 10);
   }
@@ -770,7 +773,7 @@ class Option {
   }
 
   collides(x, y){
-    if(this.lib.dist(this.x, this.y, x, y) < 30)
+    if(this.lib.dist(this.x, this.y, x, y) < 40)
       return true;
     return false;
   }
@@ -1136,6 +1139,22 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 		subMatrix.push(sudoku.getSpot(i - 1, j + 1));
 		subMatrix.push(sudoku.getSpot(i + 1, j - 1));
 		return subMatrix;
+	}
+
+	validOption({sudoku, row, col, value}){
+		let current = sudoku.getSpot(row, col)
+		if(current){
+			return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
+		}	
+	}
+
+	handleException(current, value){ //Returns if the row or column or subMatrix is blocking
+		if(current.rowNeighbors.some( x => x.value == value))
+			return "rowException"
+		if(current.colNeighbors.some( x => x.value == value))
+			return "columnException"
+		if(current.subMatrixNeighbors.some( x => x.value == value))
+			return "subMatrixException"
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuHelper;

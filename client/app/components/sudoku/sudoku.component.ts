@@ -95,13 +95,19 @@ export class SudokuComponent implements OnInit {
       }
       
       p.mouseReleased = () => {
-        for(let i = 0; i < options.length; i++)
-          if(options[i].collides(p.mouseX, p.mouseY)){
+        options.forEach( x => {
+          if(x.collides(p.mouseX, p.mouseY)){
             let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
-            let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));  
-            this.sudoku.setValue(mapY, mapX, options[i].value)
-            options[i].restart();
+            let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
+            let data = {sudoku : this.sudoku, row : mapY, col : mapX, value : x.value}
+            let result = this.sudokuHelper.validOption(data);
+            if( result == "allowed") //Valid to put number there
+              this.sudoku.setValue(mapY, mapX, x.value)
+            else
+              result == undefined ? result : alert(result);
+            x.restart();
           }
+        })
       }
 
     }
@@ -114,11 +120,8 @@ export class SudokuComponent implements OnInit {
 
   solveByNakedSingle(){
     let interval = setInterval( () => {
-      console.log("Interval")
       if(this.nakedSingleSolver.solve(this.sudoku))
         clearInterval(interval)
-      else
-        console.log("Still solving")
     }, 1000)
   }
 

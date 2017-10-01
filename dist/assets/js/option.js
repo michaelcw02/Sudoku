@@ -11,7 +11,7 @@ export class Option {
   show(){
     this.lib.textSize(24);
     this.lib.fill(0, 102, 153); 
-    this.lib.ellipse( this.x, this.y, 30, 30); 
+    this.lib.ellipse( this.x, this.y, 50, 50); 
     this.lib.fill(255); 
     this.lib.text(this.value, this.x - 5, this.y + 10);
   }
@@ -22,7 +22,7 @@ export class Option {
   }
 
   collides(x, y){
-    if(this.lib.dist(this.x, this.y, x, y) < 30)
+    if(this.lib.dist(this.x, this.y, x, y) < 40)
       return true;
     return false;
   }
