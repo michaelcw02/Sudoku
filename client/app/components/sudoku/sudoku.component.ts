@@ -104,7 +104,7 @@ export class SudokuComponent implements OnInit {
             if( result == "allowed") //Valid to put number there
               this.sudoku.setValue(mapY, mapX, x.value)
             else
-              result == undefined ? result : alert(result);
+              result == undefined ? result : alert(result); //Alert if is not valid
             x.restart();
           }
         })
