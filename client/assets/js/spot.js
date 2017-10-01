@@ -21,6 +21,16 @@ export class Spot {
     return neighbors;
   }
 
+  getPossibilities() {
+    let possibilities = this.getAllNeighbors()
+    possibilities = possibilities.map( x => x.value)
+    return range(1, 10).filter( x => !(possibilities.includes(x) && x != this.value))
+  }
+
+  countPossibilities(){
+    return this.getPossibilities().length
+  }
+
 
   setNeighbors(sudoku, subMatrix) {
     this.setRowNeighbors(sudoku);

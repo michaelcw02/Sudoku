@@ -12,6 +12,7 @@ export class CommunicationService {
   private saveSudokuCallSource= new Subject<any>();
   private loadGamesCallSource= new Subject<any>();
   private renderGameCallSource = new Subject<any>();
+  private solveByNakedSingleCallSource = new Subject<any>();
 
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
@@ -21,10 +22,15 @@ export class CommunicationService {
   saveSudoku$ = this.saveSudokuCallSource.asObservable();
   loadGames$ = this.loadGamesCallSource.asObservable();
   renderGame$ = this.renderGameCallSource.asObservable();
+  solveByNakedSingle$ = this.solveByNakedSingleCallSource.asObservable();
 
   // Service message commands
   callSolve() {
     this.solveCallSource.next();
+  }
+
+  callSolveByNakedSingle(){
+    this.solveByNakedSingleCallSource.next();
   }
 
   callGenerate(){

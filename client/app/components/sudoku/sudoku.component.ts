@@ -10,6 +10,7 @@ import { Painter } from '../../../assets/js/painter';
 import { SudokuGenerator } from '../../../assets/js/sudokuGenerator';
 import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
+import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
 import { range } from '../../../assets/js/utils';
 
 declare var p5: any;
@@ -26,6 +27,7 @@ export class SudokuComponent implements OnInit {
   sudokuSolver: SudokuSolver
   sudokuHelper: SudokuHelper
   sudokuGenerator: SudokuGenerator
+  nakedSingleSolver: NakedSingleSolver
   canvas: any
   jsonSudoku: any
   
@@ -37,7 +39,9 @@ export class SudokuComponent implements OnInit {
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
     this.sudokuGenerator = new SudokuGenerator();
+    this.nakedSingleSolver = new NakedSingleSolver();
     this.communicationService.solve$.subscribe( () => this.solve() );
+    this.communicationService.solveByNakedSingle$.subscribe( () => this.solveByNakedSingle() );
     this.communicationService.generate$.subscribe( () => {
                                                             this.sudoku.clean();
                                                             this.generate();
@@ -107,6 +111,12 @@ export class SudokuComponent implements OnInit {
   solve() {
     return this.sudokuSolver.solve(this.sudoku);
   }
+
+  solveByNakedSingle(){
+    console.log("Solving by naked single")
+    return this.nakedSingleSolver.solve(this.sudoku)
+  }
+
   generate() {
     this.sudokuGenerator.generate(this.sudoku);
     this.sudokuHelper.generateNeighbors(this.sudoku);    
@@ -125,14 +135,12 @@ export class SudokuComponent implements OnInit {
   }
 
   renderGame(grid){
-    console.log("llegue a renderear el juego y llego", grid)
     this.sudoku.loadSavedMatch(grid)
     this.sudokuHelper.generateNeighbors(this.sudoku)
     this.painter.paintSudoku(this.sudoku)
   }
 
-  saveSudoku(user) {     
-    console.log("Estoy en sudoku componet");     
+  saveSudoku(user) {       
     console.log(user);     
     this.saveSudokuService.saveSudoku(user, this.sudoku)
   }
