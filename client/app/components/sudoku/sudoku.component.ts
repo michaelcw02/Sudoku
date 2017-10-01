@@ -28,7 +28,7 @@ export class SudokuComponent implements OnInit {
   sudokuGenerator: SudokuGenerator
   canvas: any
   jsonSudoku: any
-  
+    
   constructor(private loadSudokuService: LoadSudokuService, 
               private saveSudokuService: SaveSudokuService, 
               private communicationService: CommunicationService){
