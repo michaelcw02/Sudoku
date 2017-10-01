@@ -6,7 +6,7 @@ const Sudoku = require('../entity/sudoku')
 const User = require('../entity/user')
 
 let saveUser = ((user, sudo_id) => { user.games.push(sudo_id); return user.save() }); //Trying to return a promise
-let insertSudoku = ((req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; return sudoku.save() }); //Trying to return a promise
+let insertSudoku = ((req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; sudoku.date = new Date(); return sudoku.save()}); //Trying to return a promise
 let findUser = (req => { return User.find({ name: req.body.name }) });
 let countUser = ((req) => { return findUser(req).count() });
 let updateUser = ((req, sudo_id) => User.findOneAndUpdate({ name: req.body.name },

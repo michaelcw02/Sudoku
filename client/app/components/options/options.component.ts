@@ -63,15 +63,25 @@ export class OptionsComponent implements OnInit {
   renderGames(data){
       data.forEach( x => $('#games').append($('<div class="loadMatchPanel">'+
                          "<p class='info'> ID of your saved game: " + x._id + " </p>" +
-                         "<p class='info'> Date when you saved the game: " + x.date + "</p>" +
+                         "<p class='info'> Date when you saved the game: " + this.beautifyDate(x.date) + "</p>" +
                          "</div>").click( () => this.renderSavedGame(x.grid))
       ))
+  }
+
+  beautifyDate(date){
+    date = new Date(date)
+    return date ? " " + (date.getMonth() + 1) +"/" + date.getDate() + "/" + date.getFullYear() +" at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
+                : "Date not available"
   }
 
   renderSavedGame(grid){
     console.log("Estoy listo para renderear el grid, me llego", grid)
     this.communicationService.callRenderGame(grid)
     this.modalRef.hide()
+  }
+
+  solveByNakedSingle(){
+    this.communicationService.callSolveByNakedSingle()
   }
 
   public openModal(template: TemplateRef<any>) {

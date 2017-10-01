@@ -29,6 +29,14 @@ export class SudokuHelper { //This class will help in some operations, to separa
 		return this.subMatrix.find( elem => elem.indexOf(spot) > -1 );
 	}
 
+	getSpotsWithOnePossibility(sudoku){
+		let grid = sudoku.grid;
+		
+		return grid.reduce( (z, x) =>
+			   x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z ), [])
+			   .filter( x => x.value == 0)
+	}
+
 	generateSubMatrix(sudoku){ //Cambiar por generadores, que acepten intervalos
 		//Chen como cambiaria usted esto?
 		//range(1, sudoku.rows, 3).forEach( (x, i) => { range(1, sudoku.cols, 3).forEach( (elem, j) => this.subMatrix.push( this.getSubMatrix(sudoku,i, j) ) ) } );

@@ -178,7 +178,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/options/options.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-info btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button></div>\r\n<br>\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                        <option selected>Easy</option>\r\n                        <option>Medium</option>\r\n                        <option>Hard</option>\r\n                    </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SHOW SOLUTION </button>\r\n</div>\r\n<br>\r\n\r\n<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">SAVE THIS GAME</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"username\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">LOAD YOUR GAMES</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n                \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n"
+module.exports = "<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-info btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button></div>\r\n<br>\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                        <option selected>Easy</option>\r\n                        <option>Medium</option>\r\n                        <option>Hard</option>\r\n                    </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">SAVE THIS GAME</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"username\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">LOAD YOUR GAMES</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n                \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -248,13 +248,21 @@ var OptionsComponent = (function () {
         var _this = this;
         data.forEach(function (x) { return __WEBPACK_IMPORTED_MODULE_4_jquery__('#games').append(__WEBPACK_IMPORTED_MODULE_4_jquery__('<div class="loadMatchPanel">' +
             "<p class='info'> ID of your saved game: " + x._id + " </p>" +
-            "<p class='info'> Date when you saved the game: " + x.date + "</p>" +
+            "<p class='info'> Date when you saved the game: " + _this.beautifyDate(x.date) + "</p>" +
             "</div>").click(function () { return _this.renderSavedGame(x.grid); })); });
+    };
+    OptionsComponent.prototype.beautifyDate = function (date) {
+        date = new Date(date);
+        return date ? " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
+            : "Date not available";
     };
     OptionsComponent.prototype.renderSavedGame = function (grid) {
         console.log("Estoy listo para renderear el grid, me llego", grid);
         this.communicationService.callRenderGame(grid);
         this.modalRef.hide();
+    };
+    OptionsComponent.prototype.solveByNakedSingle = function () {
+        this.communicationService.callSolveByNakedSingle();
     };
     OptionsComponent.prototype.openModal = function (template) {
         this.modalRef = this.modalService.show(template);
@@ -315,6 +323,7 @@ module.exports = "<h3>{{jsonSudoku}}</h3>"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuGenerator__ = __webpack_require__("../../../../../client/assets/js/sudokuGenerator.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolver__ = __webpack_require__("../../../../../client/assets/js/sudokuSolver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__ = __webpack_require__("../../../../../client/assets/js/nakedSingleSolver.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -324,6 +333,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -344,7 +354,9 @@ var SudokuComponent = (function () {
         this.sudokuSolver = new __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolver__["a" /* SudokuSolver */]();
         this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuHelper__["a" /* SudokuHelper */]();
         this.sudokuGenerator = new __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuGenerator__["a" /* SudokuGenerator */]();
+        this.nakedSingleSolver = new __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__["a" /* NakedSingleSolver */]();
         this.communicationService.solve$.subscribe(function () { return _this.solve(); });
+        this.communicationService.solveByNakedSingle$.subscribe(function () { return _this.solveByNakedSingle(); });
         this.communicationService.generate$.subscribe(function () {
             _this.sudoku.clean();
             _this.generate();
@@ -405,6 +417,16 @@ var SudokuComponent = (function () {
     SudokuComponent.prototype.solve = function () {
         return this.sudokuSolver.solve(this.sudoku);
     };
+    SudokuComponent.prototype.solveByNakedSingle = function () {
+        var _this = this;
+        var interval = setInterval(function () {
+            console.log("Interval");
+            if (_this.nakedSingleSolver.solve(_this.sudoku))
+                clearInterval(interval);
+            else
+                console.log("Still solving");
+        }, 1000);
+    };
     SudokuComponent.prototype.generate = function () {
         this.sudokuGenerator.generate(this.sudoku);
         this.sudokuHelper.generateNeighbors(this.sudoku);
@@ -422,13 +444,11 @@ var SudokuComponent = (function () {
         });
     };
     SudokuComponent.prototype.renderGame = function (grid) {
-        console.log("llegue a renderear el juego y llego", grid);
         this.sudoku.loadSavedMatch(grid);
         this.sudokuHelper.generateNeighbors(this.sudoku);
         this.painter.paintSudoku(this.sudoku);
     };
     SudokuComponent.prototype.saveSudoku = function (user) {
-        console.log("Estoy en sudoku componet");
         console.log(user);
         this.saveSudokuService.saveSudoku(user, this.sudoku);
     };
@@ -535,6 +555,7 @@ var CommunicationService = (function () {
         this.saveSudokuCallSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         this.loadGamesCallSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         this.renderGameCallSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.solveByNakedSingleCallSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         // Observable string streams
         this.solve$ = this.solveCallSource.asObservable();
         this.generate$ = this.generateCallSource.asObservable();
@@ -543,10 +564,14 @@ var CommunicationService = (function () {
         this.saveSudoku$ = this.saveSudokuCallSource.asObservable();
         this.loadGames$ = this.loadGamesCallSource.asObservable();
         this.renderGame$ = this.renderGameCallSource.asObservable();
+        this.solveByNakedSingle$ = this.solveByNakedSingleCallSource.asObservable();
     }
     // Service message commands
     CommunicationService.prototype.callSolve = function () {
         this.solveCallSource.next();
+    };
+    CommunicationService.prototype.callSolveByNakedSingle = function () {
+        this.solveByNakedSingleCallSource.next();
     };
     CommunicationService.prototype.callGenerate = function () {
         this.generateCallSource.next();
@@ -677,6 +702,46 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../client/assets/js/nakedSingleSolver.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
+
+
+class NakedSingleSolver {
+
+	constructor(){
+		this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]();
+	}
+
+	solve(sudoku){
+		if(!this.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
+            return true;
+        else{
+            let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
+            if(!uniques.length) //Ya no se puede seguir usando naked single
+                return true
+            uniques.forEach( x => x.value = x.getPossibilities().shift())
+            return false;
+        }
+	}
+
+
+	//Pasar a funcional
+	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+		for(let i = 0; i < sudoku.rows; i++)
+			for(let j = 0; j < sudoku.cols; j++)
+				if(sudoku.getValue(i, j) === 0)
+					return true;
+		return false;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = NakedSingleSolver;
+
+
+/***/ }),
+
 /***/ "../../../../../client/assets/js/option.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -801,6 +866,17 @@ class Spot {
     let neighbors = [];
     neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors);
     return neighbors;
+  }
+
+  getPossibilities() {
+    let possibilities = this.getAllNeighbors()
+    possibilities = possibilities.map( x => x.value)
+    return range(1, 10).filter( x => !possibilities.includes(x))
+  }
+
+  countPossibilities(){
+    let poss = this.getPossibilities()
+    return poss.length
   }
 
 
@@ -1023,6 +1099,14 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 
 	findInSubMatrix(spot){
 		return this.subMatrix.find( elem => elem.indexOf(spot) > -1 );
+	}
+
+	getSpotsWithOnePossibility(sudoku){
+		let grid = sudoku.grid;
+		
+		return grid.reduce( (z, x) =>
+			   x.reduce( (acum, e) => e.countPossibilities() == 1 ? acum.concat(e) : acum , z ), [])
+			   .filter( x => x.value == 0)
 	}
 
 	generateSubMatrix(sudoku){ //Cambiar por generadores, que acepten intervalos
