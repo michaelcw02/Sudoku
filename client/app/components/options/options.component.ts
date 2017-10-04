@@ -61,10 +61,11 @@ export class OptionsComponent implements OnInit {
   }
 
   renderGames(data){
-      data.forEach( x => $('#games').append($('<div class="loadMatchPanel">'+
-                         "<p class='info'> ID of your saved game: " + x._id + " </p>" +
-                         "<p class='info'> Date when you saved the game: " + this.beautifyDate(x.date) + "</p>" +
-                         "</div>").click( () => this.renderSavedGame(x.grid))
+      data.forEach( (x, i) => $('#games').append($('<div class="loadMatchPanel" id="loadedMatch">'+
+                        //  "<p class='info'> ID of your saved game: " + x._id + " </p>" +
+                        "<p class='info'> Match #" + (i+1) + " </p>" +
+                        "<p class='info'> Date: " + this.beautifyDate(x.date) + "</p>" +
+                        "</div> <br>").click( () => this.renderSavedGame(x.grid))
       ))
   }
 

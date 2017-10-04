@@ -1,0 +1,22 @@
+#saveHeader,
+#loadHeader,
+#resignHeader {
+    background-color: #337AB7;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+#howToHeader {
+    background-color: #0A9BD8;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+button {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+    font-family: 'Comfortaa', cursive;
+}
+
+select {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+}

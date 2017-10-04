@@ -1,0 +1,16 @@
+.modal-header {
+    background-color: #c60000;
+    color: #FFFFFF;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+#sudoku {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+body {
+    font-family: 'Comfortaa', cursive;
+}

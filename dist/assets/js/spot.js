@@ -1,67 +1,67 @@
 export class Spot {
 
-  constructor(row, col, value = 0) {
+    constructor(row, col, value = 0) {
 
-    this.value = value; //The idea is when a spot has value 0 will be a empty square
+        this.value = value; //The idea is when a spot has value 0 will be a empty square
 
-    this.row = row; //Row position at the matrix
-    this.col = col; //Column position at the matrix
+        this.row = row; //Row position at the matrix
+        this.col = col; //Column position at the matrix
 
-    this.rowNeighbors = []; // Row neigbors
-    this.colNeighbors = []; // Column neigbors
-    this.subMatrixNeighbors = []; //The subsquare neighbors
+        this.rowNeighbors = []; // Row neigbors
+        this.colNeighbors = []; // Column neigbors
+        this.subMatrixNeighbors = []; //The subsquare neighbors
 
-    this.default = false; //Default is if is a value hardcoded before the start of solving
+        this.default = false; //Default is if is a value hardcoded before the start of solving
 
-  }
+    }
 
-  getAllNeighbors() {
-    let neighbors = [];
-    neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors);
-    return neighbors;
-  }
+    getAllNeighbors() {
+        let neighbors = [];
+        neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors);
+        return neighbors;
+    }
 
-  getPossibilities() {
-    let possibilities = this.getAllNeighbors()
-    possibilities = possibilities.map( x => x.value)
-    return range(1, 10).filter( x => !possibilities.includes(x))
-  }
+    getPossibilities() {
+        let possibilities = this.getAllNeighbors()
+        possibilities = possibilities.map(x => x.value)
+        return range(1, 10).filter(x => !possibilities.includes(x))
+    }
 
-  countPossibilities(){
-    let poss = this.getPossibilities()
-    return poss.length
-  }
-
-
-  setNeighbors(sudoku, subMatrix) {
-    this.setRowNeighbors(sudoku);
-    this.setColNeighbors(sudoku);
-    this.setSubMatrixNeighbors(subMatrix);
-  }
+    countPossibilities() {
+        let poss = this.getPossibilities()
+        return poss.length
+    }
 
 
-  setRowNeighbors(sudoku) {
-    range(sudoku.rows).forEach( (x, i) => {
-      if (i <= 8 && i !== this.row) this.rowNeighbors.push(sudoku.getSpot(i, this.col))
-    } );
-  }
+    setNeighbors(sudoku, subMatrix) {
+        this.setRowNeighbors(sudoku);
+        this.setColNeighbors(sudoku);
+        this.setSubMatrixNeighbors(subMatrix);
+    }
 
-  setColNeighbors(sudoku) {
-    range(sudoku.cols).forEach( (x, j) => {
-      if (j <= 8 && j !== this.col) this.colNeighbors.push(sudoku.getSpot(this.row, j))
-    } );
-  }
 
-  setSubMatrixNeighbors(subMatrix) {
-    range(subMatrix.length).forEach( (x, i) => {
-      if (subMatrix[i] !== this) this.subMatrixNeighbors.push(subMatrix[i])
-    } )
-  }
+    setColNeighbors(sudoku) {
+        range(sudoku.cols).forEach((x, i) => {
+            if (i <= 8 && i !== this.col) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+        });
+    }
 
-  isValidOption(value) {
-    let neighbors = this.getAllNeighbors();
-    return !neighbors.some((n) => n.value === value);
-  }
+    setRowNeighbors(sudoku) {
+        range(sudoku.rows).forEach((x, j) => {
+            if (j <= 8 && j !== this.row) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+        });
+    }
+
+    setSubMatrixNeighbors(subMatrix) {
+        range(subMatrix.length).forEach((x, i) => {
+            if (subMatrix[i] !== this) this.subMatrixNeighbors.push(subMatrix[i])
+        })
+    }
+
+    isValidOption(value) {
+        let neighbors = this.getAllNeighbors();
+        return !neighbors.some((n) => n.value === value);
+    }
 
 
 }
