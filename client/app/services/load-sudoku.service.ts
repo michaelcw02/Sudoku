@@ -25,4 +25,8 @@ export class LoadSudokuService {
                 err  => callback(err)
             )
     }
+
+    retriveSudoku(){
+        return JSON.parse(localStorage.getItem("sudoku"));
+    }
 }

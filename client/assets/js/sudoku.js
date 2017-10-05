@@ -29,7 +29,7 @@ export class Sudoku {
 	setSpot(i, j, value, def = true) {
       this.grid[i][j].value = value;
       this.grid[i][j].default = def;
-  }
+    }
 
     clean(){
     	this.grid.forEach( (x, i) => { x.forEach( (elem, j) => {
@@ -58,6 +58,13 @@ export class Sudoku {
 				this.grid[i][j].default = sudoku[i][j].default
 			} )
 		});
+	}
+
+	fillGrid(obj){
+    	this.grid.forEach( (x, i) => { x.forEach( (spot, j) => {
+        	spot.value = obj[i][j].value;
+        	spot.default = obj[i][j].default;
+   		 } )} );		
 	}
 
 }

@@ -29,4 +29,9 @@ export class SaveSudokuService {
         })
         return result;
     }
+
+    storeSudoku(sudoku){
+        let obj = this.minifyJsonGrid(sudoku.grid)
+        localStorage.setItem("sudoku",JSON.stringify(obj)) 
+    }
 }

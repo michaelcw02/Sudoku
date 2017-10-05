@@ -1,1 +1,13 @@
-<h3>{{jsonSudoku}}</h3>
+<div id="sudoku">{{jsonSudoku}}</div> 
+
+<ng-template #storeModal>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h4 class="modal-title" id="myModalTitle">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>
+    </div>
+
+    <div class="modal-body" id="myModalMessage">
+        <button id="btnConfirm" class="btn btn-primary" (click)="loadGame()">Yes, I want to load it</button>
+        <button id="btnCancel"  class="btn btn-warning"  (click)="changeDifficulty('easy')">No, I want another game</button>
+    </div>
+</ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnInit }      from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild }      from '@angular/core';
 
 import { LoadSudokuService }  from '../../services/load-sudoku.service';
 import { SaveSudokuService }  from '../../services/save-sudoku.service';
@@ -12,6 +12,7 @@ import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
 import { range } from '../../../assets/js/utils';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'; 
 
 declare var p5: any;
 
@@ -31,10 +32,14 @@ export class SudokuComponent implements OnInit {
   canvas: any
   jsonSudoku: any
   
+  public modalRef: BsModalRef; 
+
   constructor(private loadSudokuService: LoadSudokuService, 
               private saveSudokuService: SaveSudokuService, 
-              private communicationService: CommunicationService){
-                
+              private communicationService: CommunicationService,
+              private modalService: BsModalService){
+
+     
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
@@ -51,7 +56,12 @@ export class SudokuComponent implements OnInit {
     this.communicationService.renderGame$.subscribe( (grid) => this.renderGame(grid))
   }
 
+  @ViewChild('storeModal') 
+  private storeModal: TemplateRef<any>;
+
   ngOnInit() {
+
+    window.onunload = () => this.saveSudokuService.storeSudoku(this.sudoku)
 
     const sketch = (p) => {
       this.painter = new Painter(60, p);
@@ -59,9 +69,10 @@ export class SudokuComponent implements OnInit {
       let options = []
       
       p.preload = () => {
-        //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
-        this.changeDifficulty('easy');
-        //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
+        this.painter.paintSudoku(this.sudoku);
+        let grid = this.loadSudokuService.retriveSudoku();
+        if(grid)
+          this.modalRef = this.modalService.show(this.storeModal);
       }
 
       p.setup = () => {
@@ -111,7 +122,14 @@ export class SudokuComponent implements OnInit {
       }
 
     }
+
     let myP5 = new p5(sketch);
+  }
+
+  loadGame(){
+    let grid = this.loadSudokuService.retriveSudoku();
+    this.sudoku.fillGrid(grid);
+    this.modalRef.hide()
   }
 
   solve() {
@@ -129,6 +147,7 @@ export class SudokuComponent implements OnInit {
     this.sudokuGenerator.generate(this.sudoku);
     this.sudokuHelper.generateNeighbors(this.sudoku);    
   }
+  
   getDifficulty() {
     return this.communicationService.callGetDifficulty();
   }
@@ -140,6 +159,7 @@ export class SudokuComponent implements OnInit {
       this.sudokuHelper.generateNeighbors(this.sudoku);
       this.painter.paintSudoku(this.sudoku);
     });
+    this.modalRef.hide()
   }
 
   renderGame(grid){
@@ -148,9 +168,9 @@ export class SudokuComponent implements OnInit {
     this.painter.paintSudoku(this.sudoku)
   }
 
-  saveSudoku(user) {       
+  saveSudoku(user) {  
     console.log(user);     
-    this.saveSudokuService.saveSudoku(user, this.sudoku)
+    this.saveSudokuService.saveSudoku(user, this.sudoku)    
   }
 
 }
