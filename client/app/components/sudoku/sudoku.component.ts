@@ -1,7 +1,7 @@
-import { Component, OnInit }      from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
-import { LoadSudokuService }  from '../../services/load-sudoku.service';
-import { SaveSudokuService }  from '../../services/save-sudoku.service';
+import { LoadSudokuService } from '../../services/load-sudoku.service';
+import { SaveSudokuService } from '../../services/save-sudoku.service';
 import { CommunicationService } from '../../services/communication.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
@@ -13,6 +13,8 @@ import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
 import { range } from '../../../assets/js/utils';
 
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
 declare var p5: any;
 
 @Component({
@@ -20,8 +22,8 @@ declare var p5: any;
   templateUrl: './sudoku.component.html',
   styleUrls: ['./sudoku.component.css']
 })
+
 export class SudokuComponent implements OnInit {
-  
   sudoku: Sudoku
   painter: Painter
   sudokuSolver: SudokuSolver
@@ -30,25 +32,28 @@ export class SudokuComponent implements OnInit {
   nakedSingleSolver: NakedSingleSolver
   canvas: any
   jsonSudoku: any
-  
-  constructor(private loadSudokuService: LoadSudokuService, 
-              private saveSudokuService: SaveSudokuService, 
-              private communicationService: CommunicationService){
-                
+
+  public modalRef: BsModalRef;
+
+  constructor(private loadSudokuService: LoadSudokuService,
+    private saveSudokuService: SaveSudokuService,
+    private communicationService: CommunicationService,
+    private modalService: BsModalService) {
+
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
     this.sudokuGenerator = new SudokuGenerator();
     this.nakedSingleSolver = new NakedSingleSolver();
-    this.communicationService.solve$.subscribe( () => this.solve() );
-    this.communicationService.solveByNakedSingle$.subscribe( () => this.solveByNakedSingle() );
-    this.communicationService.generate$.subscribe( () => {
-                                                            this.sudoku.clean();
-                                                            this.generate();
-                                                          } ); 
-    this.communicationService.changeDifficulty$.subscribe( (difficulty) => this.changeDifficulty(difficulty) );
-    this.communicationService.saveSudoku$.subscribe( (username) => this.saveSudoku(username))
-    this.communicationService.renderGame$.subscribe( (grid) => this.renderGame(grid))
+    this.communicationService.solve$.subscribe(() => this.solve());
+    this.communicationService.solveByNakedSingle$.subscribe(() => this.solveByNakedSingle());
+    this.communicationService.generate$.subscribe(() => {
+      this.sudoku.clean();
+      this.generate();
+    });
+    this.communicationService.changeDifficulty$.subscribe((difficulty) => this.changeDifficulty(difficulty));
+    this.communicationService.saveSudoku$.subscribe((username) => this.saveSudoku(username))
+    this.communicationService.renderGame$.subscribe((grid) => this.renderGame(grid))
   }
 
   ngOnInit() {
@@ -57,7 +62,7 @@ export class SudokuComponent implements OnInit {
       this.painter = new Painter(60, p);
       let clicked = false;
       let options = []
-      
+
       p.preload = () => {
         //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
         this.changeDifficulty('easy');
@@ -77,7 +82,7 @@ export class SudokuComponent implements OnInit {
       }
 
       p.draw = () => {
-        p.background(220);
+        p.background(179,182,165);
         this.painter.paintSudoku(this.sudoku);
         drawOptions();
       }
@@ -87,24 +92,24 @@ export class SudokuComponent implements OnInit {
       }
 
       p.mouseDragged = () => {
-        for(let i = 0; i < options.length; i++)
-          if(options[i].collides(p.mouseX, p.mouseY)){
+        for (let i = 0; i < options.length; i++)
+          if (options[i].collides(p.mouseX, p.mouseY)) {
             options[i].x = p.mouseX;
             options[i].y = p.mouseY;
           }
       }
-      
+
       p.mouseReleased = () => {
-        options.forEach( x => {
-          if(x.collides(p.mouseX, p.mouseY)){
+        options.forEach(x => {
+          if (x.collides(p.mouseX, p.mouseY)) {
             let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
             let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
-            let data = {sudoku : this.sudoku, row : mapY, col : mapX, value : x.value}
+            let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: x.value }
             let result = this.sudokuHelper.validOption(data);
-            if( result == "allowed") //Valid to put number there
+            if (result == "allowed") //Valid to put number there
               this.sudoku.setValue(mapY, mapX, x.value)
             else
-              result == undefined ? result : alert(result); //Alert if is not valid
+              result == undefined ? result : this.openModal(result); //Alert if is not valid
             x.restart();
           }
         })
@@ -118,16 +123,16 @@ export class SudokuComponent implements OnInit {
     return this.sudokuSolver.solve(this.sudoku);
   }
 
-  solveByNakedSingle(){
-    let interval = setInterval( () => {
-      if(this.nakedSingleSolver.solve(this.sudoku))
+  solveByNakedSingle() {
+    let interval = setInterval(() => {
+      if (this.nakedSingleSolver.solve(this.sudoku))
         clearInterval(interval)
     }, 1000)
   }
 
   generate() {
     this.sudokuGenerator.generate(this.sudoku);
-    this.sudokuHelper.generateNeighbors(this.sudoku);    
+    this.sudokuHelper.generateNeighbors(this.sudoku);
   }
   getDifficulty() {
     return this.communicationService.callGetDifficulty();
@@ -142,15 +147,49 @@ export class SudokuComponent implements OnInit {
     });
   }
 
-  renderGame(grid){
+  renderGame(grid) {
     this.sudoku.loadSavedMatch(grid)
     this.sudokuHelper.generateNeighbors(this.sudoku)
     this.painter.paintSudoku(this.sudoku)
   }
 
-  saveSudoku(user) {       
-    console.log(user);     
+  saveSudoku(user) {
+    console.log(user);
     this.saveSudokuService.saveSudoku(user, this.sudoku)
+  }
+
+
+  @ViewChild('errorModal')
+  private errorModal: TemplateRef<any>;
+
+  public openModal(result) {
+    this.modalRef = this.modalService.show(this.errorModal);
+    switch (result) {
+      case "rowException":
+        $("#messageError").text("The number already exists in that row.");
+        break;
+      case "columnException":
+        $("#messageError").text("The number already exists in that column.");
+        break;
+      case "subMatrixException":
+        $("#messageError").text("The number already exists in that sub-grid.");
+        break;
+      case "rowMatrixException":
+        $("#messageError").text("The number already exists in that row and sub-grid.");
+        break;
+      case "colMatrixException":
+        $("#messageError").text("The number already exists in that column and sub-grid.");
+        break;
+      case "rowColException":
+        $("#messageError").text("The number already exists in that row and column.");
+        break;
+      case "allException":
+        $("#messageError").text("The number already exists in that row, column and sub-grid.");
+        break;
+      default:
+        $("#messageError").text("Unknown error.")
+        break;
+    }
   }
 
 }

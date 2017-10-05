@@ -1,46 +1,81 @@
-<div id="save">
-    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME <span class="glyphicon glyphicon-floppy-disk"></span></button>
+<div id="howToPlay">
+    <button class="btn btn-info btn-block " id="showHowToPlay" (click)="openModal(howToPlayModal)"> HOW TO PLAY </button>
 </div>
 <br>
-<div id="load">
-    <button class="btn btn-primary btn-block" id="loadGame" (click)="openModal(loadModal)"> LOAD GAME <span class="glyphicon glyphicon-open"></span></button>
-</div>
-<br>
-<div id="generate">
-    <button class="btn btn-info btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button></div>
-<br>
+
 <div class="input-group">
     <select class="form-control " id="difficulty">
-                        <option selected>Easy</option>
-                        <option>Medium</option>
-                        <option>Hard</option>
-                    </select>
+                            <option selected>Easy</option>
+                            <option>Medium</option>
+                            <option>Hard</option>
+                        </select>
     <div id="level ">
         <button class="btn btn-primary btn-block " id="selectDifficulty" (click)="openModal(resignModal)"> SELECT DIFFICULTY </button>
     </div>
 </div>
 <br>
+
+<div id="save">
+    <button class="btn btn-primary btn-block" id="saveGame" (click)="openModal(template)"> SAVE GAME <span class="glyphicon glyphicon-floppy-disk"></span></button>
+</div>
+<br>
+
+<div id="load">
+    <button class="btn btn-primary btn-block" id="loadGame" (click)="openModal(loadModal)"> LOAD GAME <span class="glyphicon glyphicon-open"></span></button>
+</div>
+<br>
+
+<div id="generate">
+    <button class="btn btn-warning btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button></div>
+<br>
+
 <div id="solution ">
     <button class="btn btn-success btn-block " id="showSolution " (click)="solve() "> SOLVE BY BACKTRACK</button>
 </div>
 <br>
 
 <div id="nakedSingle">
-    <button class="btn btn-danger btn-block " id="showNakedSingleSolution " (click)="solveByNakedSingle() "> SOLVE BY NAKED SINGLE</button>
+    <button class="btn btn-success btn-block " id="showNakedSingleSolution " (click)="solveByNakedSingle() "> SOLVE BY NAKED SINGLE</button>
 </div>
 <br>
 
-<!-- Modal oculto para preguntar por el usuario con el que desea guardar la partida -->
-<ng-template #template>
-    <div class="modal-header">
+
+
+<!-- *********************************************
+                    MODALS
+    **********************************************-->
+
+<!--  HOW TO PLAY  -->
+<ng-template #howToPlayModal>
+    <div class="modal-header" id="howToHeader">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
-        <h4 class="modal-title" id="myModalTitle">SAVE THIS GAME</h4>
+        <h3 class="modal-title" id="myModalTitle"><i class="fa fa-question-circle"></i> HOW TO PLAY</h3>
     </div>
 
-    <div class="modal-body" id="myModalMessage">
+    <div class="modal-body" id="howToBody">
+        <ul>
+            <li>
+                <h4>Drag and drop the numbers from the right pane into the grid.</h4>
+            </li>
+            <li>
+                <h4>Double-click in the number to delete it.</h4>
+            </li>
+        </ul>
+    </div>
+</ng-template>
+
+
+<!--  SAVE  -->
+<ng-template #template>
+    <div class="modal-header" id="saveHeader">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h3 class="modal-title" id="myModalTitle"><span class="glyphicon glyphicon-floppy-disk"></span> SAVE THIS GAME</h3>
+    </div>
+
+    <div class="modal-body" id="saveBody">
         <form role="form" onsubmit="return false;" id="formSaveGame">
             <div class="form-group" id="groupUsername">
-                <label for="username">User name:</label>
+                <h4><label for="username">User name:</label></h4>
                 <input type="text" class="form-control" id="username" autofocus="true" placeholder="Your name" maxlength="30" required/>
             </div>
 
@@ -51,25 +86,29 @@
     </div>
 </ng-template>
 
+
+<!--  RESIGN  -->
 <ng-template #resignModal>
-    <div class="modal-header">
+    <div class="modal-header" id="resignHeader">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
-        <h4 class="modal-title" id="myModalTitle">ARE YOU SURE YOU WANT TO RESIGN?</h4>
+        <h3 class="modal-title" id="myModalTitle">ARE YOU SURE YOU WANT TO RESIGN?</h3>
     </div>
 
-    <div class="modal-body" id="myModalMessage">
+    <div class="modal-body" id="resignBody">
         <button id="btnConfirm" class="btn btn-primary" (click)="changeDifficulty()">Yes, I want to resign</button>
-        <button id="btnCancel"  class="btn btn-warning"  (click)="modalRef.hide()">No, I will keep struggling</button>
+        <button id="btnCancel" class="btn btn-warning" (click)="modalRef.hide()">No, I will keep struggling</button>
     </div>
 </ng-template>
 
+
+<!--  LOAD  -->
 <ng-template #loadModal>
-    <div class="modal-header">
+    <div class="modal-header" id="loadHeader">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
-        <h4 class="modal-title" id="myModalTitle">LOAD YOUR GAMES</h4>
+        <h3 class="modal-title" id="myModalTitle"><span class="glyphicon glyphicon-open"></span> LOAD YOUR GAMES</h3>
     </div>
 
-    <div class="modal-body" id="myModalMessage">
+    <div class="modal-body" id="loadBody">
         <form role="form" onsubmit="return false;" id="formLoadGame">
             <div class="form-group" id="groupUsername">
                 <label for="loadUserName">User name:</label>
@@ -77,7 +116,7 @@
             </div>
 
             <div class="form-group" id="games">
-                
+
             </div>
 
             <div class="form-group">

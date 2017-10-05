@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import '/comfortaa.ttf';
 body {
     align-content: center;
     background-image: url("numbers.jpg");
+    font-family: 'Comfortaa', cursive;
 }
 
 #title {
@@ -27,17 +29,16 @@ body {
     display: block;
 }
 
-.info{
-    color: #286090;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:16px;
+.info {
+    font-family: 'Comfortaa', cursive;
+    font-size: 16px;
 }
 
-.loadMatchPanel{
-    height: 100px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #286090;
-    background-color: #E2EBF3;
-    cursor: pointer;
+.loadMatchPanel {
+    background-color: #2A7F99 !important;
+    color: white !important;
+    padding: 5px 5px;
+    border-width: 10px;
+    border-radius: 10px;
+    text-align: center;
 }
