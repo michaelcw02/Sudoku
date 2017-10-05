@@ -249,7 +249,7 @@ var OptionsComponent = (function () {
         data.forEach(function (x, i) { return __WEBPACK_IMPORTED_MODULE_4_jquery__('#games').append(__WEBPACK_IMPORTED_MODULE_4_jquery__('<div class="loadMatchPanel" id="loadedMatch">' +
             //  "<p class='info'> ID of your saved game: " + x._id + " </p>" +
             "<p class='info'> Match #" + (i + 1) + " </p>" +
-            "<p class='info'> Date saved: " + _this.beautifyDate(x.date) + "</p>" +
+            "<p class='info'> Date: " + _this.beautifyDate(x.date) + "</p>" +
             "</div> <br>").click(function () { return _this.renderSavedGame(x.grid); })); });
     };
     OptionsComponent.prototype.beautifyDate = function (date) {
@@ -929,13 +929,13 @@ class Spot {
 
     setColNeighbors(sudoku) {
         range(sudoku.cols).forEach((x, i) => {
-            if (i <= 8 && i !== this.col) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+            if (i <= 8 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
         });
     }
 
     setRowNeighbors(sudoku) {
         range(sudoku.rows).forEach((x, j) => {
-            if (j <= 8 && j !== this.row) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+            if (j <= 8 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
         });
     }
 

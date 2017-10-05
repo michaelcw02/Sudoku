@@ -42,13 +42,13 @@ export class Spot {
 
     setColNeighbors(sudoku) {
         range(sudoku.cols).forEach((x, i) => {
-            if (i <= 8 && i !== this.col) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+            if (i <= 8 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
         });
     }
 
     setRowNeighbors(sudoku) {
         range(sudoku.rows).forEach((x, j) => {
-            if (j <= 8 && j !== this.row) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+            if (j <= 8 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
         });
     }
 
