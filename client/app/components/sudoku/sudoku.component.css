@@ -1,5 +1,10 @@
-.modal-header {
+#headerError {
     background-color: #c60000;
+    color: #FFFFFF;
+}
+
+#headerWait {
+    background-color: #2f9b14;
     color: #FFFFFF;
 }
 

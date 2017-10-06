@@ -6,6 +6,7 @@ export class CommunicationService {
 
   // Observable string sources
   private solveCallSource = new Subject<any>();
+  private resetCallSource = new Subject<any>();
   private generateCallSource = new Subject<any>();
   private getDifficultyCallSource = new Subject<any>();
   private changeDifficultyCallSource = new Subject<any>();
@@ -16,6 +17,7 @@ export class CommunicationService {
 
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
+  reset$ = this.resetCallSource.asObservable();
   generate$ = this.generateCallSource.asObservable();
   getDifficulty$ = this.getDifficultyCallSource.asObservable();
   changeDifficulty$ = this.changeDifficultyCallSource.asObservable();
@@ -35,6 +37,10 @@ export class CommunicationService {
 
   callGenerate(){
     this.generateCallSource.next();
+  }
+  
+  callReset(){
+    this.resetCallSource.next();
   }
 
   callGetDifficulty() {

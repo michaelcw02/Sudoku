@@ -46,6 +46,7 @@ export class SudokuComponent implements OnInit {
     this.sudokuGenerator = new SudokuGenerator();
     this.nakedSingleSolver = new NakedSingleSolver();
     this.communicationService.solve$.subscribe(() => this.solve());
+    this.communicationService.reset$.subscribe(() => this.reset());
     this.communicationService.solveByNakedSingle$.subscribe(() => this.solveByNakedSingle());
     this.communicationService.generate$.subscribe(() => {
       this.sudoku.clean();
@@ -82,7 +83,7 @@ export class SudokuComponent implements OnInit {
       }
 
       p.draw = () => {
-        p.background(179,182,165);
+        p.background(179, 182, 165);
         this.painter.paintSudoku(this.sudoku);
         drawOptions();
       }
@@ -106,13 +107,24 @@ export class SudokuComponent implements OnInit {
             let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
             let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: x.value }
             let result = this.sudokuHelper.validOption(data);
-            if (result == "allowed") //Valid to put number there
-              this.sudoku.setValue(mapY, mapX, x.value)
+            if (result == "allowed") { //Valid to put number there
+              if (!this.sudoku.getSpot(mapY, mapX).default)
+                this.sudoku.setValue(mapY, mapX, x.value)
+              else result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
+            }
             else
-              result == undefined ? result : this.openModal(result); //Alert if is not valid
+              result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
             x.restart();
           }
         })
+      }
+
+      p.mousePressed = () => {
+        let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
+        let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
+        if (!this.sudoku.getSpot(mapY, mapX).default) {
+          this.sudoku.setValue(mapY, mapX);
+        }
       }
 
     }
@@ -134,6 +146,11 @@ export class SudokuComponent implements OnInit {
     this.sudokuGenerator.generate(this.sudoku);
     this.sudokuHelper.generateNeighbors(this.sudoku);
   }
+
+  reset() {
+    return this.sudokuHelper.resetSudoku(this.sudoku);
+  }
+
   getDifficulty() {
     return this.communicationService.callGetDifficulty();
   }
@@ -161,8 +178,7 @@ export class SudokuComponent implements OnInit {
 
   @ViewChild('errorModal')
   private errorModal: TemplateRef<any>;
-
-  public openModal(result) {
+  public openErrorModal(result) {
     this.modalRef = this.modalService.show(this.errorModal);
     switch (result) {
       case "rowException":
@@ -187,9 +203,17 @@ export class SudokuComponent implements OnInit {
         $("#messageError").text("The number already exists in that row, column and sub-grid.");
         break;
       default:
-        $("#messageError").text("Unknown error.")
+        $("#messageError").text("Invalid space.")
         break;
     }
+  }
+
+
+  @ViewChild('waitModal')
+  private waitModal: TemplateRef<any>;
+  public openWaitModal(result) {
+    this.modalRef = this.modalService.show(this.waitModal);
+    $("#messageWait").text(result);
   }
 
 }

@@ -35,6 +35,10 @@ export class OptionsComponent implements OnInit {
   generate() {
     this.communicationService.callGenerate();
   }
+  
+  reset() {
+    this.communicationService.callReset();
+  }
 
   changeDifficulty() {
     let difficulty = $('#difficulty option:selected').val()
