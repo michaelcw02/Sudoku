@@ -20,6 +20,8 @@
     "@angular/http": "^4.2.4",
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
+    "@angular/platform-webworker": "^4.4.4",
+    "@angular/platform-webworker-dynamic": "^4.4.4",
     "@angular/router": "^4.2.4",
     "@types/bootstrap": "^3.3.36",
     "@types/jquery": "^3.2.12",

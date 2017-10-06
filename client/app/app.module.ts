@@ -6,20 +6,20 @@ import { TooltipModule }          from 'ngx-bootstrap/tooltip';
 import { ModalModule }            from 'ngx-bootstrap/modal';
 
 import { AppComponent }           from './app.component';
-import { UserComponent }          from './components/user/user.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 import { OptionsComponent }       from './components/options/options.component';
 
 import { LoadSudokuService }      from './services/load-sudoku.service';
 import { SaveSudokuService }      from './services/save-sudoku.service';
 import { CommunicationService }   from './services/communication.service';
+import { TimerComponent } from './components/timer/timer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
     SudokuComponent,
-    OptionsComponent
+    OptionsComponent,
+    TimerComponent
   ],
   imports: [
     BrowserModule,
