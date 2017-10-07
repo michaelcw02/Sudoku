@@ -419,8 +419,9 @@ var SudokuComponent = (function () {
         var myP5 = new p5(sketch);
     };
     SudokuComponent.prototype.solve = function () {
+        //this will become a promise, so it will use .then and .catch
         (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-            : this.sudokuService.getSolution(this.sudoku, function (x) { return x; } /*The server will return the results here, so just load this solution*/);
+            : this.sudokuService.getSolution(this.sudoku);
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
@@ -446,7 +447,7 @@ var SudokuComponent = (function () {
         });
     };
     SudokuComponent.prototype.renderGame = function (grid) {
-        this.sudoku.loadSavedMatch(grid);
+        this.sudoku.load(grid);
         this.sudokuHelper.generateNeighbors(this.sudoku);
         this.painter.paintSudoku(this.sudoku);
     };
@@ -680,11 +681,11 @@ var SudokuService = (function () {
         this.http.get("api/sudoku/games/" + userName)
             .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
     };
-    SudokuService.prototype.getSolution = function (sudoku, callback) {
+    SudokuService.prototype.getSolution = function (sudoku) {
         console.log('Estoy llamando el servidor para que me de una solucion');
-        console.log(JSON.stringify(sudoku, function (k, v) { console.log(k, v); return v; }, 4));
-        this.http.get("api/sudoku/solve/" + sudoku)
-            .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
+        var minGrid = this.minifyJsonGrid(sudoku);
+        return this.http.post('api/sudoku/solve/', minGrid)
+            .subscribe(function (res) { return Promise.resolve(res); }, function (err) { return Promise.reject(err); });
     };
     SudokuService.prototype.minifyJsonGrid = function (grid) {
         var obj = grid.map(function (x) { return x; });
@@ -937,7 +938,6 @@ class Spot {
 
 
 
-
 class Sudoku {
 
 	constructor(rows, cols) {
@@ -963,8 +963,8 @@ class Sudoku {
 
 	setSpot(i, j, value, def = true) {
       this.grid[i][j].value = value;
-      this.grid[i][j].default = def;
-  }
+	  this.grid[i][j].default = def;
+	}
 
     clean(){
     	this.grid.forEach( (x, i) => { x.forEach( (elem, j) => {
@@ -973,28 +973,18 @@ class Sudoku {
    		 } )} );
   	}
 
-	load(sudoku) { //Loads from json
+	load(sudoku) {
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, sudoku[i][j]) )
+			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value	//For Saved Matches
+																											   : sudoku[i][j]) )	//For JSON Sudoku
 		});
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
 			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => {
-				this.grid[i][j].default = sudoku[i][j] ? true : false
+				this.grid[i][j].default =  (sudoku[i][j].default != undefined) ? sudoku[i][j].default			//For Saved Matches
+																			   : sudoku[i][j] ? true : false	//For JSON Sudoku
 			} )
 		});
 	}
-
-	loadSavedMatch(sudoku){
-		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, sudoku[i][j].value) )
-		});
-		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => {
-				this.grid[i][j].default = sudoku[i][j].default
-			} )
-		});
-	}
-
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Sudoku;
 
@@ -1180,8 +1170,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 
 
 class SudokuSolver {
-	constructor(){
-		this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]();
+	constructor(sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]()){
+		this.sudokuHelper = sudokuHelper;
 		this.painter = new __WEBPACK_IMPORTED_MODULE_1__painter__["a" /* Painter */](60);
 	}
 

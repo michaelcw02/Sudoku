@@ -118,8 +118,9 @@ export class SudokuComponent implements OnInit {
   }
 
   solve() {
+    //this will become a promise, so it will use .then and .catch
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-                        : this.sudokuService.getSolution(this.sudoku, x => x/*The server will return the results here, so just load this solution*/);
+                        : this.sudokuService.getSolution(this.sudoku);
   }
 
   solveByNakedSingle() {
@@ -147,7 +148,7 @@ export class SudokuComponent implements OnInit {
   }
 
   renderGame(grid) {
-    this.sudoku.loadSavedMatch(grid)
+    this.sudoku.load(grid)
     this.sudokuHelper.generateNeighbors(this.sudoku)
     this.painter.paintSudoku(this.sudoku)
   }

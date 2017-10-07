@@ -11,7 +11,7 @@ export class SudokuService {
     }
 
     //Saving
-    saveSudoku(user,sudoku) {
+    saveSudoku(user, sudoku) {
         console.log("Trying to save from save-sudoku.service.ts");
         let gridmin = this.minifyJsonGrid(sudoku.grid);
         let data = { name : user , grid : gridmin, level : sudoku.level};
@@ -40,14 +40,14 @@ export class SudokuService {
             )
     }
 
-    getSolution(sudoku, callback) {
+    getSolution(sudoku) {
         console.log('Estoy llamando el servidor para que me de una solucion')
-        console.log(JSON.stringify(sudoku, (k, v) => {console.log(k, v); return v;}, 4))
-        this.http.get(`api/sudoku/solve/${sudoku}`)
-            .subscribe(
-                res => callback(undefined, res),
-                err => callback(err)
-            )
+        let minGrid = this.minifyJsonGrid(sudoku);
+        return this.http.post('api/sudoku/solve/', minGrid)
+                        .subscribe(
+                            res => Promise.resolve(res),
+                            err => Promise.reject(err)
+                        )
     }
 
     minifyJsonGrid(grid) {
