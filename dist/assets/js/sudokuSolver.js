@@ -2,8 +2,8 @@ import { SudokuHelper }             from './sudokuHelper';
 import { Painter }             		from './painter';
 
 export class SudokuSolver {
-	constructor(sudokuHelper = new SudokuHelper()){
-		this.sudokuHelper = sudokuHelper;
+	constructor(){
+		this.sudokuHelper = new SudokuHelper();
 		this.painter = new Painter(60);
 	}
 

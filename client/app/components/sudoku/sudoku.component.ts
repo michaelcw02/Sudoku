@@ -120,7 +120,12 @@ export class SudokuComponent implements OnInit {
   solve() {
     //this will become a promise, so it will use .then and .catch
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-                        : this.sudokuService.getSolution(this.sudoku);
+                        : this.sudokuService.getSolution(this.sudoku, (err, res) => {
+                          if(err) this.sudokuSolver.solve(this.sudoku)
+                          res = JSON.parse(res._body)
+                          console.log(res.message)
+                          this.sudoku.load(res.grid)
+                        });
   }
 
   solveByNakedSingle() {

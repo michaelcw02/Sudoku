@@ -1,4 +1,3 @@
-//let {Spot} = require('./spot'); //Only necessary for mocha not for p5
 import { Spot } 	from './spot'
 import { range } 	from './utils'
 

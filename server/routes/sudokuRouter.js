@@ -67,12 +67,13 @@ router.route('/games/:userName')
             .catch(err => res.send(err))
     })
 
-router.route('/games/')
+router.route('/solve/')
     
     .post( (req, res) => {
-        console.log(`Requested a POST of ${req.body}`)
+        console.log('Requested to solve a sudoku')
         let serverSudoku = new ServerSudoku(req.body.grid);
         let grid = serverSudoku.solve();
+        console.log(grid)
         res.json({message: 'Sudoku Solved', grid: grid})
     } )
 

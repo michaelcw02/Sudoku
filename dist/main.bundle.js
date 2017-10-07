@@ -419,9 +419,16 @@ var SudokuComponent = (function () {
         var myP5 = new p5(sketch);
     };
     SudokuComponent.prototype.solve = function () {
+        var _this = this;
         //this will become a promise, so it will use .then and .catch
         (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-            : this.sudokuService.getSolution(this.sudoku);
+            : this.sudokuService.getSolution(this.sudoku, function (err, res) {
+                if (err)
+                    _this.sudokuSolver.solve(_this.sudoku);
+                res = JSON.parse(res._body);
+                console.log(res.message);
+                _this.sudoku.load(res.grid);
+            });
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
@@ -681,11 +688,11 @@ var SudokuService = (function () {
         this.http.get("api/sudoku/games/" + userName)
             .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
     };
-    SudokuService.prototype.getSolution = function (sudoku) {
+    SudokuService.prototype.getSolution = function (sudoku, callback) {
         console.log('Estoy llamando el servidor para que me de una solucion');
-        var minGrid = this.minifyJsonGrid(sudoku);
-        return this.http.post('api/sudoku/solve/', minGrid)
-            .subscribe(function (res) { return Promise.resolve(res); }, function (err) { return Promise.reject(err); });
+        var minGrid = this.minifyJsonGrid(sudoku.grid);
+        this.http.post('api/sudoku/solve/', { grid: minGrid })
+            .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
     };
     SudokuService.prototype.minifyJsonGrid = function (grid) {
         var obj = grid.map(function (x) { return x; });
@@ -934,7 +941,6 @@ class Spot {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__spot__ = __webpack_require__("../../../../../client/assets/js/spot.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__("../../../../../client/assets/js/utils.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__utils__);
-//let {Spot} = require('./spot'); //Only necessary for mocha not for p5
 
 
 
@@ -1170,8 +1176,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 
 
 class SudokuSolver {
-	constructor(sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]()){
-		this.sudokuHelper = sudokuHelper;
+	constructor(){
+		this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]();
 		this.painter = new __WEBPACK_IMPORTED_MODULE_1__painter__["a" /* Painter */](60);
 	}
 
