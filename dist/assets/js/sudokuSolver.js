@@ -25,7 +25,6 @@ export class SudokuSolver {
 				sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
 			}
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
-		
 	}
 
 	//Pasar a funcional

@@ -66,6 +66,12 @@ router.route('/games/:userName')
             .catch(err => res.send(err))
     })
 
+router.route('/games/:sudoku')
+    
+    .get( (req, res) => {
+        
+    } )
+
  /*.put( (req, res) => {
     let id = req.params.sudoku__id;
     Sudoku.findByIdAndUpdate( id, (err, data) => {

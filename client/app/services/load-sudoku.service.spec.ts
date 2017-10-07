@@ -9,7 +9,5 @@ describe('LoadSudokuService', () => {
     });
   });
 
-  it('should be created', inject([LoadSudokuService], (service: LoadSudokuService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should be created', inject([LoadSudokuService], (service: LoadSudokuService) => expect(service).toBeTruthy() ) );
 });

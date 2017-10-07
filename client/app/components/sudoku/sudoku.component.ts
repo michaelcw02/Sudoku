@@ -1,8 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
-import { LoadSudokuService } from '../../services/load-sudoku.service';
-import { SaveSudokuService } from '../../services/save-sudoku.service';
 import { CommunicationService } from '../../services/communication.service';
+import { SudokuService }        from '../../services/sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -35,10 +34,9 @@ export class SudokuComponent implements OnInit {
 
   public modalRef: BsModalRef;
 
-  constructor(private loadSudokuService: LoadSudokuService,
-    private saveSudokuService: SaveSudokuService,
-    private communicationService: CommunicationService,
-    private modalService: BsModalService) {
+  constructor( private communicationService: CommunicationService,
+               private sudokuService: SudokuService,
+               private modalService: BsModalService ) {
 
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
@@ -120,7 +118,8 @@ export class SudokuComponent implements OnInit {
   }
 
   solve() {
-    return this.sudokuSolver.solve(this.sudoku);
+    (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
+                        : this.sudokuService.getSolution(this.sudoku, x => x/*The server will return the results here, so just load this solution*/);
   }
 
   solveByNakedSingle() {
@@ -139,7 +138,7 @@ export class SudokuComponent implements OnInit {
   }
 
   changeDifficulty(level) {
-    this.loadSudokuService.getSudoku(level, (err, data) => {
+    this.sudokuService.getSudoku(level, (err, data) => {
       console.log("Cambiando DIFICULTAD llego", JSON.parse(data._body).grid)
       this.sudoku.load(JSON.parse(data._body).grid);
       this.sudokuHelper.generateNeighbors(this.sudoku);
@@ -155,7 +154,7 @@ export class SudokuComponent implements OnInit {
 
   saveSudoku(user) {
     console.log(user);
-    this.saveSudokuService.saveSudoku(user, this.sudoku)
+    this.sudokuService.saveSudoku(user, this.sudoku)
   }
 
 
