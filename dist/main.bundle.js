@@ -324,8 +324,9 @@ module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #e
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuGenerator__ = __webpack_require__("../../../../../client/assets/js/sudokuGenerator.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolver__ = __webpack_require__("../../../../../client/assets/js/sudokuSolver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__ = __webpack_require__("../../../../../client/assets/js/nakedSingleSolver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__assets_js_sudokuSolverStep__ = __webpack_require__("../../../../../client/assets/js/sudokuSolverStep.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__assets_js_nakedSingleSolver__ = __webpack_require__("../../../../../client/assets/js/nakedSingleSolver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -347,6 +348,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SudokuComponent = (function () {
     function SudokuComponent(loadSudokuService, saveSudokuService, communicationService, modalService) {
         var _this = this;
@@ -354,11 +356,13 @@ var SudokuComponent = (function () {
         this.saveSudokuService = saveSudokuService;
         this.communicationService = communicationService;
         this.modalService = modalService;
+        this.solveBySteps = false;
         this.sudoku = new __WEBPACK_IMPORTED_MODULE_4__assets_js_sudoku__["a" /* Sudoku */](9, 9);
         this.sudokuSolver = new __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolver__["a" /* SudokuSolver */]();
         this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuHelper__["a" /* SudokuHelper */]();
+        this.sudokuSolverStep = new __WEBPACK_IMPORTED_MODULE_10__assets_js_sudokuSolverStep__["a" /* SudokuSolverStep */]();
         this.sudokuGenerator = new __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuGenerator__["a" /* SudokuGenerator */]();
-        this.nakedSingleSolver = new __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__["a" /* NakedSingleSolver */]();
+        this.nakedSingleSolver = new __WEBPACK_IMPORTED_MODULE_11__assets_js_nakedSingleSolver__["a" /* NakedSingleSolver */]();
         this.communicationService.solve$.subscribe(function () { return _this.solve(); });
         this.communicationService.solveByNakedSingle$.subscribe(function () { return _this.solveByNakedSingle(); });
         this.communicationService.generate$.subscribe(function () {
@@ -376,17 +380,12 @@ var SudokuComponent = (function () {
             var clicked = false;
             var options = [];
             p.preload = function () {
-                //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
                 _this.changeDifficulty('easy');
-                //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
             };
             p.setup = function () {
                 _this.canvas = p.createCanvas(700, 545);
                 _this.canvas.parent('screen');
                 p.background(220);
-                //sudoku.load(jsonData.grid);
-                //this.saveSudokuService.saveSudoku(sudoku);
-                //sudokuHelper.generateNeighbors(sudoku);
                 _this.painter.paintSudoku(_this.sudoku);
                 for (var i = 1; i <= _this.sudoku.rows; i++)
                     options.push(new __WEBPACK_IMPORTED_MODULE_5__assets_js_option__["a" /* Option */](p.width - 80, i * 60 - 30, i, p));
@@ -395,6 +394,8 @@ var SudokuComponent = (function () {
                 p.background(179, 182, 165);
                 _this.painter.paintSudoku(_this.sudoku);
                 drawOptions();
+                if (_this.solveBySteps)
+                    _this.solveBySteps = !_this.sudokuSolverStep.solve(_this.sudoku);
             };
             function drawOptions() {
                 options.forEach(function (x) { return x.show(); });
@@ -421,11 +422,19 @@ var SudokuComponent = (function () {
                     }
                 });
             };
+            p.doubleClicked = function () {
+                var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
+                var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
+                var current = _this.sudoku.getSpot(mapY, mapX);
+                console.log(current);
+                !current.default ? current.value = 0 : current;
+            };
         };
         var myP5 = new p5(sketch);
     };
     SudokuComponent.prototype.solve = function () {
-        return this.sudokuSolver.solve(this.sudoku);
+        this.solveBySteps = true;
+        //return this.sudokuSolver.solve(this.sudoku);
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
@@ -444,7 +453,6 @@ var SudokuComponent = (function () {
     SudokuComponent.prototype.changeDifficulty = function (level) {
         var _this = this;
         this.loadSudokuService.getSudoku(level, function (err, data) {
-            console.log("Cambiando DIFICULTAD llego", JSON.parse(data._body).grid);
             _this.sudoku.load(JSON.parse(data._body).grid);
             _this.sudokuHelper.generateNeighbors(_this.sudoku);
             _this.painter.paintSudoku(_this.sudoku);
@@ -456,7 +464,6 @@ var SudokuComponent = (function () {
         this.painter.paintSudoku(this.sudoku);
     };
     SudokuComponent.prototype.saveSudoku = function (user) {
-        console.log(user);
         this.saveSudokuService.saveSudoku(user, this.sudoku);
     };
     SudokuComponent.prototype.openModal = function (result) {
@@ -500,7 +507,7 @@ SudokuComponent = __decorate([
         template: __webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_communication_service__["a" /* CommunicationService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_communication_service__["a" /* CommunicationService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _e || Object])
 ], SudokuComponent);
 
 var _a, _b, _c, _d, _e;
@@ -1034,9 +1041,6 @@ class Sudoku {
 /* harmony export (immutable) */ __webpack_exports__["a"] = Sudoku;
 
 
-/*module.exports = { //Remove this at working with p5
-  Sudoku
-}*/
 
 /***/ }),
 
@@ -1233,7 +1237,6 @@ class SudokuSolver {
 				for(let o = 1; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
 						sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
-						//this.painter.paintSudoku(sudoku); //Desearia que cada set de valor se viera, pero p5 no lo hace asi por que la funcion draw ya usa un for, y se stackearia horrible
 						if(this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
 							return true; //Si llega hasta aca es que lo soluciono
 					}
@@ -1254,6 +1257,66 @@ class SudokuSolver {
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuSolver;
+
+
+/***/ }),
+
+/***/ "../../../../../client/assets/js/sudokuSolverStep.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
+
+
+class SudokuSolverStep {
+	constructor(){
+        this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_0__sudokuHelper__["a" /* SudokuHelper */]();
+        this.stack = []
+        this.backtrack = false
+	}
+
+	solve(sudoku){
+		if( !this.hasEmptyValues(sudoku) ) //Si ya todos los spots tienen un numero es que esta solucionado
+			return true
+		else {
+                let curr = this.sudokuHelper.nextEmpty(sudoku)
+                let currentSpot = sudoku.getSpot(curr.row, curr.col)//Nos traemos al objeto en esa posicion
+                let o = 1
+                if(this.backtrack){
+                    let back = this.stack.pop()
+                    o = back.value + 1
+                    currentSpot = back.last
+                     false ? currentSpot.value = 0 : currentSpot
+                    this.backtrack = false
+                }
+                for( ; o <= 9; o++){ //Para cada posibilidad
+					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
+                        sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
+                            this.stack.push({last: currentSpot, value : o})
+                            return false
+					}
+                }
+                let lastSpot = this.lastInStack().last
+                sudoku.setValue(lastSpot.row, lastSpot.col);
+                this.backtrack = true
+			}
+    }
+
+    lastInStack(){
+       return this.stack[this.stack.length - 1]
+    }
+    
+
+	//Pasar a funcional
+	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+		for(let i = 0; i < sudoku.rows; i++)
+			for(let j = 0; j < sudoku.cols; j++)
+				if(sudoku.getValue(i, j) === 0)
+					return true;
+		return false;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SudokuSolverStep;
 
 
 /***/ }),

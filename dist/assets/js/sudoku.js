@@ -61,7 +61,3 @@ export class Sudoku {
 	}
 
 }
-
-/*module.exports = { //Remove this at working with p5
-  Sudoku
-}*/

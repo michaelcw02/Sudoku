@@ -17,7 +17,6 @@ export class SudokuSolver {
 				for(let o = 1; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
 						sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
-						//this.painter.paintSudoku(sudoku); //Desearia que cada set de valor se viera, pero p5 no lo hace asi por que la funcion draw ya usa un for, y se stackearia horrible
 						if(this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
 							return true; //Si llega hasta aca es que lo soluciono
 					}
