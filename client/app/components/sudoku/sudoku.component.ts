@@ -69,11 +69,10 @@ export class SudokuComponent implements OnInit {
       let options = []
       
       p.preload = () => {
+        this.changeDifficulty('easy')
         this.painter.paintSudoku(this.sudoku)
         if(this.loadSudokuService.retriveSudoku())
-          this.modalRef = this.modalService.show(this.storeModal);
-        else
-          this.changeDifficulty('easy')
+          this.modalRef = this.modalService.show(this.storeModal);        
       }
 
       p.setup = () => {
@@ -130,11 +129,6 @@ export class SudokuComponent implements OnInit {
   loadStorageGame(){
     let grid = this.loadSudokuService.retriveSudoku()
     this.sudoku.fillGrid(grid)
-    this.modalRef.hide()
-  }
-
-  loadNewGame(){
-    this.changeDifficulty('easy')
     this.modalRef.hide()
   }
 

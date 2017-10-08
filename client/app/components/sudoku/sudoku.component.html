@@ -8,6 +8,6 @@
 
     <div class="modal-body" id="myModalMessage">
         <button id="btnConfirm" class="btn btn-primary" (click)="loadStorageGame()">Yes, I want to load it</button>
-        <button id="btnCancel"  class="btn btn-warning"  (click)="loadNewGame()">No, I want another game</button>
+        <button id="btnCancel"  class="btn btn-warning"  (click)="modalRef.hide()">No, I want another game</button>
     </div>
 </ng-template>
