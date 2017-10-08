@@ -9,6 +9,7 @@ import { Painter } from '../../../assets/js/painter';
 import { SudokuGenerator } from '../../../assets/js/sudokuGenerator';
 import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
+import { SudokuSolverStep } from '../../../assets/js/sudokuSolverStep';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
 import { range } from '../../../assets/js/utils';
 
@@ -29,18 +30,20 @@ export class SudokuComponent implements OnInit {
   sudokuHelper: SudokuHelper
   sudokuGenerator: SudokuGenerator
   nakedSingleSolver: NakedSingleSolver
+  sudokuSolverStep: SudokuSolverStep
   canvas: any
   jsonSudoku: any
+  solveBySteps: any
 
   public modalRef: BsModalRef;
 
   constructor( private communicationService: CommunicationService,
                private sudokuService: SudokuService,
                private modalService: BsModalService ) {
-
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
+    this.sudokuSolverStep = new SudokuSolverStep()
     this.sudokuGenerator = new SudokuGenerator();
     this.nakedSingleSolver = new NakedSingleSolver();
     this.communicationService.solve$.subscribe(() => this.solve());
@@ -62,18 +65,13 @@ export class SudokuComponent implements OnInit {
       let options = []
 
       p.preload = () => {
-        //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
         this.changeDifficulty('easy');
-        //this.jsonSudoku = this.loadSudokuService.getSudoku('anyLevelPotentialCodeInjection')
       }
 
       p.setup = () => {
         this.canvas = p.createCanvas(700, 545);
         this.canvas.parent('screen');
         p.background(220);
-        //sudoku.load(jsonData.grid);
-        //this.saveSudokuService.saveSudoku(sudoku);
-        //sudokuHelper.generateNeighbors(sudoku);
         this.painter.paintSudoku(this.sudoku);
         for (let i = 1; i <= this.sudoku.rows; i++) //Pasar a generadores
           options.push(new Option(p.width - 80, i * 60 - 30, i, p));
@@ -83,6 +81,8 @@ export class SudokuComponent implements OnInit {
         p.background(179,182,165);
         this.painter.paintSudoku(this.sudoku);
         drawOptions();
+        if(this.solveBySteps)
+          this.solveBySteps = !this.sudokuSolverStep.solve(this.sudoku)
       }
 
       function drawOptions() {
@@ -113,6 +113,14 @@ export class SudokuComponent implements OnInit {
         })
       }
 
+      p.doubleClicked = () => {
+        let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
+        let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
+        let current = this.sudoku.getSpot(mapY, mapX)
+        console.log(current)
+        !current.default ? current.value = 0 : current
+      }
+
     }
     let myP5 = new p5(sketch);
   }
@@ -126,6 +134,10 @@ export class SudokuComponent implements OnInit {
                           console.log(res.message)
                           this.sudoku.load(res.grid)
                         });
+    
+    this.solveBySteps = true
+    //return this.sudokuSolver.solve(this.sudoku);
+
   }
 
   solveByNakedSingle() {
@@ -145,7 +157,6 @@ export class SudokuComponent implements OnInit {
 
   changeDifficulty(level) {
     this.sudokuService.getSudoku(level, (err, data) => {
-      console.log("Cambiando DIFICULTAD llego", JSON.parse(data._body).grid)
       this.sudoku.load(JSON.parse(data._body).grid);
       this.sudokuHelper.generateNeighbors(this.sudoku);
       this.painter.paintSudoku(this.sudoku);
@@ -159,7 +170,6 @@ export class SudokuComponent implements OnInit {
   }
 
   saveSudoku(user) {
-    console.log(user);
     this.sudokuService.saveSudoku(user, this.sudoku)
   }
 
