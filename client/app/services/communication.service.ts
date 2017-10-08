@@ -13,6 +13,7 @@ export class CommunicationService {
   private loadGamesCallSource= new Subject<any>();
   private renderGameCallSource = new Subject<any>();
   private solveByNakedSingleCallSource = new Subject<any>();
+  private solveByHiddenSingleCallSource = new Subject<any>()
 
   // Observable string streams
   solve$ = this.solveCallSource.asObservable();
@@ -23,6 +24,7 @@ export class CommunicationService {
   loadGames$ = this.loadGamesCallSource.asObservable();
   renderGame$ = this.renderGameCallSource.asObservable();
   solveByNakedSingle$ = this.solveByNakedSingleCallSource.asObservable();
+  solveByHiddenSingle$ = this.solveByHiddenSingleCallSource.asObservable()
 
   // Service message commands
   callSolve() {
@@ -31,6 +33,10 @@ export class CommunicationService {
 
   callSolveByNakedSingle(){
     this.solveByNakedSingleCallSource.next();
+  }
+
+  callSolveByHiddenSingle(){
+    this.solveByHiddenSingleCallSource.next();
   }
 
   callGenerate(){

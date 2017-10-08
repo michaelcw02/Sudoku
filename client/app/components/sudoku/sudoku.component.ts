@@ -12,6 +12,7 @@ import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { SudokuSolverStep } from '../../../assets/js/sudokuSolverStep';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
+import { HiddenSingleSolver } from '../../../assets/js/hiddenSingleSolver';
 import { range } from '../../../assets/js/utils';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -32,6 +33,7 @@ export class SudokuComponent implements OnInit {
   sudokuGenerator: SudokuGenerator
   nakedSingleSolver: NakedSingleSolver
   sudokuSolverStep: SudokuSolverStep
+  hiddenSingleSolver : HiddenSingleSolver
   canvas: any
   jsonSudoku: any
   solveBySteps: any
@@ -49,8 +51,10 @@ export class SudokuComponent implements OnInit {
     this.sudokuSolverStep = new SudokuSolverStep()
     this.sudokuGenerator = new SudokuGenerator();
     this.nakedSingleSolver = new NakedSingleSolver();
+    this.hiddenSingleSolver = new HiddenSingleSolver()
     this.communicationService.solve$.subscribe(() => this.solve());
     this.communicationService.solveByNakedSingle$.subscribe(() => this.solveByNakedSingle());
+    this.communicationService.solveByHiddenSingle$.subscribe(() => this.solveByHiddenSingle());
     this.communicationService.generate$.subscribe(() => {
       this.sudoku.clean();
       this.generate();
@@ -137,6 +141,13 @@ export class SudokuComponent implements OnInit {
     let interval = setInterval(() => {
       if (this.nakedSingleSolver.solve(this.sudoku))
         clearInterval(interval)
+    }, 1000)
+  }
+
+  solveByHiddenSingle() {
+    let interval = setInterval(() => {
+    if (this.hiddenSingleSolver.solve(this.sudoku))
+      clearInterval(interval)
     }, 1000)
   }
 

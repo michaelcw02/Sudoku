@@ -85,6 +85,10 @@ export class OptionsComponent implements OnInit {
     this.communicationService.callSolveByNakedSingle()
   }
 
+  solveByHiddenSingle(){
+    this.communicationService.callSolveByHiddenSingle()
+  }
+
   public openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
