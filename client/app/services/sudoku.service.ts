@@ -7,7 +7,6 @@ export class SudokuService {
 
     constructor(public http: Http) {
         console.log('Sudoku Service is up')
-
     }
 
     //Saving
@@ -52,11 +51,11 @@ export class SudokuService {
 
     minifyJsonGrid(grid) {
         let obj = grid.map(x => x);
-        let result = Array.from(new Array(9), (x, i) => {
-            return Array.from(new Array(9), (x, j) => {
+        let result = Array.from(new Array(9), (x, i) =>
+            Array.from(new Array(9), (x, j) => {
                 return { value: obj[i][j].value, default: obj[i][j].default }
             })
-        })
+        )
         return result;
     }
 
