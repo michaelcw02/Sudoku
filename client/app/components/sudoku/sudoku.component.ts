@@ -130,8 +130,8 @@ export class SudokuComponent implements OnInit {
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
                         : this.sudokuService.getSolution(this.sudoku, (err, res) => {
                           if(err) this.sudokuSolver.solve(this.sudoku)
-                          res = JSON.parse(res._body)
-                          console.log(res.message)
+                          res = JSON.parse(res._body) //ELSE, could be simplified using one call
+                          console.log(res.message)    //so it can use the ternary operator
                           this.sudoku.load(res.grid)
                         });
     

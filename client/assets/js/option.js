@@ -22,9 +22,7 @@ export class Option {
   }
 
   collides(x, y){
-    if(this.lib.dist(this.x, this.y, x, y) < 40)
-      return true;
-    return false;
+    return (this.lib.dist(this.x, this.y, x, y) < 40)
   }
 
 }

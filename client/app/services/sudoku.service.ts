@@ -49,6 +49,7 @@ export class SudokuService {
             )
     }
 
+    //This should come from the helper class, but it will imply importing it
     minifyJsonGrid(grid) {
         let obj = grid.map(x => x);
         let result = Array.from(new Array(9), (x, i) =>

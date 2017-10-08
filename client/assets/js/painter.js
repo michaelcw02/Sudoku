@@ -5,18 +5,16 @@ export class Painter{ //This class wil be in charge of paint in the matrix
       this.lib = lib;
   }
 
-  paintSudoku(sudoku){ //Make more elegant
-    for(let i = 0; i < sudoku.rows; i++)
-      for(let j = 0; j < sudoku.cols; j++){
-        this.lib.fill(255);
-        this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
-        this.paintBorderLines(i, j);
-      }
-      
+  paintSudoku(sudoku){ //Make more elegant. -Done.
+    sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
+      this.lib.fill(255)
+      this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
+      this.paintBorderLines(i, j);  
+    }))
     this.paintNumbers(sudoku);     
   }
 
-  paintNumbers(sudoku){
+  paintNumbers(sudoku){ //this one could be done with filter x.forEach.filter.forEach
     for(let i = 0; i < sudoku.rows; i++)
       for(let j = 0; j < sudoku.cols; j++)
         if(sudoku.getValue(i, j) !== 0)
@@ -25,10 +23,8 @@ export class Painter{ //This class wil be in charge of paint in the matrix
 
   paintNumber(number, i, j, def = false){
     this.lib.textSize(this.dimension);
-    if(def)
-      this.lib.fill(255, 0, 0);
-    else
-      this.lib.fill(0, 102, 153);
+    def ? this.lib.fill(255, 0, 0)
+        : this.lib.fill(0, 102, 153);
     this.lib.text(number, j * this.dimension + 20,  ( i + 1) * this.dimension - 10);
   }
 

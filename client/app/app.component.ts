@@ -14,4 +14,4 @@ export class AppComponent {
 
 
 //This is like the main
-//This is where all the decorators are
+//This is where all decorators are
