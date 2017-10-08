@@ -304,7 +304,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/sudoku/sudoku.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div> \r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"changeDifficulty('easy')\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
+module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div> \r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"loadNewGame()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -376,11 +376,11 @@ var SudokuComponent = (function () {
             var clicked = false;
             var options = [];
             p.preload = function () {
-                //jsonData = p.loadJSON('../../../assets/js/sudokuCases.json');
                 _this.painter.paintSudoku(_this.sudoku);
-                var grid = _this.loadSudokuService.retriveSudoku();
-                if (grid)
+                if (_this.loadSudokuService.retriveSudoku())
                     _this.modalRef = _this.modalService.show(_this.storeModal);
+                else
+                    _this.changeDifficulty('easy');
             };
             p.setup = function () {
                 _this.canvas = p.createCanvas(700, 545);
@@ -426,9 +426,13 @@ var SudokuComponent = (function () {
         };
         var myP5 = new p5(sketch);
     };
-    SudokuComponent.prototype.loadGame = function () {
+    SudokuComponent.prototype.loadStorageGame = function () {
         var grid = this.loadSudokuService.retriveSudoku();
         this.sudoku.fillGrid(grid);
+        this.modalRef.hide();
+    };
+    SudokuComponent.prototype.loadNewGame = function () {
+        this.changeDifficulty('easy');
         this.modalRef.hide();
     };
     SudokuComponent.prototype.solve = function () {
@@ -456,7 +460,6 @@ var SudokuComponent = (function () {
             _this.sudokuHelper.generateNeighbors(_this.sudoku);
             _this.painter.paintSudoku(_this.sudoku);
         });
-        this.modalRef.hide();
     };
     SudokuComponent.prototype.renderGame = function (grid) {
         this.sudoku.loadSavedMatch(grid);
