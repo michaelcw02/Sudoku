@@ -9,6 +9,8 @@ import { AppComponent }           from './app.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 import { OptionsComponent }       from './components/options/options.component';
 
+import { LoadSudokuService }      from './services/load-sudoku.service';
+import { SaveSudokuService }      from './services/save-sudoku.service';
 import { CommunicationService }   from './services/communication.service';
 
 import { SudokuService }          from './services/sudoku.service';
@@ -32,7 +34,9 @@ import { TimerComponent } from './components/timer/timer.component';
   ],
   providers: [
     CommunicationService,
-    SudokuService
+    SudokuService,
+    SaveSudokuService,
+    LoadSudokuService
   ],
   bootstrap: [
     AppComponent

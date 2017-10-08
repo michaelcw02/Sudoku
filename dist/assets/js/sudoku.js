@@ -48,4 +48,12 @@ export class Sudoku {
 			} )
 		});
 	}
+
+	fillGrid(obj){
+    	this.grid.forEach( (x, i) => { x.forEach( (spot, j) => {
+        	spot.value = obj[i][j].value;
+        	spot.default = obj[i][j].default;
+   		 } )} );		
+	}
+
 }
