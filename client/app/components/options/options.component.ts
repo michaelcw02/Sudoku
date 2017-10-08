@@ -35,6 +35,10 @@ export class OptionsComponent implements OnInit {
   generate() {
     this.communicationService.callGenerate();
   }
+  
+  reset() {
+    this.communicationService.callReset();
+  }
 
   changeDifficulty() {
     let difficulty = $('#difficulty option:selected').val()
@@ -76,7 +80,6 @@ export class OptionsComponent implements OnInit {
   }
 
   renderSavedGame(grid){
-    console.log("Estoy listo para renderear el grid, me llego", grid)
     this.communicationService.callRenderGame(grid)
     this.modalRef.hide()
   }
@@ -87,6 +90,10 @@ export class OptionsComponent implements OnInit {
 
   solveByHiddenSingle(){
     this.communicationService.callSolveByHiddenSingle()
+  }
+
+  solveStepByStep(){
+    this.communicationService.callSolveStepByStep()
   }
 
   public openModal(template: TemplateRef<any>) {

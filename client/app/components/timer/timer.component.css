@@ -1,0 +1,15 @@
+.header,
+.timer {
+    text-align: center;
+    font-size: 25px;
+}
+
+.buttons {
+    text-align: center;
+    font-size: 15px;
+}
+
+button {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+    font-family: 'Comfortaa', cursive;
+}

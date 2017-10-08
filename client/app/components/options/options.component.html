@@ -1,3 +1,4 @@
+<!--<app-timer></app-timer>-->
 <div id="howToPlay">
     <button class="btn btn-info btn-block " id="showHowToPlay" (click)="openModal(howToPlayModal)"> HOW TO PLAY </button>
 </div>
@@ -26,7 +27,13 @@
 <br>
 
 <div id="generate">
-    <button class="btn btn-warning btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button></div>
+    <button class="btn btn-warning btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button>
+</div>
+<br>
+
+<div id="reset">
+    <button class="btn btn-danger btn-block" id="resetGame" (click)="reset() "> RESET GAME </button>
+</div>
 <br>
 
 <div id="solution ">
@@ -34,8 +41,13 @@
 </div>
 <br>
 
+<div id="solutionStepByStep">
+    <button class="btn btn-info btn-block " id="showSolutionStepByStep " (click)="solveStepByStep() "> SOLVE BY BACKTRACK STEP BY STEP</button>
+</div>
+<br>
+
 <div id="nakedSingle">
-    <button class="btn btn-success btn-block " id="showNakedSingleSolution " (click)="solveByNakedSingle() "> SOLVE BY NAKED SINGLE</button>
+    <button class="btn btn-danger btn-block " id="showNakedSingleSolution " (click)="solveByNakedSingle() "> SOLVE BY NAKED SINGLE</button>
 </div>
 <br>
 
