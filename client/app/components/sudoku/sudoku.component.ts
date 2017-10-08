@@ -69,10 +69,8 @@ export class SudokuComponent implements OnInit {
       let options = []
       
       p.preload = () => {
-        this.changeDifficulty('easy')
-        this.painter.paintSudoku(this.sudoku)
-        if(this.loadSudokuService.retriveSudoku())
-          this.modalRef = this.modalService.show(this.storeModal);        
+        Promise.resolve(this.changeDifficulty('easy'))
+        .then(() => this.showStorageModal());
       }
 
       p.setup = () => {
@@ -81,7 +79,7 @@ export class SudokuComponent implements OnInit {
         p.background(220);
         //sudoku.load(jsonData.grid);
         //this.saveSudokuService.saveSudoku(sudoku);
-        //sudokuHelper.generateNeighbors(sudoku);
+        //sudokuHelper.generateNeighbors(sudoku); 
         this.painter.paintSudoku(this.sudoku);
         for (let i = 1; i <= this.sudoku.rows; i++) //Pasar a generadores
           options.push(new Option(p.width - 80, i * 60 - 30, i, p));
@@ -124,6 +122,11 @@ export class SudokuComponent implements OnInit {
     }
 
     let myP5 = new p5(sketch);
+  }
+
+  showStorageModal(){
+    if(this.loadSudokuService.retriveSudoku())
+      this.modalRef = this.modalService.show(this.storeModal); 
   }
 
   loadStorageGame(){

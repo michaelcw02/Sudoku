@@ -376,10 +376,8 @@ var SudokuComponent = (function () {
             var clicked = false;
             var options = [];
             p.preload = function () {
-                _this.changeDifficulty('easy');
-                _this.painter.paintSudoku(_this.sudoku);
-                if (_this.loadSudokuService.retriveSudoku())
-                    _this.modalRef = _this.modalService.show(_this.storeModal);
+                Promise.resolve(_this.changeDifficulty('easy'))
+                    .then(function () { return _this.showStorageModal(); });
             };
             p.setup = function () {
                 _this.canvas = p.createCanvas(700, 545);
@@ -387,7 +385,7 @@ var SudokuComponent = (function () {
                 p.background(220);
                 //sudoku.load(jsonData.grid);
                 //this.saveSudokuService.saveSudoku(sudoku);
-                //sudokuHelper.generateNeighbors(sudoku);
+                //sudokuHelper.generateNeighbors(sudoku); 
                 _this.painter.paintSudoku(_this.sudoku);
                 for (var i = 1; i <= _this.sudoku.rows; i++)
                     options.push(new __WEBPACK_IMPORTED_MODULE_5__assets_js_option__["a" /* Option */](p.width - 80, i * 60 - 30, i, p));
@@ -424,6 +422,10 @@ var SudokuComponent = (function () {
             };
         };
         var myP5 = new p5(sketch);
+    };
+    SudokuComponent.prototype.showStorageModal = function () {
+        if (this.loadSudokuService.retriveSudoku())
+            this.modalRef = this.modalService.show(this.storeModal);
     };
     SudokuComponent.prototype.loadStorageGame = function () {
         var grid = this.loadSudokuService.retriveSudoku();
