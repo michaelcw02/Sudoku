@@ -26,12 +26,8 @@ export class SudokuSolver {
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
 	}
 
-	//Pasar a funcional
-	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-		for(let i = 0; i < sudoku.rows; i++)
-			for(let j = 0; j < sudoku.cols; j++)
-				if(sudoku.getValue(i, j) === 0)
-					return true;
-		return false;
+	//Pasar a funcional. -Listo
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
 }

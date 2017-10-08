@@ -7,11 +7,7 @@ export class SudokuHelper { //This class will help in some operations, to separa
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach((x, i) => {
-            x.forEach((elem, j) => {
-                elem.setNeighbors(sudoku, this.findInSubMatrix(elem))
-            })
-        });
+        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
     }
 
     nextEmpty(sudoku) {
