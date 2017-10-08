@@ -1,5 +1,5 @@
 import { Sudoku }             from './sudoku';
-import { SudokuHelper }             from './sudokuHelper';
+import { SudokuHelper }       from './sudokuHelper';
 
 export class SudokuGenerator {
     constructor() {

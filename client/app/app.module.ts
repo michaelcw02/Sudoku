@@ -10,9 +10,8 @@ import { UserComponent }          from './components/user/user.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 import { OptionsComponent }       from './components/options/options.component';
 
-import { LoadSudokuService }      from './services/load-sudoku.service';
-import { SaveSudokuService }      from './services/save-sudoku.service';
 import { CommunicationService }   from './services/communication.service';
+import { SudokuService }          from './services/sudoku.service';
 
 @NgModule({
   declarations: [
@@ -29,9 +28,8 @@ import { CommunicationService }   from './services/communication.service';
     ModalModule.forRoot()
   ],
   providers: [
-    LoadSudokuService,
-    SaveSudokuService,
-    CommunicationService
+    CommunicationService,
+    SudokuService
   ],
   bootstrap: [
     AppComponent

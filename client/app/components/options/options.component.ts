@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 
-import { LoadSudokuService }  from '../../services/load-sudoku.service';
+import { SudokuService }        from '../../services/sudoku.service';
 import { CommunicationService } from '../../services/communication.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -16,9 +16,9 @@ export class OptionsComponent implements OnInit {
 
   public modalRef: BsModalRef;
 
-  constructor(private modalService: BsModalService, 
-              private communicationService: CommunicationService,
-              private loadSudokuService: LoadSudokuService) {
+  constructor( private modalService: BsModalService, 
+               private communicationService: CommunicationService,
+               private sudokuService: SudokuService ) {
 
     this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() )
     this.communicationService.loadGames$.subscribe( () => this.loadGames() )
@@ -54,7 +54,7 @@ export class OptionsComponent implements OnInit {
 
   loadGames(){
     let userName = $('#loadUserName').val()
-    this.loadSudokuService.getGames(userName, (err, data) => {
+    this.sudokuService.getGames(userName, (err, data) => {
       this.renderGames(JSON.parse(data._body).matches);
     })
 

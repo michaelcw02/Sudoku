@@ -2,8 +2,9 @@ const express = require('express')
 
 const router = express.Router()
 
-const Sudoku = require('../entity/sudoku')
-const User = require('../entity/user')
+const Sudoku        = require('../entity/sudoku')
+const User          = require('../entity/user')
+const ServerSudoku  = require('../models/serverSudoku')
 
 let saveUser = ((user, sudo_id) => { user.games.push(sudo_id); return user.save() }); //Trying to return a promise
 let insertSudoku = ((req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; sudoku.date = new Date(); return sudoku.save()}); //Trying to return a promise
@@ -65,6 +66,16 @@ router.route('/games/:userName')
             .then(data => res.json({ message: 'Games loaded!', matches : data}))
             .catch(err => res.send(err))
     })
+
+router.route('/solve/')
+    
+    .post( (req, res) => {
+        console.log('Requested to solve a sudoku')
+        let serverSudoku = new ServerSudoku(req.body.grid);
+        let grid = serverSudoku.solve();
+        console.log(grid)
+        res.json({message: 'Sudoku Solved', grid: grid})
+    } )
 
  /*.put( (req, res) => {
     let id = req.params.sudoku__id;

@@ -1,8 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
-import { LoadSudokuService } from '../../services/load-sudoku.service';
-import { SaveSudokuService } from '../../services/save-sudoku.service';
 import { CommunicationService } from '../../services/communication.service';
+import { SudokuService }        from '../../services/sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -40,11 +39,9 @@ export class SudokuComponent implements OnInit {
 
   public modalRef: BsModalRef;
 
-  constructor(private loadSudokuService: LoadSudokuService,
-    private saveSudokuService: SaveSudokuService,
-    private communicationService: CommunicationService,
-    private modalService: BsModalService) {
-    this.solveBySteps = false;
+  constructor( private communicationService: CommunicationService,
+               private sudokuService: SudokuService,
+               private modalService: BsModalService ) {
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
@@ -133,8 +130,18 @@ export class SudokuComponent implements OnInit {
   }
 
   solve() {
+    //this will become a promise, so it will use .then and .catch
+    (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
+                        : this.sudokuService.getSolution(this.sudoku, (err, res) => {
+                          if(err) this.sudokuSolver.solve(this.sudoku)
+                          res = JSON.parse(res._body)
+                          console.log(res.message)
+                          this.sudoku.load(res.grid)
+                        });
+    
     this.solveBySteps = true
     //return this.sudokuSolver.solve(this.sudoku);
+
   }
 
   solveByNakedSingle() {
@@ -160,7 +167,7 @@ export class SudokuComponent implements OnInit {
   }
 
   changeDifficulty(level) {
-    this.loadSudokuService.getSudoku(level, (err, data) => {
+    this.sudokuService.getSudoku(level, (err, data) => {
       this.sudoku.load(JSON.parse(data._body).grid);
       this.sudokuHelper.generateNeighbors(this.sudoku);
       this.painter.paintSudoku(this.sudoku);
@@ -168,13 +175,13 @@ export class SudokuComponent implements OnInit {
   }
 
   renderGame(grid) {
-    this.sudoku.loadSavedMatch(grid)
+    this.sudoku.load(grid)
     this.sudokuHelper.generateNeighbors(this.sudoku)
     this.painter.paintSudoku(this.sudoku)
   }
 
   saveSudoku(user) {
-    this.saveSudokuService.saveSudoku(user, this.sudoku)
+    this.sudokuService.saveSudoku(user, this.sudoku)
   }
 
 
