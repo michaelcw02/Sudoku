@@ -320,8 +320,9 @@ module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #e
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__assets_js_sudokuGenerator__ = __webpack_require__("../../../../../client/assets/js/sudokuGenerator.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuSolver__ = __webpack_require__("../../../../../client/assets/js/sudokuSolver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__assets_js_nakedSingleSolver__ = __webpack_require__("../../../../../client/assets/js/nakedSingleSolver.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolverStep__ = __webpack_require__("../../../../../client/assets/js/sudokuSolverStep.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__ = __webpack_require__("../../../../../client/assets/js/nakedSingleSolver.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -341,6 +342,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var SudokuComponent = (function () {
     function SudokuComponent(communicationService, sudokuService, modalService) {
         var _this = this;
@@ -350,9 +353,9 @@ var SudokuComponent = (function () {
         this.sudoku = new __WEBPACK_IMPORTED_MODULE_3__assets_js_sudoku__["a" /* Sudoku */](9, 9);
         this.sudokuSolver = new __WEBPACK_IMPORTED_MODULE_8__assets_js_sudokuSolver__["a" /* SudokuSolver */]();
         this.sudokuHelper = new __WEBPACK_IMPORTED_MODULE_7__assets_js_sudokuHelper__["a" /* SudokuHelper */]();
+        this.sudokuSolverStep = new __WEBPACK_IMPORTED_MODULE_9__assets_js_sudokuSolverStep__["a" /* SudokuSolverStep */]();
         this.sudokuGenerator = new __WEBPACK_IMPORTED_MODULE_6__assets_js_sudokuGenerator__["a" /* SudokuGenerator */]();
-        this.nakedSingleSolver = new __WEBPACK_IMPORTED_MODULE_9__assets_js_nakedSingleSolver__["a" /* NakedSingleSolver */]();
-
+        this.nakedSingleSolver = new __WEBPACK_IMPORTED_MODULE_10__assets_js_nakedSingleSolver__["a" /* NakedSingleSolver */]();
         this.communicationService.solve$.subscribe(function () { return _this.solve(); });
         this.communicationService.solveByNakedSingle$.subscribe(function () { return _this.solveByNakedSingle(); });
         this.communicationService.generate$.subscribe(function () {
@@ -434,6 +437,7 @@ var SudokuComponent = (function () {
                 _this.sudoku.load(res.grid);
             });
         this.solveBySteps = true;
+        //return this.sudokuSolver.solve(this.sudoku);
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
@@ -506,7 +510,7 @@ SudokuComponent = __decorate([
         template: __webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _d || Object])
 ], SudokuComponent);
 
 var _a, _b, _c, _d;
