@@ -117,7 +117,6 @@ export class SudokuComponent implements OnInit {
         let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
         let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
         let current = this.sudoku.getSpot(mapY, mapX)
-        console.log(current)
         !current.default ? current.value = 0 : current
       }
 
@@ -129,15 +128,11 @@ export class SudokuComponent implements OnInit {
     //this will become a promise, so it will use .then and .catch
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
                         : this.sudokuService.getSolution(this.sudoku, (err, res) => {
-                          if(err) this.sudokuSolver.solve(this.sudoku)
-                          res = JSON.parse(res._body) //ELSE, could be simplified using one call
-                          console.log(res.message)    //so it can use the ternary operator
-                          this.sudoku.load(res.grid)
-                        });
-    
+                            err ? this.sudokuSolver.solve(this.sudoku)
+                                : this.sudoku.load(JSON.parse(res._body).grid)
+                          });
     this.solveBySteps = true
     //return this.sudokuSolver.solve(this.sudoku);
-
   }
 
   solveByNakedSingle() {

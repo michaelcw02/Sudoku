@@ -76,7 +76,6 @@ export class OptionsComponent implements OnInit {
   }
 
   renderSavedGame(grid){
-    console.log("Estoy listo para renderear el grid, me llego", grid)
     this.communicationService.callRenderGame(grid)
     this.modalRef.hide()
   }

@@ -2,7 +2,7 @@
  * This method was copied from Underscore.js
  * http://underscorejs.org/
  */
-let range = (start, stop, step) => {
+range = function (start, stop, step) {
     if (stop == null) {
         stop = start || 0;
         start = 0;
@@ -21,5 +21,4 @@ let range = (start, stop, step) => {
     return range;
 };
 
-module.exports = { range 
-}
+module.exports = { range }

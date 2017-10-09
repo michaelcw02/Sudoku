@@ -35,17 +35,16 @@ export class SudokuService {
         this.http.get(`api/sudoku/games/${userName}`)
             .subscribe(
                 res => callback(undefined, res),
-                err  => callback(err)
+                err => callback(err)
             )
     }
 
     getSolution(sudoku, callback) {
-        console.log('Estoy llamando el servidor para que me de una solucion')
-        let minGrid = this.minifyJsonGrid(sudoku.grid);
+        const minGrid = this.minifyJsonGrid(sudoku.grid);
         this.http.post('api/sudoku/solve/', {grid: minGrid})
             .subscribe(
                 res => callback(undefined, res),
-                err  => callback(err)
+                err => callback(err)
             )
     }
 
