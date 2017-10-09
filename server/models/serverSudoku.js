@@ -1,8 +1,6 @@
-//const require               = require('@std/esm')
 import { Sudoku }               from '../../client/assets/js/sudoku'
 import { SudokuHelper }         from '../../client/assets/js/sudokuHelper'
 import { SudokuSolver }         from '../../client/assets/js/sudokuSolver'
-import { NakedSingleSolver }    from '../../client/assets/js/nakedSingleSolver'
 
 
 class ServerSudoku {
@@ -10,14 +8,13 @@ class ServerSudoku {
         this.sudoku = new Sudoku(9,9);
         this.sudokuHelper = new SudokuHelper();
         this.sudokuSolver = new SudokuSolver(this.sudokuHelper);
-        this.nakedSingleSolver = new NakedSingleSolver();
         this.sudoku.load(grid);
         this.sudokuHelper.generateNeighbors(this.sudoku);
     }
 
     solve() {
-        this.sudokuSolver.solve(this.sudoku);
-        return this.minifyJsonGrid(this.sudoku.grid);
+        return Promise.resolve(this.sudokuSolver.solve(this.sudoku))
+                      .then( x => Promise.resolve(this.minifyJsonGrid(this.sudoku.grid)));
     }
 
     minifyJsonGrid(grid) {

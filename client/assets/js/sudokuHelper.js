@@ -81,8 +81,8 @@ export class SudokuHelper { //This class will help in some operations, to separa
             return "columnException";
         }
         if (rows) {
-            if (subm) return "rowMatrixException";
-            return "rowException";
+            return (subm) ? "rowMatrixException"
+                          : "rowException";
         }
         if (subm) return "subMatrixException";
     }
