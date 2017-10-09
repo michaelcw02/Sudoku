@@ -2,6 +2,8 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { CommunicationService } from '../../services/communication.service';
 import { SudokuService }        from '../../services/sudoku.service';
+import { LoadSudokuService }  from '../../services/load-sudoku.service';
+import { SaveSudokuService }  from '../../services/save-sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -11,8 +13,8 @@ import { SudokuHelper } from '../../../assets/js/sudokuHelper';
 import { SudokuSolver } from '../../../assets/js/sudokuSolver';
 import { SudokuSolverStep } from '../../../assets/js/sudokuSolverStep';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
+import { HiddenSingleSolver } from '../../../assets/js/hiddenSingleSolver';
 import { range } from '../../../assets/js/utils';
-
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 declare var p5: any;
@@ -31,23 +33,34 @@ export class SudokuComponent implements OnInit {
   sudokuGenerator: SudokuGenerator
   nakedSingleSolver: NakedSingleSolver
   sudokuSolverStep: SudokuSolverStep
+  hiddenSingleSolver : HiddenSingleSolver
   canvas: any
   jsonSudoku: any
+  
   solveBySteps: any
 
   public modalRef: BsModalRef;
 
-  constructor( private communicationService: CommunicationService,
-               private sudokuService: SudokuService,
-               private modalService: BsModalService ) {
+
+  constructor(private sudokuService: SudokuService,
+              private saveSudokuService: SaveSudokuService,
+              private loadSudokuService: LoadSudokuService, 
+              private communicationService: CommunicationService,
+              private modalService: BsModalService){
+
+     
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
     this.sudokuSolverStep = new SudokuSolverStep()
     this.sudokuGenerator = new SudokuGenerator();
     this.nakedSingleSolver = new NakedSingleSolver();
+    this.hiddenSingleSolver = new HiddenSingleSolver()
     this.communicationService.solve$.subscribe(() => this.solve());
+    this.communicationService.solveStepByStep$.subscribe( () => this.solveStepByStep())
+    this.communicationService.reset$.subscribe(() => this.reset());
     this.communicationService.solveByNakedSingle$.subscribe(() => this.solveByNakedSingle());
+    this.communicationService.solveByHiddenSingle$.subscribe(() => this.solveByHiddenSingle());
     this.communicationService.generate$.subscribe(() => {
       this.sudoku.clean();
       this.generate();
@@ -55,9 +68,15 @@ export class SudokuComponent implements OnInit {
     this.communicationService.changeDifficulty$.subscribe((difficulty) => this.changeDifficulty(difficulty));
     this.communicationService.saveSudoku$.subscribe((username) => this.saveSudoku(username))
     this.communicationService.renderGame$.subscribe((grid) => this.renderGame(grid))
+
   }
 
+  @ViewChild('storeModal') 
+  private storeModal: TemplateRef<any>;
+
   ngOnInit() {
+
+    window.onunload = () => this.saveSudokuService.storeSudoku(this.sudoku)
 
     const sketch = (p) => {
       this.painter = new Painter(60, p);
@@ -65,7 +84,9 @@ export class SudokuComponent implements OnInit {
       let options = []
 
       p.preload = () => {
-        this.changeDifficulty('easy');
+        Promise.resolve(this.changeDifficulty('easy'))
+        .then(() => this.showStorageModal());
+        //this.changeDifficulty('easy')
       }
 
       p.setup = () => {
@@ -78,7 +99,7 @@ export class SudokuComponent implements OnInit {
       }
 
       p.draw = () => {
-        p.background(179,182,165);
+        p.background(179, 182, 165);
         this.painter.paintSudoku(this.sudoku);
         drawOptions();
         if(this.solveBySteps)
@@ -104,10 +125,13 @@ export class SudokuComponent implements OnInit {
             let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
             let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: x.value }
             let result = this.sudokuHelper.validOption(data);
-            if (result == "allowed") //Valid to put number there
-              this.sudoku.setValue(mapY, mapX, x.value)
+            if (result == "allowed") { //Valid to put number there
+              if (!this.sudoku.getSpot(mapY, mapX).default)
+                this.sudoku.setValue(mapY, mapX, x.value)
+              else result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
+            }
             else
-              result == undefined ? result : this.openModal(result); //Alert if is not valid
+              result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
             x.restart();
           }
         })
@@ -119,9 +143,29 @@ export class SudokuComponent implements OnInit {
         let current = this.sudoku.getSpot(mapY, mapX)
         !current.default ? current.value = 0 : current
       }
+      
+      p.mousePressed = () => {
+        let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9))
+        let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9))
+        if(range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
+          if (!this.sudoku.getSpot(mapY, mapX).default) 
+            this.sudoku.setValue(mapY, mapX)
+      }
 
     }
+
     let myP5 = new p5(sketch);
+  }
+
+  showStorageModal(){
+    if(this.loadSudokuService.retriveSudoku())
+      this.modalRef = this.modalService.show(this.storeModal); 
+  }
+
+  loadStorageGame(){
+    let grid = this.loadSudokuService.retriveSudoku()
+    this.sudoku.fillGrid(grid)
+    this.modalRef.hide()
   }
 
   solve() {
@@ -131,8 +175,11 @@ export class SudokuComponent implements OnInit {
                             err ? this.sudokuSolver.solve(this.sudoku)
                                 : this.sudoku.load(JSON.parse(res._body).grid)
                           });
-    this.solveBySteps = true
     //return this.sudokuSolver.solve(this.sudoku);
+  }
+
+  solveStepByStep(){
+    this.solveBySteps = true
   }
 
   solveByNakedSingle() {
@@ -142,10 +189,22 @@ export class SudokuComponent implements OnInit {
     }, 1000)
   }
 
+  solveByHiddenSingle() {
+    let interval = setInterval(() => {
+    if (this.hiddenSingleSolver.solve(this.sudoku))
+      clearInterval(interval)
+    }, 1000)
+  }
+
   generate() {
     this.sudokuGenerator.generate(this.sudoku);
     this.sudokuHelper.generateNeighbors(this.sudoku);
   }
+
+  reset() {
+    return this.sudokuHelper.resetSudoku(this.sudoku);
+  }
+
   getDifficulty() {
     return this.communicationService.callGetDifficulty();
   }
@@ -171,8 +230,7 @@ export class SudokuComponent implements OnInit {
 
   @ViewChild('errorModal')
   private errorModal: TemplateRef<any>;
-
-  public openModal(result) {
+  public openErrorModal(result) {
     this.modalRef = this.modalService.show(this.errorModal);
     switch (result) {
       case "rowException":
@@ -197,9 +255,17 @@ export class SudokuComponent implements OnInit {
         $("#messageError").text("The number already exists in that row, column and sub-grid.");
         break;
       default:
-        $("#messageError").text("Unknown error.")
+        $("#messageError").text("Invalid space.")
         break;
     }
+  }
+
+
+  @ViewChild('waitModal')
+  private waitModal: TemplateRef<any>;
+  public openWaitModal(result) {
+    this.modalRef = this.modalService.show(this.waitModal);
+    $("#messageWait").text(result);
   }
 
 }

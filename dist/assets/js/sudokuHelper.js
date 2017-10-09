@@ -14,6 +14,15 @@ export class SudokuHelper { //This class will help in some operations, to separa
         });
     }
 
+    resetSudoku(sudoku) {
+        sudoku.grid.forEach((row, i) => {
+            row.forEach((spot, j) => {
+                if (!sudoku.getSpot(i, j).default)
+                    sudoku.setValue(i, j);
+            })
+        });
+    }
+
     nextEmpty(sudoku) {
         let grid = sudoku.grid;
         let result = {};

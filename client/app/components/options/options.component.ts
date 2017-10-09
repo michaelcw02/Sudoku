@@ -35,6 +35,10 @@ export class OptionsComponent implements OnInit {
   generate() {
     this.communicationService.callGenerate();
   }
+  
+  reset() {
+    this.communicationService.callReset();
+  }
 
   changeDifficulty() {
     let difficulty = $('#difficulty option:selected').val()
@@ -82,6 +86,14 @@ export class OptionsComponent implements OnInit {
 
   solveByNakedSingle(){
     this.communicationService.callSolveByNakedSingle()
+  }
+
+  solveByHiddenSingle(){
+    this.communicationService.callSolveByHiddenSingle()
+  }
+
+  solveStepByStep(){
+    this.communicationService.callSolveStepByStep()
   }
 
   public openModal(template: TemplateRef<any>) {

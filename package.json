@@ -12,9 +12,9 @@
   },
   "private": true,
   "@std/esm": {
-		"cjs": true,
-		"esm": "js"
-	},
+    "cjs": true,
+    "esm": "js"
+  },
   "dependencies": {
     "@angular/animations": "^4.2.4",
     "@angular/common": "^4.2.4",
@@ -24,6 +24,8 @@
     "@angular/http": "^4.2.4",
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
+    "@angular/platform-webworker": "^4.4.4",
+    "@angular/platform-webworker-dynamic": "^4.4.4",
     "@angular/router": "^4.2.4",
     "@std/esm": "^0.11.2",
     "@types/bootstrap": "^3.3.36",
