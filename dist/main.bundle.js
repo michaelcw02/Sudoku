@@ -67,7 +67,7 @@ AppComponent = __decorate([
 ], AppComponent);
 
 //This is like the main
-//This is where all the decorators are 
+//This is where all decorators are 
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -240,7 +240,6 @@ var OptionsComponent = (function () {
     OptionsComponent.prototype.renderGames = function (data) {
         var _this = this;
         data.forEach(function (x, i) { return __WEBPACK_IMPORTED_MODULE_4_jquery__('#games').append(__WEBPACK_IMPORTED_MODULE_4_jquery__('<div class="loadMatchPanel" id="loadedMatch">' +
-            //  "<p class='info'> ID of your saved game: " + x._id + " </p>" +
             "<p class='info'> Match #" + (i + 1) + " </p>" +
             "<p class='info'> Date: " + _this.beautifyDate(x.date) + "</p>" +
             "</div> <br>").click(function () { return _this.renderSavedGame(x.grid); })); });
@@ -403,7 +402,7 @@ var SudokuComponent = (function () {
             };
             p.draw = function () {
                 p.background(179, 182, 165);
-                _this.painter.paintSudoku(_this.sudoku);
+                _this.painter.paintSudoku(_this.sudoku); //Paints every 60fps
                 drawOptions();
                 if (_this.solveBySteps)
                     _this.solveBySteps = !_this.sudokuSolverStep.solve(_this.sudoku);
@@ -441,7 +440,6 @@ var SudokuComponent = (function () {
                 var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
                 var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
                 var current = _this.sudoku.getSpot(mapY, mapX);
-                console.log(current);
                 !current.default ? current.value = 0 : current;
             };
             p.mousePressed = function () {
@@ -468,11 +466,8 @@ var SudokuComponent = (function () {
         //this will become a promise, so it will use .then and .catch
         (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
             : this.sudokuService.getSolution(this.sudoku, function (err, res) {
-                if (err)
-                    _this.sudokuSolver.solve(_this.sudoku);
-                res = JSON.parse(res._body);
-                console.log(res.message);
-                _this.sudoku.load(res.grid);
+                err ? _this.sudokuSolver.solve(_this.sudoku)
+                    : _this.sudoku.load(JSON.parse(res._body).grid);
             });
         //return this.sudokuSolver.solve(this.sudoku);
     };
@@ -905,11 +900,11 @@ var SudokuService = (function () {
             .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
     };
     SudokuService.prototype.getSolution = function (sudoku, callback) {
-        console.log('Estoy llamando el servidor para que me de una solucion');
         var minGrid = this.minifyJsonGrid(sudoku.grid);
         this.http.post('api/sudoku/solve/', { grid: minGrid })
             .subscribe(function (res) { return callback(undefined, res); }, function (err) { return callback(err); });
     };
+    //This should come from the helper class, but it will imply importing it
     SudokuService.prototype.minifyJsonGrid = function (grid) {
         var obj = grid.map(function (x) { return x; });
         var result = Array.from(new Array(9), function (x, i) {
@@ -1060,10 +1055,8 @@ class Option {
         this.y = this.original.y;
     }
 
-    collides(x, y) {
-        if (this.lib.dist(this.x, this.y, x, y) < 40)
-            return true;
-        return false;
+    collides(x, y){
+        return (this.lib.dist(this.x, this.y, x, y) < 40)
     }
 
 }
@@ -1083,49 +1076,45 @@ class Painter { //This class wil be in charge of paint in the matrix
         this.lib = lib;
     }
 
-    paintSudoku(sudoku) { //Make more elegant
-        for (let i = 0; i < sudoku.rows; i++)
-            for (let j = 0; j < sudoku.cols; j++) {
-                this.lib.fill(255);
-                this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
-                this.paintBorderLines(i, j);
-            }
+  paintSudoku(sudoku){ //Make more elegant. -Done.
+    sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
+      this.lib.fill(255)
+      this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
+      this.paintBorderLines(i, j);  
+    }))
+    this.paintNumbers(sudoku);     
+  }
 
-        this.paintNumbers(sudoku);
-    }
+  paintNumbers(sudoku){ //this one could be done with filter x.forEach.filter.forEach
+    for(let i = 0; i < sudoku.rows; i++)
+      for(let j = 0; j < sudoku.cols; j++)
+        if(sudoku.getValue(i, j) !== 0)
+          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
+  }
 
-    paintNumbers(sudoku) {
-        for (let i = 0; i < sudoku.rows; i++)
-            for (let j = 0; j < sudoku.cols; j++)
-                if (sudoku.getValue(i, j) !== 0)
-                    this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
-    }
+  paintNumber(number, i, j, def = false) {
+      this.lib.textSize(this.dimension - 10);
+      this.lib.textFont("Comfortaa");
+      def ? this.lib.fill(0)
+          : this.lib.fill(255, 0, 0);
+      this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
+  }
 
-    paintNumber(number, i, j, def = false) {
-        this.lib.textSize(this.dimension - 10);
-        this.lib.textFont("Comfortaa");
-        if (def)
-            this.lib.fill(0);
-        else
-            this.lib.fill(255, 0, 0);
-        this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
-    }
-
-    paintBorderLines(row, col) {
-        this.lib.fill(50);
-        if (col % 3 === 0) {
-            if (row % 3 === 0)
-                this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension);
-            this.lib.rect(row * this.dimension, col * this.dimension, this.dimension, 5);
-        } else {
-            if (row % 3 === 0)
-                this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension);
-        }
-        if (col === 8)
-            this.lib.rect(row * this.dimension, (col + 1) * this.dimension, this.dimension, 5);
-        if (row === 8)
-            this.lib.rect((row + 1) * this.dimension, col * this.dimension, 5, this.dimension);
-    }
+  paintBorderLines(row, col) {
+      this.lib.fill(50);
+      if (col % 3 === 0) {
+          if (row % 3 === 0)
+              this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension);
+          this.lib.rect(row * this.dimension, col * this.dimension, this.dimension, 5);
+      } else {
+          if (row % 3 === 0)
+              this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension);
+      }
+      if (col === 8)
+          this.lib.rect(row * this.dimension, (col + 1) * this.dimension, this.dimension, 5);
+      if (row === 8)
+          this.lib.rect((row + 1) * this.dimension, col * this.dimension, 5, this.dimension);
+  }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Painter;
 
@@ -1227,10 +1216,9 @@ class Sudoku {
 	constructor(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
-
-		this.grid = Array.from( new Array(this.rows), (x, i) => {
-			return Array.from( new Array(this.cols), (x, j) => new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j) )
-		} )
+		this.grid = Array.from(new Array(this.rows), (x, i) => {
+			return Array.from(new Array(this.cols), (x, j) => new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j))
+		})
 	}
 
 	getSpot(i, j) {
@@ -1246,27 +1234,29 @@ class Sudoku {
 	}
 
 	setSpot(i, j, value, def = true) {
-      this.grid[i][j].value = value;
-	  this.grid[i][j].default = def;
+		this.grid[i][j].value = value;
+		this.grid[i][j].default = def;
 	}
 
-    clean(){
-    	this.grid.forEach( (x, i) => { x.forEach( (elem, j) => {
-        	elem.value = 0;
-        	elem.default = false;
-   		 } )} );
-  	}
+	clean() {
+		this.grid.forEach((x, i) => {
+			x.forEach((elem, j) => {
+				elem.value = 0;
+				elem.default = false;
+			})
+		});
+	}
 
 	load(sudoku) {
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value	//For Saved Matches
-																											   : sudoku[i][j]) )	//For JSON Sudoku
+			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value //For Saved Matches
+																											  : sudoku[i][j])) //For JSON Sudoku
 		});
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map( (y, j) => {
-				this.grid[i][j].default =  (sudoku[i][j].default != undefined) ? sudoku[i][j].default			//For Saved Matches
-																			   : sudoku[i][j] ? true : false	//For JSON Sudoku
-			} )
+			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => {
+				this.grid[i][j].default = (sudoku[i][j].default != undefined) ? sudoku[i][j].default //For Saved Matches
+																			  : sudoku[i][j] ? true : false //For JSON Sudoku
+			})
 		});
 	}
 
@@ -1282,6 +1272,7 @@ class Sudoku {
 
 
 
+
 /***/ }),
 
 /***/ "../../../../../client/assets/js/sudokuGenerator.js":
@@ -1290,6 +1281,9 @@ class Sudoku {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sudoku__ = __webpack_require__("../../../../../client/assets/js/sudoku.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sudokuHelper__ = __webpack_require__("../../../../../client/assets/js/sudokuHelper.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__("../../../../../client/assets/js/utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__utils__);
+
 
 
 
@@ -1319,30 +1313,25 @@ class SudokuGenerator {
         return false; //Este return permite romper la recursion, sino la pila se llenaria
     }
 
-    //Pasar a funcional
-    hasEmptyValues(sudoku) { //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-        for (let i = 0; i < sudoku.rows; i++)
-            for (let j = 0; j < sudoku.cols; j++)
-                if (sudoku.getValue(i, j) === 0)
-                    return true;
-        return false;
-    }
+	//Pasar a funcional. -Listo
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
+	}
 
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
         //HACER FUNCIONAL
         let newSudoku = new __WEBPACK_IMPORTED_MODULE_0__sudoku__["a" /* Sudoku */](9, 9); // Se crea un sudoku vacío
         this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
         this.solve(newSudoku); //Se resuelve el newSudoku por completo
-        let i = 0;
-        while (i < 17) { //Para que asigne sólo 17 casillas por default
+        //Para que asigne sólo 17 casillas por default
+        Object(__WEBPACK_IMPORTED_MODULE_2__utils__["range"])(17).forEach( i => {
             let row = Math.floor(Math.random() * 8);
             let col = Math.floor(Math.random() * 8);
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
             if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
-                i++;
             }
-        }
+        })
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuGenerator;
@@ -1363,11 +1352,7 @@ class SudokuHelper { //This class will help in some operations, to separate basi
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach((x, i) => {
-            x.forEach((elem, j) => {
-                elem.setNeighbors(sudoku, this.findInSubMatrix(elem))
-            })
-        });
+        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
     }
 
     resetSudoku(sudoku) {
@@ -1450,8 +1435,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
             return "columnException";
         }
         if (rows) {
-            if (subm) return "rowMatrixException";
-            return "rowException";
+            return (subm) ? "rowMatrixException"
+                          : "rowException";
         }
         if (subm) return "subMatrixException";
     }
@@ -1492,13 +1477,9 @@ class SudokuSolver {
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
 	}
 
-	//Pasar a funcional
-	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-		for(let i = 0; i < sudoku.rows; i++)
-			for(let j = 0; j < sudoku.cols; j++)
-				if(sudoku.getValue(i, j) === 0)
-					return true;
-		return false;
+	//Pasar a funcional. -Listo
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuSolver;
@@ -1552,13 +1533,9 @@ class SudokuSolverStep {
     }
     
 
-	//Pasar a funcional
-	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-		for(let i = 0; i < sudoku.rows; i++)
-			for(let j = 0; j < sudoku.cols; j++)
-				if(sudoku.getValue(i, j) === 0)
-					return true;
-		return false;
+	//Pasar a funcional. -Listo
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuSolverStep;
@@ -1569,7 +1546,10 @@ class SudokuSolverStep {
 /***/ "../../../../../client/assets/js/utils.js":
 /***/ (function(module, exports) {
 
-//Copied from Underscore.js
+/**
+ * This method was copied from Underscore.js
+ * http://underscorejs.org/
+ */
 range = function (start, stop, step) {
     if (stop == null) {
         stop = start || 0;
@@ -1589,34 +1569,7 @@ range = function (start, stop, step) {
     return range;
 };
 
-module.exports = {
-    range
-}
-
-/**
- * export class Utils {
-    constructor() { }
-    range (start, stop, step) {
-        if (stop == null) {
-            stop = start || 0;
-            start = 0;
-        }
-        if (!step) {
-            step = stop < start ? -1 : 1;
-        }
-    
-        let length = Math.max(Math.ceil((stop - start) / step), 0);
-        let range = Array(length);
-    
-        for (let idx = 0; idx < length; idx++, start += step) {
-            range[idx] = start;
-        }
-    
-        return range;
-    };
-}
-
- */
+module.exports = { range }
 
 /***/ }),
 

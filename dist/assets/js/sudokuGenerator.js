@@ -1,5 +1,6 @@
-import { Sudoku }             from './sudoku';
-import { SudokuHelper }       from './sudokuHelper';
+import { Sudoku }           from './sudoku';
+import { SudokuHelper }     from './sudokuHelper';
+import { range }            from './utils'
 
 export class SudokuGenerator {
     constructor() {
@@ -27,29 +28,24 @@ export class SudokuGenerator {
         return false; //Este return permite romper la recursion, sino la pila se llenaria
     }
 
-    //Pasar a funcional
-    hasEmptyValues(sudoku) { //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-        for (let i = 0; i < sudoku.rows; i++)
-            for (let j = 0; j < sudoku.cols; j++)
-                if (sudoku.getValue(i, j) === 0)
-                    return true;
-        return false;
-    }
+	//Pasar a funcional. -Listo
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
+	}
 
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
         //HACER FUNCIONAL
         let newSudoku = new Sudoku(9, 9); // Se crea un sudoku vacío
         this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
         this.solve(newSudoku); //Se resuelve el newSudoku por completo
-        let i = 0;
-        while (i < 17) { //Para que asigne sólo 17 casillas por default
+        //Para que asigne sólo 17 casillas por default
+        range(17).forEach( i => {
             let row = Math.floor(Math.random() * 8);
             let col = Math.floor(Math.random() * 8);
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
             if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
-                i++;
             }
-        }
+        })
     }
 }

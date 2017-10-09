@@ -99,7 +99,7 @@ export class SudokuComponent implements OnInit {
 
       p.draw = () => {
         p.background(179, 182, 165);
-        this.painter.paintSudoku(this.sudoku);
+        this.painter.paintSudoku(this.sudoku); //Paints every 60fps
         drawOptions();
         if(this.solveBySteps)
           this.solveBySteps = !this.sudokuSolverStep.solve(this.sudoku)
