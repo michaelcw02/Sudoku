@@ -86,7 +86,6 @@ export class SudokuComponent implements OnInit {
       p.preload = () => {
         Promise.resolve(this.changeDifficulty('easy'))
         .then(() => this.showStorageModal());
-        //this.changeDifficulty('easy')
       }
 
       p.setup = () => {
@@ -208,6 +207,7 @@ export class SudokuComponent implements OnInit {
   }
 
   reset() {
+    this.solveBySteps = false
     return this.sudokuHelper.resetSudoku(this.sudoku);
   }
 

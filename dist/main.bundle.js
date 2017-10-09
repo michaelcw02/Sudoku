@@ -392,7 +392,6 @@ var SudokuComponent = (function () {
             p.preload = function () {
                 Promise.resolve(_this.changeDifficulty('easy'))
                     .then(function () { return _this.showStorageModal(); });
-                //this.changeDifficulty('easy')
             };
             p.setup = function () {
                 _this.canvas = p.createCanvas(700, 545);
@@ -499,6 +498,7 @@ var SudokuComponent = (function () {
         this.sudokuHelper.generateNeighbors(this.sudoku);
     };
     SudokuComponent.prototype.reset = function () {
+        this.solveBySteps = false;
         return this.sudokuHelper.resetSudoku(this.sudoku);
     };
     SudokuComponent.prototype.getDifficulty = function () {
