@@ -6,14 +6,31 @@ const Sudoku        = require('../entity/sudoku')
 const User          = require('../entity/user')
 const ServerSudoku  = require('../models/serverSudoku')
 
-let saveUser = ((user, sudo_id) => { user.games.push(sudo_id); return user.save() }); //Trying to return a promise
-let insertSudoku = ((req, sudoku) => { sudoku.grid = req.body.grid; sudoku.level = req.body.level; sudoku.date = new Date(); return sudoku.save()}); //Trying to return a promise
-let findUser = (req => { return User.find({ name: req.body.name }) });
-let countUser = ((req) => { return findUser(req).count() });
-let updateUser = ((req, sudo_id) => User.findOneAndUpdate({ name: req.body.name },
-    { $push: { games: sudo_id } },
-    { upsert: true, new: true }
-));
+
+let saveUser = (user, sudo_id) => { 
+    user.games.push(sudo_id); 
+    return user.save(); //this method returns a promise 
+}; 
+let insertSudoku = (req, sudoku) => { 
+    sudoku.grid = req.body.grid; 
+    sudoku.level = req.body.level; 
+    sudoku.date = new Date(); 
+    return sudoku.save(); //This method returns a promise
+}; 
+let findUser = req => User.find({ name: req.body.name }) ;
+let countUser = req => findUser(req).count();
+let updateUser = (req, sudo_id) => User.findOneAndUpdate({ name: req.body.name }, 
+                                                         { $push: { games: sudo_id } }, 
+                                                         { upsert: true, new: true }
+                                                        );
+let findOneRandomSudoku = (filter) => { 
+    return new Promise((resolve, reject) => {
+        Sudoku.findOneRandom(filter, (err, data) => {
+            resolve(data);
+            reject(err);
+        })
+    })
+}
 
 router.use((req, res, next) => {
     console.log(`You are in the Sudoku Router at: ${Date.now()}`)
@@ -21,7 +38,6 @@ router.use((req, res, next) => {
 })
 
 router.route('/')
-
     .post((req, res) => {
         console.log(`Requested a POST of ${req.body}`)
         let user = new User();
@@ -34,31 +50,18 @@ router.route('/')
             .catch((err) => res.send(err));
     })
 
-    .get((req, res) => {
-        console.log(`Requested a GET of ${req.body}`)
-        Sudoku.find((err, data) => {
-            if (err) res.json({ name: err.name, message: err.message, status: 666 })
-            console.log(data)
-            res.json(data)
-        })
-    })
-
 router.route('/level/:level')
-
     .get((req, res) => {
         let level = req.params.level;
         level = level.toLowerCase();
         let filter = { level: level };
-        Sudoku.findOneRandom(filter, (err, data) => {
-            if (err) res.json({ name: err.name, message: err.message, status: 666 })
-            console.log({ grid: data });
-            res.json({ grid: data.grid })
-        })
+        findOneRandomSudoku(filter)
+            .then(data => res.json({ grid: data.grid }))
+            .catch(err => res.json({ name: err.name, message: err.message, status: 666 }))
     })
 
 
 router.route('/games/:userName')
-
     .get((req, res) => {
         let userName = req.params.userName;
         User.find({name : userName}, {games : 1, _id : 0})
@@ -68,30 +71,10 @@ router.route('/games/:userName')
     })
 
 router.route('/solve/')
-    
     .post( (req, res) => {
-        console.log('Requested to solve a sudoku')
         let serverSudoku = new ServerSudoku(req.body.grid);
-        let grid = serverSudoku.solve();
-        console.log(grid)
-        res.json({message: 'Sudoku Solved', grid: grid})
+        serverSudoku.solve()
+                    .then(grid => res.json({message: 'Sudoku Solved', grid: grid}))
     } )
-
- /*.put( (req, res) => {
-    let id = req.params.sudoku__id;
-    Sudoku.findByIdAndUpdate( id, (err, data) => {
-        if (err)    res.json( {name: err.name, message: err.message, status: 666} )
-            res.json( {name: "sudokuUpdated", message: "sudoku has been successfully updated", status: 69} )
-    } )
- } )
- 
- .delete( (req, res) => {
-    let id = req.params.sudoku__id;
-    Sudoku.remove( id, (err) => {
-        if (err)    res.json( {name: err.name, message: err.message, status: 666} )
-        res.json( {name: "sudokuDeleted", message: "sudoku has been successfully deleted from DB", status: 69} )
-    } )
- } )*/
-
 
  module.exports = router

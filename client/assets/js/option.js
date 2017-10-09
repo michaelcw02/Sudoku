@@ -22,10 +22,8 @@ export class Option {
         this.y = this.original.y;
     }
 
-    collides(x, y) {
-        if (this.lib.dist(this.x, this.y, x, y) < 40)
-            return true;
-        return false;
+    collides(x, y){
+        return (this.lib.dist(this.x, this.y, x, y) < 40)
     }
 
 }

@@ -7,7 +7,6 @@ export class SudokuService {
 
     constructor(public http: Http) {
         console.log('Sudoku Service is up')
-
     }
 
     //Saving
@@ -36,27 +35,27 @@ export class SudokuService {
         this.http.get(`api/sudoku/games/${userName}`)
             .subscribe(
                 res => callback(undefined, res),
-                err  => callback(err)
+                err => callback(err)
             )
     }
 
     getSolution(sudoku, callback) {
-        console.log('Estoy llamando el servidor para que me de una solucion')
-        let minGrid = this.minifyJsonGrid(sudoku.grid);
+        const minGrid = this.minifyJsonGrid(sudoku.grid);
         this.http.post('api/sudoku/solve/', {grid: minGrid})
             .subscribe(
                 res => callback(undefined, res),
-                err  => callback(err)
+                err => callback(err)
             )
     }
 
+    //This should come from the helper class, but it will imply importing it
     minifyJsonGrid(grid) {
         let obj = grid.map(x => x);
-        let result = Array.from(new Array(9), (x, i) => {
-            return Array.from(new Array(9), (x, j) => {
+        let result = Array.from(new Array(9), (x, i) =>
+            Array.from(new Array(9), (x, j) => {
                 return { value: obj[i][j].value, default: obj[i][j].default }
             })
-        })
+        )
         return result;
     }
 
