@@ -14,7 +14,7 @@ const sudokuRouter = require('./server/routes/sudokuRouter')
 const port         = process.env.PORT || 9090;
 const app          = express()
 
-mongoose.connect('mongodb://admin:admin@ds147454.mlab.com:47454/sudoku', {useMongoClient: true})
+mongoose.connect('mongodb://localhost/sudokus', {useMongoClient: true})
 
 //'mongodb://localhost/sudokus //for local deployment
 //mongodb://admin:admin@ds147454.mlab.com:47454/sudoku //for heroku

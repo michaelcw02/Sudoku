@@ -2,6 +2,8 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { CommunicationService } from '../../services/communication.service';
 import { SudokuService }        from '../../services/sudoku.service';
+import { LoadSudokuService }  from '../../services/load-sudoku.service';
+import { SaveSudokuService }  from '../../services/save-sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -13,7 +15,6 @@ import { SudokuSolverStep } from '../../../assets/js/sudokuSolverStep';
 import { NakedSingleSolver } from '../../../assets/js/nakedSingleSolver';
 import { HiddenSingleSolver } from '../../../assets/js/hiddenSingleSolver';
 import { range } from '../../../assets/js/utils';
-
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 declare var p5: any;
@@ -35,14 +36,19 @@ export class SudokuComponent implements OnInit {
   hiddenSingleSolver : HiddenSingleSolver
   canvas: any
   jsonSudoku: any
+  
   solveBySteps: any
 
   public modalRef: BsModalRef;
 
-  constructor( private communicationService: CommunicationService,
-               private sudokuService: SudokuService,
-               private modalService: BsModalService ) {
 
+  constructor(private sudokuService: SudokuService,
+              private saveSudokuService: SaveSudokuService,
+              private loadSudokuService: LoadSudokuService, 
+              private communicationService: CommunicationService,
+              private modalService: BsModalService){
+
+     
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
@@ -65,7 +71,12 @@ export class SudokuComponent implements OnInit {
 
   }
 
+  @ViewChild('storeModal') 
+  private storeModal: TemplateRef<any>;
+
   ngOnInit() {
+
+    window.onunload = () => this.saveSudokuService.storeSudoku(this.sudoku)
 
     const sketch = (p) => {
       this.painter = new Painter(60, p);
@@ -73,7 +84,9 @@ export class SudokuComponent implements OnInit {
       let options = []
 
       p.preload = () => {
-        this.changeDifficulty('easy');
+        Promise.resolve(this.changeDifficulty('easy'))
+        .then(() => this.showStorageModal());
+        //this.changeDifficulty('easy')
       }
 
       p.setup = () => {
@@ -141,7 +154,19 @@ export class SudokuComponent implements OnInit {
       }
 
     }
+
     let myP5 = new p5(sketch);
+  }
+
+  showStorageModal(){
+    if(this.loadSudokuService.retriveSudoku())
+      this.modalRef = this.modalService.show(this.storeModal); 
+  }
+
+  loadStorageGame(){
+    let grid = this.loadSudokuService.retriveSudoku()
+    this.sudoku.fillGrid(grid)
+    this.modalRef.hide()
   }
 
   solve() {
