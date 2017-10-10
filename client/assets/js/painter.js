@@ -24,7 +24,7 @@ export class Painter { //This class wil be in charge of paint in the matrix
   paintNumber(number, i, j, def = false) {
       this.lib.textSize(this.dimension - 10);
       this.lib.textFont("Comfortaa");
-      def ? this.lib.fill(0);
+      def ? this.lib.fill(0)
           : this.lib.fill(255, 0, 0);
       this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
   }

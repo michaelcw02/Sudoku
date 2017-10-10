@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
 import * as $ from 'jquery';
-import {WorkerAppModule} from '@angular/platform-webworker';
-import {platformWorkerAppDynamic} from '@angular/platform-webworker-dynamic';
 
 @Component({
   selector: 'app-timer',
@@ -9,15 +8,18 @@ import {platformWorkerAppDynamic} from '@angular/platform-webworker-dynamic';
   styleUrls: ['./timer.component.css']
 })
 export class TimerComponent implements OnInit {
-  
+
   worker: Worker
+
+  minutes: number = -1;
+  seconds: number = -1;
 
   constructor() {
     this.worker = null;
   }
 
   ngOnInit() {
-    $("#timer").text("00:00");
+    this.startTimer();
   }
 
   startTimer(){
@@ -25,15 +27,20 @@ export class TimerComponent implements OnInit {
         if (this.worker==null){
            this.worker = new Worker("../../assets/js/timer.js");
         }
-        this.worker.onmessage = (e) => $("timer").text(e.data);
+        this.worker.postMessage({minutes: this.minutes, seconds: this.seconds})
+        this.worker.onmessage = (e) => {
+          this.minutes = e.data.minutes;
+          this.seconds = e.data.seconds;
+        }
      }
      else{
-       $("timer").text("Browser does not support Web Workers");
+       $("#timer").text("Browser does not support Web Workers");
      }
   }
 
   stopTimer(){
     this.worker.terminate();
+    this.worker = null;
   }
 
   restartTimer(){
