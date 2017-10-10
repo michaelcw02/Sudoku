@@ -1,4 +1,6 @@
-export class SudokuHelper { //This class will help in some operations, to separate basic logic from other logic
+/* This class will help in some operations, to separate basic logic */
+
+export class SudokuHelper { 
 
     constructor() {
         this.subMatrix = [];
@@ -10,24 +12,24 @@ export class SudokuHelper { //This class will help in some operations, to separa
         grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
     }
 
-    resetSudoku(sudoku) {
+    resetSudoku(sudoku, fun = z => z == "possible" || z == "heuristic") {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
-                if (!sudoku.getSpot(i, j).default)
-                    sudoku.setValue(i, j);
+                if (fun(sudoku.getSpot(i, j).state))
+                    sudoku.setValue(i, j) //Sets to zero
             })
         });
     }
 
-    nextEmpty(sudoku) {
+    nextEmpty(sudoku) { //Please pass this to reduce
         let grid = sudoku.grid;
         let result = {};
         grid.forEach((x, i) => {
             x.forEach((elem, j) => {
                 if (!sudoku.getValue(i, j)) result = { row: i, col: j }
             })
-        });
-        return result;
+        })
+        return result
     }
 
     findInSubMatrix(spot) {
@@ -73,9 +75,8 @@ export class SudokuHelper { //This class will help in some operations, to separa
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) {
+        if (current) 
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
-        }
     }
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking

@@ -17,18 +17,17 @@ export class SudokuGenerator {
             while (options.length) { //Mientras exista alguna opción sin probar
                 let o = options[Math.floor(Math.random() * options.length)]; //Elije aleatoriamente una opción del array
                 if (currentSpot.isValidOption(o)) { //Si es valida (No esta en la fila, columna o submatriz)
-                    sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor      
+                    currentSpot.setValueAndState(o, "heuristic") //The value was set by an algorithm     
                     if (this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
                         return true; //Si llega hasta aca es que lo soluciono
                 }
                 options = options.filter(x => x != o); //Elimina del array la opción ya que no fue válida
             }
-            sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+            currentSpot.value = 0 //BACKTRACK
         }
-        return false; //Este return permite romper la recursion, sino la pila se llenaria
+        return false; //This return breaks recursion
     }
 
-	//Pasar a funcional. -Listo
     hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
         return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
@@ -43,7 +42,7 @@ export class SudokuGenerator {
             let row = Math.floor(Math.random() * 8);
             let col = Math.floor(Math.random() * 8);
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
-            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
+            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
             }
         })

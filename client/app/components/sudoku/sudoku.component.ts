@@ -125,29 +125,23 @@ export class SudokuComponent implements OnInit {
             let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: x.value }
             let result = this.sudokuHelper.validOption(data);
             if (result == "allowed") { //Valid to put number there
-              if (!this.sudoku.getSpot(mapY, mapX).default)
+              if (this.sudoku.getSpot(mapY, mapX).state == "possible")
                 this.sudoku.setValue(mapY, mapX, x.value)
-              else result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
+              else result == undefined ? result : this.openErrorModal(result); //Modal-Alert if is not valid
             }
             else
-              result == undefined ? result : this.openErrorModal(result); //Alert if is not valid
+              result == undefined ? result : this.openErrorModal(result); //Modal-Alert if is not valid
             x.restart();
           }
         })
       }
 
-      p.doubleClicked = () => {
-        let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
-        let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
-        let current = this.sudoku.getSpot(mapY, mapX)
-        !current.default ? current.value = 0 : current
-      }
       
       p.mousePressed = () => {
         let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9))
         let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9))
         if(range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
-          if (!this.sudoku.getSpot(mapY, mapX).default) 
+          if (this.sudoku.getSpot(mapY, mapX).state == "possible") 
             this.sudoku.setValue(mapY, mapX)
       }
 
@@ -178,10 +172,12 @@ export class SudokuComponent implements OnInit {
   }
 
   solveStepByStep(){
+    this.cleanUserInput()
     this.solveBySteps = true
   }
 
   solveByNakedSingle() {
+    this.cleanUserInput()
     let interval = setInterval(() => {
       if (this.nakedSingleSolver.solve(this.sudoku))
         clearInterval(interval)
@@ -189,6 +185,7 @@ export class SudokuComponent implements OnInit {
   }
 
   solveByHiddenSingle() {
+    this.cleanUserInput()
     let interval = setInterval(() => {
     if (this.hiddenSingleSolver.solve(this.sudoku))
       clearInterval(interval)
@@ -225,6 +222,12 @@ export class SudokuComponent implements OnInit {
 
   saveSudoku(user) {
     this.sudokuService.saveSudoku(user, this.sudoku)
+  }
+
+  /* Only clears values set by the user */ 
+
+  cleanUserInput(){
+    this.sudokuHelper.resetSudoku(this.sudoku, z => z == "possible")
   }
 
 

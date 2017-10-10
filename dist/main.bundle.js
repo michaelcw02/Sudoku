@@ -425,28 +425,22 @@ var SudokuComponent = (function () {
                         var data = { sudoku: _this.sudoku, row: mapY, col: mapX, value: x.value };
                         var result = _this.sudokuHelper.validOption(data);
                         if (result == "allowed") {
-                            if (!_this.sudoku.getSpot(mapY, mapX).default)
+                            if (_this.sudoku.getSpot(mapY, mapX).state == "possible")
                                 _this.sudoku.setValue(mapY, mapX, x.value);
                             else
-                                result == undefined ? result : _this.openErrorModal(result); //Alert if is not valid
+                                result == undefined ? result : _this.openErrorModal(result); //Modal-Alert if is not valid
                         }
                         else
-                            result == undefined ? result : _this.openErrorModal(result); //Alert if is not valid
+                            result == undefined ? result : _this.openErrorModal(result); //Modal-Alert if is not valid
                         x.restart();
                     }
                 });
-            };
-            p.doubleClicked = function () {
-                var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
-                var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
-                var current = _this.sudoku.getSpot(mapY, mapX);
-                !current.default ? current.value = 0 : current;
             };
             p.mousePressed = function () {
                 var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
                 var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
                 if (Object(__WEBPACK_IMPORTED_MODULE_14__assets_js_utils__["range"])(_this.sudoku.rows).includes(mapY) && Object(__WEBPACK_IMPORTED_MODULE_14__assets_js_utils__["range"])(_this.sudoku.cols).includes(mapX))
-                    if (!_this.sudoku.getSpot(mapY, mapX).default)
+                    if (_this.sudoku.getSpot(mapY, mapX).state == "possible")
                         _this.sudoku.setValue(mapY, mapX);
             };
         };
@@ -472,10 +466,12 @@ var SudokuComponent = (function () {
         //return this.sudokuSolver.solve(this.sudoku);
     };
     SudokuComponent.prototype.solveStepByStep = function () {
+        this.cleanUserInput();
         this.solveBySteps = true;
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
+        this.cleanUserInput();
         var interval = setInterval(function () {
             if (_this.nakedSingleSolver.solve(_this.sudoku))
                 clearInterval(interval);
@@ -483,6 +479,7 @@ var SudokuComponent = (function () {
     };
     SudokuComponent.prototype.solveByHiddenSingle = function () {
         var _this = this;
+        this.cleanUserInput();
         var interval = setInterval(function () {
             if (_this.hiddenSingleSolver.solve(_this.sudoku))
                 clearInterval(interval);
@@ -514,6 +511,10 @@ var SudokuComponent = (function () {
     };
     SudokuComponent.prototype.saveSudoku = function (user) {
         this.sudokuService.saveSudoku(user, this.sudoku);
+    };
+    /* Only clears values set by the user */
+    SudokuComponent.prototype.cleanUserInput = function () {
+        this.sudokuHelper.resetSudoku(this.sudoku, function (z) { return z == "possible"; });
     };
     SudokuComponent.prototype.openErrorModal = function (result) {
         this.modalRef = this.modalService.show(this.errorModal);
@@ -834,7 +835,7 @@ var SaveSudokuService = (function () {
         var obj = grid.map(function (x) { return x; });
         var result = Array.from(new Array(9), function (x, i) {
             return Array.from(new Array(9), function (x, j) {
-                return { value: obj[i][j].value, default: obj[i][j].default };
+                return { value: obj[i][j].value, state: obj[i][j].state };
             });
         });
         return result;
@@ -909,7 +910,7 @@ var SudokuService = (function () {
         var obj = grid.map(function (x) { return x; });
         var result = Array.from(new Array(9), function (x, i) {
             return Array.from(new Array(9), function (x, j) {
-                return { value: obj[i][j].value, default: obj[i][j].default };
+                return { value: obj[i][j].value, state: obj[i][j].state };
             });
         });
         return result;
@@ -1076,7 +1077,7 @@ class Painter { //This class wil be in charge of paint in the matrix
         this.lib = lib;
     }
 
-  paintSudoku(sudoku){ //Make more elegant. -Done.
+  paintSudoku(sudoku){ 
     sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
       this.lib.fill(255)
       this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
@@ -1089,14 +1090,23 @@ class Painter { //This class wil be in charge of paint in the matrix
     for(let i = 0; i < sudoku.rows; i++)
       for(let j = 0; j < sudoku.cols; j++)
         if(sudoku.getValue(i, j) !== 0)
-          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
+          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).state);
   }
 
-  paintNumber(number, i, j, def = false) {
+  paintNumber(number, i, j, state = "possible") {
       this.lib.textSize(this.dimension - 10);
       this.lib.textFont("Comfortaa");
-      def ? this.lib.fill(0)
-          : this.lib.fill(255, 0, 0);
+      switch(state){
+          case "default" : 
+            this.lib.fill(0);
+            break;
+          case "possible" : 
+            this.lib.fill(0, 0, 255);
+            break;
+          case "heuristic" :
+            this.lib.fill(0, 255, 0);
+            break;
+      }
       this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
   }
 
@@ -1138,7 +1148,13 @@ class Spot {
         this.colNeighbors = []; // Column neigbors
         this.subMatrixNeighbors = []; //The subsquare neighbors
 
-        this.default = false; //Default is if is a value hardcoded before the start of solving
+        this.state = "possible";
+
+        /* Three possible states:
+           1- Default : The user can not change it
+           2- Heuristic: The value was set by an algorithm(backtrack) or a technique(naked or hidden single) 
+           3- Possible: The value was set by the user
+        */
 
     }
 
@@ -1169,13 +1185,13 @@ class Spot {
 
     setColNeighbors(sudoku) {
         range(sudoku.cols).forEach((x, i) => {
-            if (i <= 8 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+            if (i <= sudoku.cols - 1 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
         });
     }
 
     setRowNeighbors(sudoku) {
         range(sudoku.rows).forEach((x, j) => {
-            if (j <= 8 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+            if (j <= sudoku.rows - 1 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
         });
     }
 
@@ -1190,14 +1206,15 @@ class Spot {
         return !neighbors.some((n) => n.value === value);
     }
 
+    setValueAndState(value = 0, state = "possible"){
+        this.value = value
+        this.state = state
+    }
 
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Spot;
 
 
-/*module.exports = { //Remove this at working with p5
-  Spot
-}*/
 
 /***/ }),
 
@@ -1233,38 +1250,43 @@ class Sudoku {
 		this.grid[i][j].value = value
 	}
 
-	setSpot(i, j, value, def = true) {
+	setSpot(i, j, value, state = "default") {
 		this.grid[i][j].value = value;
-		this.grid[i][j].default = def;
+		this.grid[i][j].state = state;
 	}
 
 	clean() {
 		this.grid.forEach((x, i) => {
 			x.forEach((elem, j) => {
 				elem.value = 0;
-				elem.default = false;
+				elem.state = "possible";
 			})
 		});
 	}
 
 	load(sudoku) {
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value //For Saved Matches
-																											  : sudoku[i][j])) //For JSON Sudoku
+			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => 
+				this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) 
+				? sudoku[i][j].value //For Saved Matches
+				: sudoku[i][j])) //For Sudokus loaded by simple JSONS
 		});
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
 			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => {
-				this.grid[i][j].default = (sudoku[i][j].default != undefined) ? sudoku[i][j].default //For Saved Matches
-																			  : sudoku[i][j] ? true : false //For JSON Sudoku
+				this.grid[i][j].state = (sudoku[i][j].state != undefined) 
+				? sudoku[i][j].state //For Saved Matches
+				: sudoku[i][j] ? "default" : "possible" //For Sudokus loaded by simple JSONS
 			})
 		});
 	}
 
-	fillGrid(obj){
-    	this.grid.forEach( (x, i) => { x.forEach( (spot, j) => {
-        	spot.value = obj[i][j].value;
-        	spot.default = obj[i][j].default;
-   		 } )} );		
+	fillGrid(obj) {
+		this.grid.forEach((x, i) => {
+			x.forEach((spot, j) => {
+				spot.value = obj[i][j].value;
+				spot.state = obj[i][j].state;
+			})
+		});
 	}
 
 }
@@ -1302,18 +1324,17 @@ class SudokuGenerator {
             while (options.length) { //Mientras exista alguna opción sin probar
                 let o = options[Math.floor(Math.random() * options.length)]; //Elije aleatoriamente una opción del array
                 if (currentSpot.isValidOption(o)) { //Si es valida (No esta en la fila, columna o submatriz)
-                    sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor      
+                    currentSpot.setValueAndState(o, "heuristic") //The value was set by an algorithm     
                     if (this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
                         return true; //Si llega hasta aca es que lo soluciono
                 }
                 options = options.filter(x => x != o); //Elimina del array la opción ya que no fue válida
             }
-            sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+            currentSpot.value = 0 //BACKTRACK
         }
-        return false; //Este return permite romper la recursion, sino la pila se llenaria
+        return false; //This return breaks recursion
     }
 
-	//Pasar a funcional. -Listo
     hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
         return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
@@ -1328,7 +1349,7 @@ class SudokuGenerator {
             let row = Math.floor(Math.random() * 8);
             let col = Math.floor(Math.random() * 8);
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
-            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
+            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
             }
         })
@@ -1343,7 +1364,9 @@ class SudokuGenerator {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class SudokuHelper { //This class will help in some operations, to separate basic logic from other logic
+/* This class will help in some operations, to separate basic logic */
+
+class SudokuHelper { 
 
     constructor() {
         this.subMatrix = [];
@@ -1355,24 +1378,24 @@ class SudokuHelper { //This class will help in some operations, to separate basi
         grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
     }
 
-    resetSudoku(sudoku) {
+    resetSudoku(sudoku, fun = z => z == "possible" || z == "heuristic") {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
-                if (!sudoku.getSpot(i, j).default)
-                    sudoku.setValue(i, j);
+                if (fun(sudoku.getSpot(i, j).state))
+                    sudoku.setValue(i, j) //Sets to zero
             })
         });
     }
 
-    nextEmpty(sudoku) {
+    nextEmpty(sudoku) { //Please pass this to reduce
         let grid = sudoku.grid;
         let result = {};
         grid.forEach((x, i) => {
             x.forEach((elem, j) => {
                 if (!sudoku.getValue(i, j)) result = { row: i, col: j }
             })
-        });
-        return result;
+        })
+        return result
     }
 
     findInSubMatrix(spot) {
@@ -1418,9 +1441,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) {
+        if (current) 
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
-        }
     }
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking
@@ -1467,12 +1489,12 @@ class SudokuSolver {
 
 				for(let o = 1; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-						sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
+						currentSpot.setValueAndState(o, "heuristic") //Value is set by the algorithm
 						if(this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
 							return true; //Si llega hasta aca es que lo soluciono
 					}
 				}
-				sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+				currentSpot.value = 0//BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
 			}
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
 	}

@@ -11,7 +11,13 @@ export class Spot {
         this.colNeighbors = []; // Column neigbors
         this.subMatrixNeighbors = []; //The subsquare neighbors
 
-        this.default = false; //Default is if is a value hardcoded before the start of solving
+        this.state = "possible";
+
+        /* Three possible states:
+           1- Default : The user can not change it
+           2- Heuristic: The value was set by an algorithm(backtrack) or a technique(naked or hidden single) 
+           3- Possible: The value was set by the user
+        */
 
     }
 
@@ -42,13 +48,13 @@ export class Spot {
 
     setColNeighbors(sudoku) {
         range(sudoku.cols).forEach((x, i) => {
-            if (i <= 8 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+            if (i <= sudoku.cols - 1 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
         });
     }
 
     setRowNeighbors(sudoku) {
         range(sudoku.rows).forEach((x, j) => {
-            if (j <= 8 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+            if (j <= sudoku.rows - 1 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
         });
     }
 
@@ -63,9 +69,9 @@ export class Spot {
         return !neighbors.some((n) => n.value === value);
     }
 
+    setValueAndState(value = 0, state = "possible"){
+        this.value = value
+        this.state = state
+    }
 
 }
-
-/*module.exports = { //Remove this at working with p5
-  Spot
-}*/
