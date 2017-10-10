@@ -46,6 +46,8 @@ export class TimerComponent implements OnInit {
   restartTimer(){
     this.worker.terminate();
     this.worker = null;
+    this.minutes = 0;
+    this.seconds = 0;
   }
 
 }
