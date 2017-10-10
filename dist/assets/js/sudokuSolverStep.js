@@ -1,24 +1,27 @@
 import { SudokuHelper }             from './sudokuHelper';
 
+/* This solver emulates the backtrack algorithm without using recursion, that's why it uses a stack
+    the use of this technique was necessary to show every step in the solution process of the algorithm
+*/
+
 export class SudokuSolverStep {
 	constructor(){
-        this.sudokuHelper = new SudokuHelper();
-        this.stack = []
-        this.backtrack = false
+        this.sudokuHelper = new SudokuHelper() //Helps with some commons methods of a sudoku
+        this.stack = [] //To manage recursion without using native recursion
+        this.backtrack = false //A variable to record if last iteration required backtrack
 	}
 
 	solve(sudoku){
-		if( !this.hasEmptyValues(sudoku) ) //Si ya todos los spots tienen un numero es que esta solucionado
+		if( !this.hasEmptyValues(sudoku) ) //If sudoku is solved the algorithm ends
 			return true
 		else {
-                let curr = this.sudokuHelper.nextEmpty(sudoku)
-                let currentSpot = sudoku.getSpot(curr.row, curr.col)//Nos traemos al objeto en esa posicion
-                let o = 1
+                let curr = this.sudokuHelper.nextEmpty(sudoku) //Coordinates of next empty spot
+                let currentSpot = sudoku.getSpot(curr.row, curr.col) //Empty spot
+                let o = 1 
                 if(this.backtrack){
                     let back = this.stack.pop()
                     o = back.value + 1
                     currentSpot = back.last
-                    0 == 10 ? currentSpot.value = 0 : currentSpot
                     this.backtrack = false
                 }
                 for( ; o <= 9; o++){ //Para cada posibilidad
@@ -38,8 +41,6 @@ export class SudokuSolverStep {
        return this.stack[this.stack.length - 1]
     }
     
-
-	//Pasar a funcional. -Listo
     hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
         return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
