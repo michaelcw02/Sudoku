@@ -16,7 +16,7 @@ export class SudokuHelper {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
                 if (fun(sudoku.getSpot(i, j).state))
-                    sudoku.setValue(i, j) //Sets to zero
+                    sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
         });
     }

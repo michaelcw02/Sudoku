@@ -26,14 +26,14 @@ export class SudokuSolverStep {
                 }
                 for( ; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-                        sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
-                            this.stack.push({last: currentSpot, value : o})
-                            return false
+                        currentSpot.setValueAndState(o, "heuristic")
+                        this.stack.push({last: currentSpot, value : o})
+                        return false
 					}
                 }
                 let lastSpot = this.lastInStack().last
-                sudoku.setValue(lastSpot.row, lastSpot.col);
-                this.backtrack = true
+                sudoku.setValue(lastSpot.row, lastSpot.col) //Puts to zero
+                this.backtrack = true //Backtrack needed
 			}
     }
 

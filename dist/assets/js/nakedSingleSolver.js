@@ -13,7 +13,7 @@ export class NakedSingleSolver {
             let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
             if(!uniques.length) //Ya no se puede seguir usando naked single
                 return true
-            uniques.forEach( x => x.value = x.getPossibilities().shift())
+            uniques.forEach( x => x.setValueAndState(x.getPossibilities().shift(), "heuristic"))
             return false;
         }
 	}

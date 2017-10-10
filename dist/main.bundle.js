@@ -946,7 +946,6 @@ class HiddenSingleSolver {
         else{
             //Se recorre por fila buscando las que solo tienen una posible solucion, y si la tienen se les pone
             range(sudoku.rows).forEach( x => this.spotsUniqueInRow(sudoku, x))
-            range(sudoku.cols).forEach( x => this.spotsUniqueInCol(sudoku, x))
         }
 	}
 
@@ -957,16 +956,7 @@ class HiddenSingleSolver {
         spots.forEach(x => {
             let res = x.possibilities.filter(e => this.existsOnlyOnce(e, spots))
             x.spot.value = res.length == 1 ? res[0] : x.spot.value
-        })
-    }
-
-    spotsUniqueInCol(sudoku, col){
-        let spots = sudoku.grid[0][col].reduce((z, x) => x.value == 0 ?
-            z.concat({ spot: x, possibilities: x.getPossibilities() }) : z
-        , [])
-        spots.forEach(x => {
-            let res = x.possibilities.filter(e => this.existsOnlyOnce(e, spots))
-            x.spot.value = res == 1 ? res[0] : x.spot.value
+            x.spot.state = res.length == 1 ? "heuristic" : x.spot.state
         })
     }
 
@@ -1008,7 +998,7 @@ class NakedSingleSolver {
             let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
             if(!uniques.length) //Ya no se puede seguir usando naked single
                 return true
-            uniques.forEach( x => x.value = x.getPossibilities().shift())
+            uniques.forEach( x => x.setValueAndState(x.getPossibilities().shift(), "heuristic"))
             return false;
         }
 	}
@@ -1255,6 +1245,10 @@ class Sudoku {
 		this.grid[i][j].state = state;
 	}
 
+	setValueAndState(i, j, value, state){
+		this.grid[i][j].setValueAndState(value, state)
+	}
+
 	clean() {
 		this.grid.forEach((x, i) => {
 			x.forEach((elem, j) => {
@@ -1382,7 +1376,7 @@ class SudokuHelper {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
                 if (fun(sudoku.getSpot(i, j).state))
-                    sudoku.setValue(i, j) //Sets to zero
+                    sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
         });
     }
@@ -1542,14 +1536,14 @@ class SudokuSolverStep {
                 }
                 for( ; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-                        sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
-                            this.stack.push({last: currentSpot, value : o})
-                            return false
+                        currentSpot.setValueAndState(o, "heuristic")
+                        this.stack.push({last: currentSpot, value : o})
+                        return false
 					}
                 }
                 let lastSpot = this.lastInStack().last
-                sudoku.setValue(lastSpot.row, lastSpot.col);
-                this.backtrack = true
+                sudoku.setValue(lastSpot.row, lastSpot.col) //Puts to zero
+                this.backtrack = true //Backtrack needed
 			}
     }
 
