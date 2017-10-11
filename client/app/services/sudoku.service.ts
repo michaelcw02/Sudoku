@@ -47,7 +47,6 @@ export class SudokuService {
                         .catch(err => Observable.throw(new Error(err.json())))
     }
 
-    //This should come from the helper class, but it will imply importing it
     minifyJsonGrid(grid) {
         let obj = grid.map(x => x);
         let result = Array.from(new Array(9), (x, i) =>

@@ -12,7 +12,7 @@ export class SudokuSolverStep {
 	}
 
 	solve(sudoku){
-		if( !this.hasEmptyValues(sudoku) ) //If sudoku is solved the algorithm ends
+		if(!this.sudokuHelper.hasEmptyValues(sudoku)) //If sudoku is solved the algorithm ends
 			return true
 		else {
                 let curr = this.sudokuHelper.nextEmpty(sudoku) //Coordinates of next empty spot
@@ -41,7 +41,4 @@ export class SudokuSolverStep {
        return this.stack[this.stack.length - 1]
     }
     
-    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-        return sudoku.grid.some( x => x.some( y => y.value === 0) )
-	}
 }

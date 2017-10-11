@@ -11,7 +11,3 @@ import { CommunicationService } from './services/communication.service';
 export class AppComponent {
   
 }
-
-
-//This is like the main
-//This is where all decorators are

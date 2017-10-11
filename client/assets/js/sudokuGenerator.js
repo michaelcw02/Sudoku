@@ -8,7 +8,7 @@ export class SudokuGenerator {
     }
 
     solve(sudoku) {
-        if (!this.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
+        if (!this.sudokuHelper.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
             return true;
         else {
             let curr = this.sudokuHelper.nextEmpty(sudoku); //Sacamos la fila y columna del primer spot vacio que encuentre
@@ -27,10 +27,6 @@ export class SudokuGenerator {
         }
         return false; //This return breaks recursion
     }
-
-    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-        return sudoku.grid.some( x => x.some( y => y.value === 0) )
-	}
 
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
         //HACER FUNCIONAL

@@ -1,4 +1,5 @@
-import { SudokuHelper }             from './sudokuHelper';
+import { SudokuHelper }             from './sudokuHelper'
+import { range } 	                from './utils'
 
 export class HiddenSingleSolver {
 
@@ -7,7 +8,7 @@ export class HiddenSingleSolver {
 	}
 
 	solve(sudoku){
-		if(!this.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
+		if(!this.sudokuHelper.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
             return true;
         else{
             //Se recorre por fila buscando las que solo tienen una posible solucion, y si la tienen se les pone
@@ -56,8 +57,4 @@ export class HiddenSingleSolver {
     existsOnlyOnce(elem, spots){
         return spots.reduce( (z, x) => x.possibilities.includes(elem) ? ++z : z ,0) == 1
     }
-
-	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-        return sudoku.grid.some( x => x.some( y => y.value === 0) )
-	}
 }
