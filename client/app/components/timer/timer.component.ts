@@ -27,7 +27,6 @@ export class TimerComponent implements OnInit {
         if (this.worker==null){
            this.worker = new Worker("../../assets/js/timer.js");
         }
-        this.worker.postMessage({minutes: this.minutes, seconds: this.seconds})
         this.worker.onmessage = (e) => {
           this.minutes = e.data.minutes;
           this.seconds = e.data.seconds;

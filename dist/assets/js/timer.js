@@ -26,8 +26,3 @@ class Timer {
 
 t = new Timer();
 t.start()
-self.onmessage( e => {
-    const min = e.minutes;
-    const sec = e.seconds;
-    t.start(min, sec)
-})

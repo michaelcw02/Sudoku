@@ -174,19 +174,27 @@ export class SudokuComponent implements OnInit {
 
   solve() {
     this.loading = true;
-    (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-                        : this.sudokuService.getSolution(this.sudoku)
-                              .subscribe(
-                                res => {
-                                  this.loading = false
-                                  this.sudoku.load(res.grid)
-                                },
-                                err => {
-                                  this.loading = false
-                                  this.sudokuSolver.solve(this.sudoku)
-                                }
-                              )
-    //return this.sudokuSolver.solve(this.sudoku);
+    (!navigator.onLine) ? this.localSolve()
+                        : this.serverSolve()
+  }
+
+  localSolve() {
+    this.loading = false;
+    this.sudokuSolver.solve(this.sudoku);
+  }
+
+  serverSolve() {
+    this.sudokuService.getSolution(this.sudoku)
+        .subscribe(
+          res => {
+            this.loading = false
+            this.sudoku.load(res.grid)
+          },
+          err => {
+            this.loading = false
+            this.sudokuSolver.solve(this.sudoku)
+          }
+        )
   }
   
   solveStepByStep(){
