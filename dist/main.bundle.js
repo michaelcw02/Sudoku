@@ -21,7 +21,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 exports.push([module.i, "@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);", ""]);
 
 // module
-exports.push([module.i, "@font-face {\r\n    font-family: Comfortaa;\r\n    src: url(" + __webpack_require__("../../../../../client/comfortaa.ttf") + ");\r\n}\r\n\r\n#title {\r\n    text-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);\r\n    font-family: 'Comfortaa', cursive;\r\n    font-weight: bold;\r\n}\r\n\r\n#options {\r\n    padding-top: 0px;\r\n}", ""]);
+exports.push([module.i, "@font-face {\r\n    font-family: Comfortaa;\r\n    src: url(" + __webpack_require__("../../../../../client/comfortaa.ttf") + ");\r\n}\r\n\r\n#title {\r\n    text-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);\r\n    font-family: 'Comfortaa', cursive;\r\n    font-weight: bold;\r\n}\r\n\r\n#options {\r\n    padding-top: 0px;\r\n}\r\n\r\n#timerDiv {\r\n    text-align: left;\r\n}\r\n\r\n#infoWebSudoku {\r\n    float: right;\r\n    background-color: #B3B6A5;\r\n    font-size: 18px;\r\n}", ""]);
 
 // exports
 
@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n    <br>\r\n    <h1 id=\"title\">SUDOKU</h1>\r\n</div>\r\n<div class=\"container-fluid\" id=\"sudokuBox\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-3\" id=\"options\">\r\n            <app-timer></app-timer> \r\n            <app-options></app-options>\r\n        </div>\r\n        <div class=\"col-sm-9\" id=\"divPrincipal\">\r\n            <div id=\"screen\">\r\n                <app-sudoku></app-sudoku>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n    <br>\r\n    <div class=\"col-sm-4\" id=\"timerDiv\"><br><br>\r\n        <app-timer></app-timer>\r\n    </div>\r\n    <div class=\"col-sm-5\">\r\n        <h1 id=\"title\">SUDOKU</h1>\r\n    </div>\r\n    <div class=\"col-sm-3\"></div>\r\n</div>\r\n<div class=\"container-fluid\" id=\"sudokuBox\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-3\" id=\"options\">\r\n            <app-options></app-options>\r\n        </div>\r\n        <div class=\"col-sm-9\" id=\"divPrincipal\">\r\n            <div id=\"screen\">\r\n                <app-sudoku></app-sudoku>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div id=\"infoWebSudoku\">\r\n    Difficulty levels taken from <a href=\"http://es.websudoku.com/\">WebSudoku</a>\r\n</div>"
 
 /***/ }),
 
@@ -171,7 +171,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/options/options.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--<app-timer></app-timer>-->\r\n<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE NEW GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \">BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>"
+module.exports = "<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE NEW GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \">BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -297,7 +297,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerSave {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
+exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerSuccess {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
 
 // exports
 
@@ -310,7 +310,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/sudoku/sudoku.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ngx-loading [show]=\"loading\"></ngx-loading>\r\n\r\n<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #saveModal id=\"modalSave\">\r\n    <div class=\"modal-header\" id=\"headerSave\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Saving...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageSave\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
+module.exports = "<ngx-loading [show]=\"loading\"></ngx-loading>\r\n\r\n<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #successModal id=\"modalSuccess\">\r\n    <div class=\"modal-header\" id=\"headerSuccess\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"titleSuccess\"> Success</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageSuccess\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -495,7 +495,7 @@ var SudokuComponent = (function () {
                 clearInterval(interval);
                 _this.sudokuHelper.hasEmptyValues(_this.sudoku) ?
                     _this.showError("The sudoku couldn't be solved by NakedSingle. Try another option.") :
-                    _this.showError("THE SUDOKU IS SOLVED");
+                    _this.showSuccess("Solved", "The sudoku was solved");
             }
         }, 1000);
     };
@@ -507,7 +507,7 @@ var SudokuComponent = (function () {
                 clearInterval(interval);
                 _this.sudokuHelper.hasEmptyValues(_this.sudoku) ?
                     _this.showError("The sudoku couldn't be solved by HiddenSingle. Try another option.") :
-                    _this.showError("THE SUDOKU IS SOLVED");
+                    _this.showSuccess("Solved", "The sudoku was solved");
             }
         }, 1000);
     };
@@ -542,16 +542,17 @@ var SudokuComponent = (function () {
         var _this = this;
         this.sudokuService.saveSudoku(user, this.sudoku, function (err, res) {
             err ? _this.showError("There was an error saving the match.")
-                : _this.showGameSaved(user);
+                : _this.showSuccess("Saved", "Match saved successfully.");
         });
     };
     /* Only clears values set by the user */
     SudokuComponent.prototype.cleanUserInput = function () {
         this.sudokuHelper.resetSudoku(this.sudoku, function (z) { return z == "possible"; });
     };
-    SudokuComponent.prototype.showGameSaved = function (user) {
-        this.modalRef = this.modalService.show(this.saveModal);
-        $("#messageSave").text(user + "'s match saved successfully.");
+    SudokuComponent.prototype.showSuccess = function (title, message) {
+        this.modalRef = this.modalService.show(this.successModal);
+        $("#titleSuccess").text(title);
+        $("#messageSuccess").text(message);
     };
     SudokuComponent.prototype.showError = function (message) {
         this.modalRef = this.modalService.show(this.errorModal);
@@ -600,9 +601,9 @@ __decorate([
     __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _b || Object)
 ], SudokuComponent.prototype, "storeModal", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('saveModal'),
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('successModal'),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _c || Object)
-], SudokuComponent.prototype, "saveModal", void 0);
+], SudokuComponent.prototype, "successModal", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('waitModal'),
     __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _d || Object)
@@ -1139,59 +1140,59 @@ class Painter { //This class wil be in charge of paint the sudoku every 60fps
         this.lib = lib
     }
 
-  paintSudoku(sudoku){ 
-    sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
-      this.lib.fill(255)
-      this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension)
-      this.paintBorderLines(i, j)
-    }))
-    this.paintNumbers(sudoku)   
-  }
+    paintSudoku(sudoku) {
+        sudoku.grid.forEach((x, i) => x.forEach((y, j) => {
+            this.lib.fill(255)
+            this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension)
+            this.paintBorderLines(i, j)
+        }))
+        this.paintNumbers(sudoku)
+    }
 
-  paintNumbers(sudoku){ 
-    Object(__WEBPACK_IMPORTED_MODULE_0__utils__["range"])(sudoku.rows).forEach( i => {
-        Object(__WEBPACK_IMPORTED_MODULE_0__utils__["range"])(sudoku.cols).forEach( j => {
-            if(sudoku.getValue(i, j) !== 0)
-                this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).state)
+    paintNumbers(sudoku) {
+        Object(__WEBPACK_IMPORTED_MODULE_0__utils__["range"])(sudoku.rows).forEach(i => {
+            Object(__WEBPACK_IMPORTED_MODULE_0__utils__["range"])(sudoku.cols).forEach(j => {
+                if (sudoku.getValue(i, j) !== 0)
+                    this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).state)
+            })
         })
-    })
-  }
+    }
 
-  /* Paints the numbers in the sudoku (default = black, heuristic = green, possible = blue)*/
-  paintNumber(number, i, j, state = "possible") {
-      this.lib.textSize(this.dimension - 10)
-      this.lib.textFont("Comfortaa")
-      switch(state){
-          case "default" : 
-            this.lib.fill(0);
-            break;
-          case "possible" : 
-            this.lib.fill(0, 0, 255);
-            break;
-          case "heuristic" :
-            this.lib.fill(0, 255, 0);
-            break;
-      }
-      this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10)
-  }
+    /* Paints the numbers in the sudoku (default = black, heuristic = green, possible = blue)*/
+    paintNumber(number, i, j, state = "possible") {
+        this.lib.textSize(this.dimension - 10)
+        this.lib.textFont("Comfortaa")
+        switch (state) {
+            case "default":
+                this.lib.fill(0);
+                break;
+            case "possible":
+                this.lib.fill(0, 102, 153);
+                break;
+            case "heuristic":
+                this.lib.fill(47, 155, 20);
+                break;
+        }
+        this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10)
+    }
 
-  /* Paints the black border lines visible at the canvas */
+    /* Paints the black border lines visible at the canvas */
 
-  paintBorderLines(row, col) {
-      this.lib.fill(50)
-      if (col % 3 === 0) {
-          if (row % 3 === 0)
-              this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension)
-          this.lib.rect(row * this.dimension, col * this.dimension, this.dimension, 5)
-      } else {
-          if (row % 3 === 0)
-              this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension)
-      }
-      if (col === 8)
-          this.lib.rect(row * this.dimension, (col + 1) * this.dimension, this.dimension, 5)
-      if (row === 8)
-          this.lib.rect((row + 1) * this.dimension, col * this.dimension, 5, this.dimension)
-  }
+    paintBorderLines(row, col) {
+        this.lib.fill(50)
+        if (col % 3 === 0) {
+            if (row % 3 === 0)
+                this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension)
+            this.lib.rect(row * this.dimension, col * this.dimension, this.dimension, 5)
+        } else {
+            if (row % 3 === 0)
+                this.lib.rect(row * this.dimension, col * this.dimension, 5, this.dimension)
+        }
+        if (col === 8)
+            this.lib.rect(row * this.dimension, (col + 1) * this.dimension, this.dimension, 5)
+        if (row === 8)
+            this.lib.rect((row + 1) * this.dimension, col * this.dimension, 5, this.dimension)
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Painter;
 
@@ -1442,7 +1443,7 @@ class SudokuGenerator {
 "use strict";
 /* This class will help in some operations, to separate basic logic */
 
-class SudokuHelper { 
+class SudokuHelper {
 
     constructor() {
         this.subMatrix = []
@@ -1450,7 +1451,7 @@ class SudokuHelper {
 
     /* Generates row, column and subMatrix neighbors for each spot */
 
-    generateNeighbors(sudoku) { 
+    generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku)
         let grid = sudoku.grid
         grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
@@ -1465,16 +1466,15 @@ class SudokuHelper {
         })
     }
 
-    
+
     gridToMatrix(grid) { //Grid of spots to a grid with only integers
         return grid.map(x => x.map(y => y.value))
     }
 
     nextEmpty(sudoku) { //Gives the coordinates of the next empty spot
         let grid = sudoku.grid
-        return grid.reduce( (z, x, i) => 
-               x.reduce( (acum, e, j) => !sudoku.getValue(i, j) ? {row: i, col: j} : acum,z)
-        , {})
+        return grid.reduce((z, x, i) =>
+            x.reduce((acum, e, j) => !sudoku.getValue(i, j) ? { row: i, col: j } : acum, z), {})
     }
 
     findInSubMatrix(spot) {
@@ -1489,9 +1489,9 @@ class SudokuHelper {
             .filter(x => x.value == 0)
     }
 
-    generateSubMatrix(sudoku) { 
-        range(1, sudoku.rows, 3).forEach( row => {
-            range(1, sudoku.cols, 3).forEach( col => {
+    generateSubMatrix(sudoku) {
+        range(1, sudoku.rows, 3).forEach(row => {
+            range(1, sudoku.cols, 3).forEach(col => {
                 this.subMatrix.push(this.getSubMatrix(sudoku, row, col))
             })
         })
@@ -1513,27 +1513,45 @@ class SudokuHelper {
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) 
+        if (current)
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
     }
 
-    compareGrids(oldGrid, newGrid){
-        return oldGrid.reduce( (z, x, i) => 
-            x.reduce( (acum, e, j) => 
-                e != newGrid[i][j].value ? false : acum
-            , z)
-        , true)
+    compareGrids(oldGrid, newGrid) {
+        return oldGrid.reduce((z, x, i) =>
+            x.reduce((acum, e, j) =>
+                e != newGrid[i][j].value ? false : acum, z), true)
     }
 
-    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku has empty values
-        return sudoku.grid.some( x => x.some( y => !y.value) )
-	}
+    hasEmptyValues(sudoku) { //Auxiliar to see if sudoku has empty values
+        return sudoku.grid.some(x => x.some(y => !y.value))
+    }
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking
         let cols = current.colNeighbors.some(x => x.value == value);
         let rows = current.rowNeighbors.some(x => x.value == value);
         let subm = current.subMatrixNeighbors.some(x => x.value == value);
 
+<<<<<<< HEAD
+        switch (cols || rows || subm) {
+            case cols && rows && subm:
+                return "allException";
+            case rows && cols:
+                return "rowColException";
+            case cols && subm:
+                return "colMatrixException";
+            case rows && subm:
+                return "rowMatrixException";
+            case rows:
+                return "rowException";
+            case cols:
+                return "columnException";
+            case subm:
+                return "subMatrixException";
+            default:
+                break;
+        }
+=======
         if (cols && rows && subm) return "allException";
         if (cols) {
             if (rows) return "rowColException";
@@ -1544,6 +1562,7 @@ class SudokuHelper {
             return (subm) ? "rowMatrixException" : "rowException"
 
         if (subm) return "subMatrixException";
+>>>>>>> AndreyValidaciones
     }
 
     /* Counts how many spots have values different than zero */

@@ -13,3 +13,13 @@
 #options {
     padding-top: 0px;
 }
+
+#timerDiv {
+    text-align: left;
+}
+
+#infoWebSudoku {
+    float: right;
+    background-color: #B3B6A5;
+    font-size: 18px;
+}
