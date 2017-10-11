@@ -41,6 +41,7 @@ export class SudokuComponent implements OnInit {
   solveBySteps: any
 
   public modalRef: BsModalRef
+  public loading = false
 
   constructor(private sudokuService: SudokuService,
               private saveSudokuService: SaveSudokuService,
@@ -169,26 +170,22 @@ export class SudokuComponent implements OnInit {
 
   solve() {
     //this will become a promise, so it will use .then and .catch
-    this.setLoading(true);
+    this.loading = true;
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
                         : this.sudokuService.getSolution(this.sudoku)
                               .subscribe(
                                 res => {
-                                  this.setLoading(false);
+                                  this.loading = false
                                   this.sudoku.load(res.grid)
                                 },
                                 err => {
-                                  this.setLoading(false);
+                                  this.loading = false
                                   this.sudokuSolver.solve(this.sudoku)
                                 }
                               )
     //return this.sudokuSolver.solve(this.sudoku);
   }
-
-  setLoading(mode) {
-    this.communicationService.callLoading(mode);
-  } 
-
+  
   solveStepByStep(){
     this.solveBySteps = true
   }

@@ -9,15 +9,7 @@ import { CommunicationService } from './services/communication.service';
 })
 
 export class AppComponent {
-  public loading = false;
-  constructor(private communicationService: CommunicationService) {
-
-    this.communicationService.setLoading$.subscribe(mode => this.loading = mode)
-    
-  }
-
   
-
 }
 
 

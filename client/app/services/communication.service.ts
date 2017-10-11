@@ -16,7 +16,6 @@ export class CommunicationService {
   private solveByNakedSingleCallSource  = new Subject<any>();
   private solveByHiddenSingleCallSource = new Subject<any>();
   private solveStepByStepCallSource     = new Subject<any>();
-  private setLoading                    = new Subject<any>();
 
 
   // Observable string streams
@@ -31,7 +30,6 @@ export class CommunicationService {
   solveByNakedSingle$   = this.solveByNakedSingleCallSource.asObservable();
   solveByHiddenSingle$  = this.solveByHiddenSingleCallSource.asObservable()
   solveStepByStep$      = this.solveStepByStepCallSource.asObservable();
-  setLoading$           = this.setLoading.asObservable();
 
   // Service message commands
   callSolve() {
@@ -76,9 +74,6 @@ export class CommunicationService {
 
   callRenderGame(grid){
     this.renderGameCallSource.next(grid);
-  }
-  callLoading(mode) {
-    this.setLoading.next(mode);
   }
 
 }
