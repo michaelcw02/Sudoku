@@ -517,7 +517,8 @@ var SudokuComponent = (function () {
     };
     SudokuComponent.prototype.reset = function () {
         this.solveBySteps = false;
-        return this.sudokuHelper.resetSudoku(this.sudoku);
+        this.sudokuHelper.resetSudoku(this.sudoku);
+        this.sudokuHelper.generateNeighbors(this.sudoku);
     };
     SudokuComponent.prototype.getDifficulty = function () {
         return this.communicationService.callGetDifficulty();
@@ -1449,7 +1450,7 @@ class SudokuHelper {
                 if (fun(sudoku.getSpot(i, j).state))
                     sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
-        });
+        })
     }
 
     

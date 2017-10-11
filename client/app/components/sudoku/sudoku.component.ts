@@ -219,13 +219,14 @@ export class SudokuComponent implements OnInit {
   }
 
   generate() {
-    this.sudokuGenerator.generate(this.sudoku);
-    this.sudokuHelper.generateNeighbors(this.sudoku);
+    this.sudokuGenerator.generate(this.sudoku)
+    this.sudokuHelper.generateNeighbors(this.sudoku)
   }
 
   reset() {
     this.solveBySteps = false
-    return this.sudokuHelper.resetSudoku(this.sudoku);
+    this.sudokuHelper.resetSudoku(this.sudoku)
+    this.sudokuHelper.generateNeighbors(this.sudoku)
   }
 
   getDifficulty() {
@@ -234,9 +235,9 @@ export class SudokuComponent implements OnInit {
 
   changeDifficulty(level) {
     this.sudokuService.getSudoku(level, (err, data) => {
-      this.sudoku.load(JSON.parse(data._body).grid);
-      this.sudokuHelper.generateNeighbors(this.sudoku);
-      this.painter.paintSudoku(this.sudoku);
+      this.sudoku.load(JSON.parse(data._body).grid)
+      this.sudokuHelper.generateNeighbors(this.sudoku)
+      this.painter.paintSudoku(this.sudoku)
     });
   }
 
@@ -261,12 +262,12 @@ export class SudokuComponent implements OnInit {
 
   showGameSaved(user) {
     this.modalRef = this.modalService.show(this.saveModal);
-    $("#messageSave").text(user + "'s match saved successfully.");
+    $("#messageSave").text(user + "'s match saved successfully.")
   }
 
   showError(message) {
-    this.modalRef = this.modalService.show(this.errorModal);
-    $("#messageError").text(message);
+    this.modalRef = this.modalService.show(this.errorModal)
+    $("#messageError").text(message)
   }
 
 
@@ -302,7 +303,7 @@ export class SudokuComponent implements OnInit {
   @ViewChild('waitModal')
   private waitModal: TemplateRef<any>
   public openWaitModal(result) {
-    this.modalRef = this.modalService.show(this.waitModal);
+    this.modalRef = this.modalService.show(this.waitModal)
     $("#messageWait").text(result)
   }
   

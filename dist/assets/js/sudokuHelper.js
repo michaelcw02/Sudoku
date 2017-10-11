@@ -20,7 +20,7 @@ export class SudokuHelper {
                 if (fun(sudoku.getSpot(i, j).state))
                     sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
-        });
+        })
     }
 
     
