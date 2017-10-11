@@ -219,6 +219,7 @@ export class SudokuComponent implements OnInit {
   }
 
   generate() {
+    this.sudokuHelper.resetSudoku(this.sudoku)
     this.sudokuGenerator.generate(this.sudoku)
     this.sudokuHelper.generateNeighbors(this.sudoku)
   }
@@ -226,6 +227,7 @@ export class SudokuComponent implements OnInit {
   reset() {
     this.solveBySteps = false
     this.sudokuHelper.resetSudoku(this.sudoku)
+    this.sudokuHelper.resetNeighbors(this.sudoku)
     this.sudokuHelper.generateNeighbors(this.sudoku)
   }
 

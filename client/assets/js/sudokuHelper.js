@@ -98,10 +98,20 @@ export class SudokuHelper {
             if (subm) return "colMatrixException";
             return "columnException";
         }
-        if (rows) {
-            return (subm) ? "rowMatrixException" :
-                "rowException";
-        }
+        if (rows)
+            return (subm) ? "rowMatrixException" : "rowException"
+
         if (subm) return "subMatrixException";
+    }
+
+    /* Counts how many spots have values different than zero */
+    countValues(sudoku){
+        let grid = sudoku.grid
+        return grid.reduce( (z, x) => x.reduce( (acum, e) => e.value ? ++acum : acum, z),0)
+    }
+
+    resetNeighbors(sudoku){
+        let grid = sudoku.grid
+        grid.forEach( x => x.forEach( s => s.cleanNeighbors()))
     }
 }
