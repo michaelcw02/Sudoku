@@ -1,6 +1,6 @@
 /* This class will help in some operations, to separate basic logic */
 
-export class SudokuHelper { 
+export class SudokuHelper {
 
     constructor() {
         this.subMatrix = []
@@ -8,7 +8,7 @@ export class SudokuHelper {
 
     /* Generates row, column and subMatrix neighbors for each spot */
 
-    generateNeighbors(sudoku) { 
+    generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku)
         let grid = sudoku.grid
         grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
@@ -23,16 +23,15 @@ export class SudokuHelper {
         })
     }
 
-    
+
     gridToMatrix(grid) { //Grid of spots to a grid with only integers
         return grid.map(x => x.map(y => y.value))
     }
 
     nextEmpty(sudoku) { //Gives the coordinates of the next empty spot
         let grid = sudoku.grid
-        return grid.reduce( (z, x, i) => 
-               x.reduce( (acum, e, j) => !sudoku.getValue(i, j) ? {row: i, col: j} : acum,z)
-        , {})
+        return grid.reduce((z, x, i) =>
+            x.reduce((acum, e, j) => !sudoku.getValue(i, j) ? { row: i, col: j } : acum, z), {})
     }
 
     findInSubMatrix(spot) {
@@ -47,9 +46,9 @@ export class SudokuHelper {
             .filter(x => x.value == 0)
     }
 
-    generateSubMatrix(sudoku) { 
-        range(1, sudoku.rows, 3).forEach( row => {
-            range(1, sudoku.cols, 3).forEach( col => {
+    generateSubMatrix(sudoku) {
+        range(1, sudoku.rows, 3).forEach(row => {
+            range(1, sudoku.cols, 3).forEach(col => {
                 this.subMatrix.push(this.getSubMatrix(sudoku, row, col))
             })
         })
@@ -71,37 +70,42 @@ export class SudokuHelper {
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) 
+        if (current)
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
     }
 
-    compareGrids(oldGrid, newGrid){
-        return oldGrid.reduce( (z, x, i) => 
-            x.reduce( (acum, e, j) => 
-                e != newGrid[i][j].value ? false : acum
-            , z)
-        , true)
+    compareGrids(oldGrid, newGrid) {
+        return oldGrid.reduce((z, x, i) =>
+            x.reduce((acum, e, j) =>
+                e != newGrid[i][j].value ? false : acum, z), true)
     }
 
-    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku has empty values
-        return sudoku.grid.some( x => x.some( y => !y.value) )
-	}
+    hasEmptyValues(sudoku) { //Auxiliar to see if sudoku has empty values
+        return sudoku.grid.some(x => x.some(y => !y.value))
+    }
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking
         let cols = current.colNeighbors.some(x => x.value == value);
         let rows = current.rowNeighbors.some(x => x.value == value);
         let subm = current.subMatrixNeighbors.some(x => x.value == value);
 
-        if (cols && rows && subm) return "allException";
-        if (cols) {
-            if (rows) return "rowColException";
-            if (subm) return "colMatrixException";
-            return "columnException";
+        switch (cols || rows || subm) {
+            case cols && rows && subm:
+                return "allException";
+            case rows && cols:
+                return "rowColException";
+            case cols && subm:
+                return "colMatrixException";
+            case rows && subm:
+                return "rowMatrixException";
+            case rows:
+                return "rowException";
+            case cols:
+                return "columnException";
+            case subm:
+                return "subMatrixException";
+            default:
+                break;
         }
-        if (rows) {
-            return (subm) ? "rowMatrixException" :
-                "rowException";
-        }
-        if (subm) return "subMatrixException";
     }
 }
