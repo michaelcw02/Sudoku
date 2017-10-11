@@ -27,7 +27,7 @@
 <br>
 
 <div id="generate">
-    <button class="btn btn-warning btn-block" id="generateGame" (click)="generate() "> GENERATE GAME </button>
+    <button class="btn btn-warning btn-block" id="generateGame" (click)="generate() "> GENERATE NEW GAME </button>
 </div>
 <br>
 
@@ -42,7 +42,7 @@
 <br>
 
 <div id="solutionStepByStep">
-    <button class="btn btn-info btn-block " id="showSolutionStepByStep " (click)="solveStepByStep() "> SOLVE BY BACKTRACK STEP BY STEP</button>
+    <button class="btn btn-info btn-block " id="showSolutionStepByStep " (click)="solveStepByStep() ">BACKTRACK STEP BY STEP</button>
 </div>
 <br>
 
@@ -55,7 +55,6 @@
     <button class="btn btn-warning btn-block " id="showHiddenSingleSolution " (click)="solveByHiddenSingle() "> SOLVE BY HIDDEN SINGLE</button>
 </div>
 <br>
-
 
 <!-- *********************************************
                     MODALS
@@ -74,7 +73,7 @@
                 <h4>Drag and drop the numbers from the right pane into the grid.</h4>
             </li>
             <li>
-                <h4>Double-click in the number to delete it.</h4>
+                <h4>Click in the number to delete it.</h4>
             </li>
         </ul>
     </div>
@@ -139,5 +138,17 @@
                 <button type="submit" class="btn btn-primary" id="load" (click)="loadGames()">LOAD GAMES <span class="glyphicon glyphicon-open"></span></button>
             </div>
         </form>
+    </div>
+</ng-template>
+
+<ng-template #errorModal id="modalError">
+    <div class="modal-header" id="headerError">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
+        <h3 class="modal-title" id="myModalTitle"><i class="fa fa-warning"></i> Error</h3>
+    </div>
+    <div class="modal-body" id="myModalMessage">
+        <br>
+        <h4 id="messageError"></h4>
+        <br>
     </div>
 </ng-template>

@@ -1,10 +1,10 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
-import { SudokuService }        from '../../services/sudoku.service';
+import { SudokuService } from '../../services/sudoku.service';
 import { CommunicationService } from '../../services/communication.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
-import * as $                     from 'jquery'
+import * as $ from 'jquery'
 
 
 @Component({
@@ -16,13 +16,16 @@ export class OptionsComponent implements OnInit {
 
   public modalRef: BsModalRef;
 
-  constructor( private modalService: BsModalService, 
-               private communicationService: CommunicationService,
-               private sudokuService: SudokuService ) {
+  @ViewChild('errorModal')
+  private errorModal: TemplateRef<any>;
 
-    this.communicationService.getDifficulty$.subscribe( () => this.getDifficulty() )
-    this.communicationService.loadGames$.subscribe( () => this.loadGames() )
-  
+  constructor(private modalService: BsModalService,
+    private communicationService: CommunicationService,
+    private sudokuService: SudokuService) {
+
+    this.communicationService.getDifficulty$.subscribe(() => this.getDifficulty())
+    this.communicationService.loadGames$.subscribe(() => this.loadGames())
+
   }
 
   ngOnInit() {
@@ -35,7 +38,7 @@ export class OptionsComponent implements OnInit {
   generate() {
     this.communicationService.callGenerate();
   }
-  
+
   reset() {
     this.communicationService.callReset();
   }
@@ -45,53 +48,53 @@ export class OptionsComponent implements OnInit {
     this.communicationService.callChangeDifficulty(difficulty);
     this.modalRef.hide()
   }
-  
+
   getDifficulty() {
     return $('#difficulty option:selected').val()
   }
 
-  saveSudoku(){
+  saveSudoku() {
     let userName = $('#username').val()
     this.communicationService.callSaveSudoku(userName);
     this.modalRef.hide()
   }
 
-  loadGames(){
+  loadGames() {
     let userName = $('#loadUserName').val()
     this.sudokuService.getGames(userName, (err, data) => {
-      this.renderGames(JSON.parse(data._body).matches);
+      err ? $("#games").text("User " + userName + " has no saved matches.")
+        : this.renderGames(JSON.parse(data._body).matches);
     })
-
   }
 
-  renderGames(data){
-      data.forEach( (x, i) => $('#games').append($('<div class="loadMatchPanel" id="loadedMatch">'+
-                        "<p class='info'> Match #" + (i+1) + " </p>" +
-                        "<p class='info'> Date: " + this.beautifyDate(x.date) + "</p>" +
-                        "</div> <br>").click( () => this.renderSavedGame(x.grid))
-      ))
+  renderGames(data) {
+    data.forEach((x, i) => $('#games').append($('<div class="loadMatchPanel" id="loadedMatch">' +
+      "<p class='info'> Match #" + (i + 1) + " </p>" +
+      "<p class='info'> Date: " + this.beautifyDate(x.date) + "</p>" +
+      "</div> <br>").click(() => this.renderSavedGame(x.grid))
+    ))
   }
 
-  beautifyDate(date){
+  beautifyDate(date) {
     date = new Date(date)
-    return date ? " " + (date.getMonth() + 1) +"/" + date.getDate() + "/" + date.getFullYear() +" at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
-                : "Date not available"
+    return date ? " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
+      : "Date not available"
   }
 
-  renderSavedGame(grid){
+  renderSavedGame(grid) {
     this.communicationService.callRenderGame(grid)
     this.modalRef.hide()
   }
 
-  solveByNakedSingle(){
+  solveByNakedSingle() {
     this.communicationService.callSolveByNakedSingle()
   }
 
-  solveByHiddenSingle(){
+  solveByHiddenSingle() {
     this.communicationService.callSolveByHiddenSingle()
   }
 
-  solveStepByStep(){
+  solveStepByStep() {
     this.communicationService.callSolveStepByStep()
   }
 

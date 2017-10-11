@@ -11,7 +11,15 @@ export class HiddenSingleSolver {
             return true;
         else{
             //Se recorre por fila buscando las que solo tienen una posible solucion, y si la tienen se les pone
+            let oldGrid = this.sudokuHelper.gridToMatrix(sudoku.grid)
             range(sudoku.rows).forEach( x => this.spotsUniqueInRow(sudoku, x))
+            range(sudoku.cols).forEach( x => this.spotsUniqueInCol(sudoku, x))
+            range(1, 9, 3).forEach( row => {
+                range(1, 9, 3).forEach( col => {
+                    this.spotsUniqueInSubMatrix(this.sudokuHelper.getSubMatrix(sudoku, row, col))
+                })
+            })
+            return this.sudokuHelper.compareGrids(oldGrid, sudoku.grid)
         }
 	}
 
@@ -19,6 +27,25 @@ export class HiddenSingleSolver {
         let spots = sudoku.grid[row].reduce((z, x) => x.value == 0 ?
             z.concat({ spot: x, possibilities: x.getPossibilities() }) : z
         , [])
+        this.updateUniqueSpots(spots)
+    }
+
+    spotsUniqueInCol(sudoku, col){
+        let grid = sudoku.grid
+        let spots = range(sudoku.rows).reduce((z, x) => sudoku.getValue(x, col) == 0 ?
+            z.concat({ spot: sudoku.getSpot(x, col), possibilities: sudoku.getSpot(x, col).getPossibilities() }) : z
+        , [])
+        this.updateUniqueSpots(spots)
+    }
+
+    spotsUniqueInSubMatrix(subMatrix){
+        let spots = subMatrix.reduce((z, x) => x.value == 0 ?
+            z.concat({ spot: x, possibilities: x.getPossibilities() }) : z
+        , [])
+        this.updateUniqueSpots(spots)
+    }
+
+    updateUniqueSpots(spots){
         spots.forEach(x => {
             let res = x.possibilities.filter(e => this.existsOnlyOnce(e, spots))
             x.spot.value = res.length == 1 ? res[0] : x.spot.value
@@ -30,12 +57,7 @@ export class HiddenSingleSolver {
         return spots.reduce( (z, x) => x.possibilities.includes(elem) ? ++z : z ,0) == 1
     }
 
-	//Pasar a funcional
 	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-		for(let i = 0; i < sudoku.rows; i++)
-			for(let j = 0; j < sudoku.cols; j++)
-				if(sudoku.getValue(i, j) === 0)
-					return true;
-		return false;
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
 }

@@ -10,14 +10,14 @@ export class SudokuService {
     }
 
     //Saving
-    saveSudoku(user, sudoku) {
+    saveSudoku(user, sudoku, callback) {
         console.log("Trying to save from save-sudoku.service.ts");
         let gridmin = this.minifyJsonGrid(sudoku.grid);
         let data = { name : user , grid : gridmin, level : sudoku.level};
         this.http.post(`api/sudoku`, data)
                 .subscribe( 
-                    res => console.log(res),
-                    err => console.log(err)
+                    res => {callback(undefined, res); console.log(res)},
+                    err => {callback(err); console.log(err)}
                 )
     }
 
