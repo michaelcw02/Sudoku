@@ -35,7 +35,7 @@ Optional:
 ## How to Set Up
 
     npm install 
-    ng build
+    npm run build
     npm start
 
 ![alt tag](http://forthebadge.com/images/badges/built-with-love.svg) 
