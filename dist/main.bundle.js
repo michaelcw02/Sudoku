@@ -1341,10 +1341,11 @@ class SudokuGenerator {
         //Para que asigne sólo 17 casillas por default
         Object(__WEBPACK_IMPORTED_MODULE_2__utils__["range"])(17).forEach( i => {
             let row = Math.floor(Math.random() * 8);
-            let col = Math.floor(Math.random() * 8);
+            let col = Math.floor(Math.random() * 8);            
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
-            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) tenga valor (o sea que sea igual a 0)
+            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
+                console.log(i)
             }
         })
     }
