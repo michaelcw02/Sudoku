@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
+import { Observable, Subscription } from 'rxjs/Rx'
 import 'rxjs/add/operator/map'
 
 @Injectable()
@@ -39,13 +40,11 @@ export class SudokuService {
             )
     }
 
-    getSolution(sudoku, callback) {
+    getSolution(sudoku): Observable<any> {
         const minGrid = this.minifyJsonGrid(sudoku.grid);
-        this.http.post('api/sudoku/solve/', {grid: minGrid})
-            .subscribe(
-                res => callback(undefined, res),
-                err => callback(err)
-            )
+        return this.http.post('api/sudoku/solve/', {grid: minGrid})
+                        .map(res => res.json())
+                        .catch(err => Observable.throw(new Error(err.json())))
     }
 
     //This should come from the helper class, but it will imply importing it

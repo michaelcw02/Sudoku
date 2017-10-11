@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { CommunicationService } from './services/communication.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,9 +9,15 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  fetchDataFromServer() {
+  public loading = false;
+  constructor(private communicationService: CommunicationService) {
+
+    this.communicationService.setLoading$.subscribe(mode => this.loading = mode)
     
   }
+
+  
+
 }
 
 

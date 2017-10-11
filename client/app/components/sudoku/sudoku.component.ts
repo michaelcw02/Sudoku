@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import 'rxjs/add/operator/map'
 
 import { CommunicationService } from '../../services/communication.service';
 import { SudokuService }        from '../../services/sudoku.service';
@@ -39,8 +40,7 @@ export class SudokuComponent implements OnInit {
   
   solveBySteps: any
 
-  public modalRef: BsModalRef;
-
+  public modalRef: BsModalRef
 
   constructor(private sudokuService: SudokuService,
               private saveSudokuService: SaveSudokuService,
@@ -169,13 +169,25 @@ export class SudokuComponent implements OnInit {
 
   solve() {
     //this will become a promise, so it will use .then and .catch
+    this.setLoading(true);
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-                        : this.sudokuService.getSolution(this.sudoku, (err, res) => {
-                            err ? this.sudokuSolver.solve(this.sudoku)
-                                : this.sudoku.load(JSON.parse(res._body).grid)
-                          });
+                        : this.sudokuService.getSolution(this.sudoku)
+                              .subscribe(
+                                res => {
+                                  this.setLoading(false);
+                                  this.sudoku.load(res.grid)
+                                },
+                                err => {
+                                  this.setLoading(false);
+                                  this.sudokuSolver.solve(this.sudoku)
+                                }
+                              )
     //return this.sudokuSolver.solve(this.sudoku);
   }
+
+  setLoading(mode) {
+    this.communicationService.callLoading(mode);
+  } 
 
   solveStepByStep(){
     this.solveBySteps = true
