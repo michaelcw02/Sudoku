@@ -5,30 +5,33 @@ import { Subject } from 'rxjs/Subject';
 export class CommunicationService {
 
   // Observable string sources
-  private solveCallSource = new Subject<any>();
-  private resetCallSource = new Subject<any>();
-  private generateCallSource = new Subject<any>();
-  private getDifficultyCallSource = new Subject<any>();
-  private changeDifficultyCallSource = new Subject<any>();
-  private saveSudokuCallSource= new Subject<any>();
-  private loadGamesCallSource= new Subject<any>();
-  private renderGameCallSource = new Subject<any>();
-  private solveByNakedSingleCallSource = new Subject<any>();
-  private solveByHiddenSingleCallSource = new Subject<any>()
-  private solveStepByStepCallSource = new Subject<any>()
+  private solveCallSource               = new Subject<any>();
+  private resetCallSource               = new Subject<any>();
+  private generateCallSource            = new Subject<any>();
+  private getDifficultyCallSource       = new Subject<any>();
+  private changeDifficultyCallSource    = new Subject<any>();
+  private saveSudokuCallSource          = new Subject<any>();
+  private loadGamesCallSource           = new Subject<any>();
+  private renderGameCallSource          = new Subject<any>();
+  private solveByNakedSingleCallSource  = new Subject<any>();
+  private solveByHiddenSingleCallSource = new Subject<any>();
+  private solveStepByStepCallSource     = new Subject<any>();
+  private setLoading                    = new Subject<any>();
+
 
   // Observable string streams
-  solve$ = this.solveCallSource.asObservable();
-  reset$ = this.resetCallSource.asObservable();
-  generate$ = this.generateCallSource.asObservable();
-  getDifficulty$ = this.getDifficultyCallSource.asObservable();
-  changeDifficulty$ = this.changeDifficultyCallSource.asObservable();
-  saveSudoku$ = this.saveSudokuCallSource.asObservable();
-  loadGames$ = this.loadGamesCallSource.asObservable();
-  renderGame$ = this.renderGameCallSource.asObservable();
-  solveByNakedSingle$ = this.solveByNakedSingleCallSource.asObservable();
-  solveByHiddenSingle$ = this.solveByHiddenSingleCallSource.asObservable()
-  solveStepByStep$ = this.solveStepByStepCallSource.asObservable()
+  solve$                = this.solveCallSource.asObservable();
+  reset$                = this.resetCallSource.asObservable();
+  generate$             = this.generateCallSource.asObservable();
+  getDifficulty$        = this.getDifficultyCallSource.asObservable();
+  changeDifficulty$     = this.changeDifficultyCallSource.asObservable();
+  saveSudoku$           = this.saveSudokuCallSource.asObservable();
+  loadGames$            = this.loadGamesCallSource.asObservable();
+  renderGame$           = this.renderGameCallSource.asObservable();
+  solveByNakedSingle$   = this.solveByNakedSingleCallSource.asObservable();
+  solveByHiddenSingle$  = this.solveByHiddenSingleCallSource.asObservable()
+  solveStepByStep$      = this.solveStepByStepCallSource.asObservable();
+  setLoading$           = this.setLoading.asObservable();
 
   // Service message commands
   callSolve() {
@@ -73,6 +76,9 @@ export class CommunicationService {
 
   callRenderGame(grid){
     this.renderGameCallSource.next(grid);
+  }
+  callLoading(mode) {
+    this.setLoading.next(mode);
   }
 
 }
