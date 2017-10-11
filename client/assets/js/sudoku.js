@@ -23,38 +23,47 @@ export class Sudoku {
 		this.grid[i][j].value = value
 	}
 
-	setSpot(i, j, value, def = true) {
+	setSpot(i, j, value, state = "default") {
 		this.grid[i][j].value = value;
-		this.grid[i][j].default = def;
+		this.grid[i][j].state = state;
+	}
+
+	setValueAndState(i, j, value, state){
+		this.grid[i][j].setValueAndState(value, state)
 	}
 
 	clean() {
 		this.grid.forEach((x, i) => {
 			x.forEach((elem, j) => {
 				elem.value = 0;
-				elem.default = false;
+				elem.state = "possible";
 			})
 		});
 	}
 
 	load(sudoku) {
 		range(this.rows).map((x, i) => {
-			range(this.cols).map((y, j) => this.grid[i][j] = new Spot(i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value //For Saved Matches
-																											  : sudoku[i][j])) //For JSON Sudoku
+			range(this.cols).map((y, j) => 
+				this.grid[i][j] = new Spot(i, j, (sudoku[i][j].value != undefined) 
+				? sudoku[i][j].value //For Saved Matches
+				: sudoku[i][j])) //For Sudokus loaded by simple JSONS
 		});
 		range(this.rows).map((x, i) => {
 			range(this.cols).map((y, j) => {
-				this.grid[i][j].default = (sudoku[i][j].default != undefined) ? sudoku[i][j].default //For Saved Matches
-																			  : sudoku[i][j] ? true : false //For JSON Sudoku
+				this.grid[i][j].state = (sudoku[i][j].state != undefined) 
+				? sudoku[i][j].state //For Saved Matches
+				: sudoku[i][j] ? "default" : "possible" //For Sudokus loaded by simple JSONS
 			})
 		});
 	}
 
-	fillGrid(obj){
-    	this.grid.forEach( (x, i) => { x.forEach( (spot, j) => {
-        	spot.value = obj[i][j].value;
-        	spot.default = obj[i][j].default;
-   		 } )} );		
+	fillGrid(obj) {
+		this.grid.forEach((x, i) => {
+			x.forEach((spot, j) => {
+				spot.value = obj[i][j].value;
+				spot.state = obj[i][j].state;
+			})
+		});
 	}
 
 }

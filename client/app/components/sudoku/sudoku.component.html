@@ -14,19 +14,17 @@
     </div>
 </ng-template>
 
-
-<ng-template #waitModal id="waitModal">
-    <div class="modal-header" id="headerWait">
+<ng-template #saveModal id="modalSave">
+    <div class="modal-header" id="headerSave">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">&times;</button>
-        <h3 class="modal-title" id="myModalTitle"> Wait...</h3>
+        <h3 class="modal-title" id="myModalTitle"> Saving...</h3>
     </div>
     <div class="modal-body" id="myModalMessage">
         <br>
-        <h4 id="messageWait"></h4>
+        <h4 id="messageSave"></h4>
         <br>
     </div>
 </ng-template>
-
 
 <ng-template #storeModal>
     <div class="modal-header">
@@ -36,6 +34,6 @@
 
     <div class="modal-body" id="myModalMessage">
         <button id="btnConfirm" class="btn btn-primary" (click)="loadStorageGame()">Yes, I want to load it</button>
-        <button id="btnCancel"  class="btn btn-warning"  (click)="modalRef.hide()">No, I want another game</button>
+        <button id="btnCancel" class="btn btn-warning" (click)="modalRef.hide()">No, I want another game</button>
     </div>
 </ng-template>

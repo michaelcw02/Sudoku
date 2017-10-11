@@ -155,7 +155,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#saveHeader,\r\n#loadHeader,\r\n#resignHeader {\r\n    background-color: #337AB7;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#howToHeader {\r\n    background-color: #0A9BD8;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\nbutton {\r\n    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);\r\n    font-family: 'Comfortaa', cursive;\r\n}\r\n\r\nselect {\r\n    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);\r\n}", ""]);
+exports.push([module.i, "#saveHeader,\r\n#loadHeader,\r\n#resignHeader {\r\n    background-color: #337AB7;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#howToHeader {\r\n    background-color: #0A9BD8;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#bodyError,\r\n#games {\r\n    text-align: center;\r\n}\r\n\r\nbutton {\r\n    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);\r\n    font-family: 'Comfortaa', cursive;\r\n}\r\n\r\nselect {\r\n    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);\r\n}", ""]);
 
 // exports
 
@@ -168,7 +168,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/options/options.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--<app-timer></app-timer>-->\r\n<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \"> SOLVE BY BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Double-click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>"
+module.exports = "<!--<app-timer></app-timer>-->\r\n<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE NEW GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \">BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -234,7 +234,8 @@ var OptionsComponent = (function () {
         var _this = this;
         var userName = __WEBPACK_IMPORTED_MODULE_4_jquery__('#loadUserName').val();
         this.sudokuService.getGames(userName, function (err, data) {
-            _this.renderGames(JSON.parse(data._body).matches);
+            err ? __WEBPACK_IMPORTED_MODULE_4_jquery__("#games").text("User " + userName + " has no saved matches.")
+                : _this.renderGames(JSON.parse(data._body).matches);
         });
     };
     OptionsComponent.prototype.renderGames = function (data) {
@@ -267,16 +268,20 @@ var OptionsComponent = (function () {
     };
     return OptionsComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('errorModal'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
+], OptionsComponent.prototype, "errorModal", void 0);
 OptionsComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'app-options',
         template: __webpack_require__("../../../../../client/app/components/options/options.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/options/options.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */]) === "function" && _d || Object])
 ], OptionsComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=options.component.js.map
 
 /***/ }),
@@ -289,7 +294,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerWait {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
+exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerSave {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
 
 // exports
 
@@ -302,7 +307,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/sudoku/sudoku.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #waitModal id=\"waitModal\">\r\n    <div class=\"modal-header\" id=\"headerWait\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Wait...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageWait\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
+module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #saveModal id=\"modalSave\">\r\n    <div class=\"modal-header\" id=\"headerSave\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Saving...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageSave\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -425,28 +430,22 @@ var SudokuComponent = (function () {
                         var data = { sudoku: _this.sudoku, row: mapY, col: mapX, value: x.value };
                         var result = _this.sudokuHelper.validOption(data);
                         if (result == "allowed") {
-                            if (!_this.sudoku.getSpot(mapY, mapX).default)
+                            if (_this.sudoku.getSpot(mapY, mapX).state == "possible")
                                 _this.sudoku.setValue(mapY, mapX, x.value);
                             else
-                                result == undefined ? result : _this.openErrorModal(result); //Alert if is not valid
+                                result == undefined ? result : _this.openErrorModal(result); //Modal-Alert if is not valid
                         }
                         else
-                            result == undefined ? result : _this.openErrorModal(result); //Alert if is not valid
+                            result == undefined ? result : _this.openErrorModal(result); //Modal-Alert if is not valid
                         x.restart();
                     }
                 });
-            };
-            p.doubleClicked = function () {
-                var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
-                var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
-                var current = _this.sudoku.getSpot(mapY, mapX);
-                !current.default ? current.value = 0 : current;
             };
             p.mousePressed = function () {
                 var mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9));
                 var mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9));
                 if (Object(__WEBPACK_IMPORTED_MODULE_14__assets_js_utils__["range"])(_this.sudoku.rows).includes(mapY) && Object(__WEBPACK_IMPORTED_MODULE_14__assets_js_utils__["range"])(_this.sudoku.cols).includes(mapX))
-                    if (!_this.sudoku.getSpot(mapY, mapX).default)
+                    if (_this.sudoku.getSpot(mapY, mapX).state == "possible")
                         _this.sudoku.setValue(mapY, mapX);
             };
         };
@@ -472,20 +471,31 @@ var SudokuComponent = (function () {
         //return this.sudokuSolver.solve(this.sudoku);
     };
     SudokuComponent.prototype.solveStepByStep = function () {
+        this.cleanUserInput();
         this.solveBySteps = true;
     };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
+        this.cleanUserInput();
         var interval = setInterval(function () {
-            if (_this.nakedSingleSolver.solve(_this.sudoku))
+            if (_this.nakedSingleSolver.solve(_this.sudoku)) {
                 clearInterval(interval);
+                _this.sudokuHelper.hasEmptyValues(_this.sudoku) ?
+                    _this.showError("The sudoku couldn't be solved by NakedSingle. Try another option.") :
+                    _this.showError("THE SUDOKU IS SOLVED");
+            }
         }, 1000);
     };
     SudokuComponent.prototype.solveByHiddenSingle = function () {
         var _this = this;
+        this.cleanUserInput();
         var interval = setInterval(function () {
-            if (_this.hiddenSingleSolver.solve(_this.sudoku))
+            if (_this.hiddenSingleSolver.solve(_this.sudoku)) {
                 clearInterval(interval);
+                _this.sudokuHelper.hasEmptyValues(_this.sudoku) ?
+                    _this.showError("The sudoku couldn't be solved by HiddenSingle. Try another option.") :
+                    _this.showError("THE SUDOKU IS SOLVED");
+            }
         }, 1000);
     };
     SudokuComponent.prototype.generate = function () {
@@ -513,34 +523,49 @@ var SudokuComponent = (function () {
         this.painter.paintSudoku(this.sudoku);
     };
     SudokuComponent.prototype.saveSudoku = function (user) {
-        this.sudokuService.saveSudoku(user, this.sudoku);
+        var _this = this;
+        this.sudokuService.saveSudoku(user, this.sudoku, function (err, res) {
+            err ? _this.showError("There was an error saving the match.")
+                : _this.showGameSaved(user);
+        });
+    };
+    /* Only clears values set by the user */
+    SudokuComponent.prototype.cleanUserInput = function () {
+        this.sudokuHelper.resetSudoku(this.sudoku, function (z) { return z == "possible"; });
+    };
+    SudokuComponent.prototype.showGameSaved = function (user) {
+        this.modalRef = this.modalService.show(this.saveModal);
+        $("#messageSave").text(user + "'s match saved successfully.");
+    };
+    SudokuComponent.prototype.showError = function (message) {
+        this.modalRef = this.modalService.show(this.errorModal);
+        $("#messageError").text(message);
     };
     SudokuComponent.prototype.openErrorModal = function (result) {
-        this.modalRef = this.modalService.show(this.errorModal);
         switch (result) {
             case "rowException":
-                $("#messageError").text("The number already exists in that row.");
+                this.showError("The number already exists in that row.");
                 break;
             case "columnException":
-                $("#messageError").text("The number already exists in that column.");
+                this.showError("The number already exists in that column.");
                 break;
             case "subMatrixException":
-                $("#messageError").text("The number already exists in that sub-grid.");
+                this.showError("The number already exists in that sub-grid.");
                 break;
             case "rowMatrixException":
-                $("#messageError").text("The number already exists in that row and sub-grid.");
+                this.showError("The number already exists in that row and sub-grid.");
                 break;
             case "colMatrixException":
-                $("#messageError").text("The number already exists in that column and sub-grid.");
+                this.showError("The number already exists in that column and sub-grid.");
                 break;
             case "rowColException":
-                $("#messageError").text("The number already exists in that row and column.");
+                this.showError("The number already exists in that row and column.");
                 break;
             case "allException":
-                $("#messageError").text("The number already exists in that row, column and sub-grid.");
+                this.showError("The number already exists in that row, column and sub-grid.");
                 break;
             default:
-                $("#messageError").text("Invalid space.");
+                this.showError("Invalid space.");
                 break;
         }
     };
@@ -551,16 +576,20 @@ var SudokuComponent = (function () {
     return SudokuComponent;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('storeModal'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
-], SudokuComponent.prototype, "storeModal", void 0);
-__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('errorModal'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _b || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
 ], SudokuComponent.prototype, "errorModal", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('waitModal'),
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('storeModal'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _b || Object)
+], SudokuComponent.prototype, "storeModal", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('saveModal'),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _c || Object)
+], SudokuComponent.prototype, "saveModal", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('waitModal'),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _d || Object)
 ], SudokuComponent.prototype, "waitModal", void 0);
 SudokuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -568,10 +597,10 @@ SudokuComponent = __decorate([
         template: __webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _j || Object])
 ], SudokuComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=sudoku.component.js.map
 
 /***/ }),
@@ -834,7 +863,7 @@ var SaveSudokuService = (function () {
         var obj = grid.map(function (x) { return x; });
         var result = Array.from(new Array(9), function (x, i) {
             return Array.from(new Array(9), function (x, j) {
-                return { value: obj[i][j].value, default: obj[i][j].default };
+                return { value: obj[i][j].value, state: obj[i][j].state };
             });
         });
         return result;
@@ -882,12 +911,12 @@ var SudokuService = (function () {
         console.log('Sudoku Service is up');
     }
     //Saving
-    SudokuService.prototype.saveSudoku = function (user, sudoku) {
+    SudokuService.prototype.saveSudoku = function (user, sudoku, callback) {
         console.log("Trying to save from save-sudoku.service.ts");
         var gridmin = this.minifyJsonGrid(sudoku.grid);
         var data = { name: user, grid: gridmin, level: sudoku.level };
         this.http.post("api/sudoku", data)
-            .subscribe(function (res) { return console.log(res); }, function (err) { return console.log(err); });
+            .subscribe(function (res) { callback(undefined, res); console.log(res); }, function (err) { callback(err); console.log(err); });
     };
     //Loading
     SudokuService.prototype.getSudoku = function (level, callback) {
@@ -909,7 +938,7 @@ var SudokuService = (function () {
         var obj = grid.map(function (x) { return x; });
         var result = Array.from(new Array(9), function (x, i) {
             return Array.from(new Array(9), function (x, j) {
-                return { value: obj[i][j].value, default: obj[i][j].default };
+                return { value: obj[i][j].value, state: obj[i][j].state };
             });
         });
         return result;
@@ -944,8 +973,15 @@ class HiddenSingleSolver {
             return true;
         else{
             //Se recorre por fila buscando las que solo tienen una posible solucion, y si la tienen se les pone
+            let oldGrid = this.sudokuHelper.gridToMatrix(sudoku.grid)
             range(sudoku.rows).forEach( x => this.spotsUniqueInRow(sudoku, x))
             range(sudoku.cols).forEach( x => this.spotsUniqueInCol(sudoku, x))
+            range(1, 9, 3).forEach( row => {
+                range(1, 9, 3).forEach( col => {
+                    this.spotsUniqueInSubMatrix(this.sudokuHelper.getSubMatrix(sudoku, row, col))
+                })
+            })
+            return this.sudokuHelper.compareGrids(oldGrid, sudoku.grid)
         }
 	}
 
@@ -953,19 +989,29 @@ class HiddenSingleSolver {
         let spots = sudoku.grid[row].reduce((z, x) => x.value == 0 ?
             z.concat({ spot: x, possibilities: x.getPossibilities() }) : z
         , [])
-        spots.forEach(x => {
-            let res = x.possibilities.filter(e => this.existsOnlyOnce(e, spots))
-            x.spot.value = res.length == 1 ? res[0] : x.spot.value
-        })
+        this.updateUniqueSpots(spots)
     }
 
     spotsUniqueInCol(sudoku, col){
-        let spots = sudoku.grid[0][col].reduce((z, x) => x.value == 0 ?
+        let grid = sudoku.grid
+        let spots = range(sudoku.rows).reduce((z, x) => sudoku.getValue(x, col) == 0 ?
+            z.concat({ spot: sudoku.getSpot(x, col), possibilities: sudoku.getSpot(x, col).getPossibilities() }) : z
+        , [])
+        this.updateUniqueSpots(spots)
+    }
+
+    spotsUniqueInSubMatrix(subMatrix){
+        let spots = subMatrix.reduce((z, x) => x.value == 0 ?
             z.concat({ spot: x, possibilities: x.getPossibilities() }) : z
         , [])
+        this.updateUniqueSpots(spots)
+    }
+
+    updateUniqueSpots(spots){
         spots.forEach(x => {
             let res = x.possibilities.filter(e => this.existsOnlyOnce(e, spots))
-            x.spot.value = res == 1 ? res[0] : x.spot.value
+            x.spot.value = res.length == 1 ? res[0] : x.spot.value
+            x.spot.state = res.length == 1 ? "heuristic" : x.spot.state
         })
     }
 
@@ -973,13 +1019,8 @@ class HiddenSingleSolver {
         return spots.reduce( (z, x) => x.possibilities.includes(elem) ? ++z : z ,0) == 1
     }
 
-	//Pasar a funcional
 	hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
-		for(let i = 0; i < sudoku.rows; i++)
-			for(let j = 0; j < sudoku.cols; j++)
-				if(sudoku.getValue(i, j) === 0)
-					return true;
-		return false;
+        return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = HiddenSingleSolver;
@@ -1004,11 +1045,10 @@ class NakedSingleSolver {
 		if(!this.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
             return true;
         else{
+			let oldGrid = this.sudokuHelper.gridToMatrix(sudoku.grid)
             let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
-            if(!uniques.length) //Ya no se puede seguir usando naked single
-                return true
-            uniques.forEach( x => x.value = x.getPossibilities().shift())
-            return false;
+            uniques.forEach( x => x.setValueAndState(x.getPossibilities().shift(), "heuristic"))
+            return this.sudokuHelper.compareGrids(oldGrid, sudoku.grid)
         }
 	}
 
@@ -1076,7 +1116,7 @@ class Painter { //This class wil be in charge of paint in the matrix
         this.lib = lib;
     }
 
-  paintSudoku(sudoku){ //Make more elegant. -Done.
+  paintSudoku(sudoku){ 
     sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
       this.lib.fill(255)
       this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
@@ -1089,14 +1129,23 @@ class Painter { //This class wil be in charge of paint in the matrix
     for(let i = 0; i < sudoku.rows; i++)
       for(let j = 0; j < sudoku.cols; j++)
         if(sudoku.getValue(i, j) !== 0)
-          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
+          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).state);
   }
 
-  paintNumber(number, i, j, def = false) {
+  paintNumber(number, i, j, state = "possible") {
       this.lib.textSize(this.dimension - 10);
       this.lib.textFont("Comfortaa");
-      def ? this.lib.fill(0)
-          : this.lib.fill(255, 0, 0);
+      switch(state){
+          case "default" : 
+            this.lib.fill(0);
+            break;
+          case "possible" : 
+            this.lib.fill(0, 0, 255);
+            break;
+          case "heuristic" :
+            this.lib.fill(0, 255, 0);
+            break;
+      }
       this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
   }
 
@@ -1138,7 +1187,13 @@ class Spot {
         this.colNeighbors = []; // Column neigbors
         this.subMatrixNeighbors = []; //The subsquare neighbors
 
-        this.default = false; //Default is if is a value hardcoded before the start of solving
+        this.state = "possible";
+
+        /* Three possible states:
+           1- Default : The user can not change it
+           2- Heuristic: The value was set by an algorithm(backtrack) or a technique(naked or hidden single) 
+           3- Possible: The value was set by the user
+        */
 
     }
 
@@ -1169,13 +1224,13 @@ class Spot {
 
     setColNeighbors(sudoku) {
         range(sudoku.cols).forEach((x, i) => {
-            if (i <= 8 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
+            if (i <= sudoku.cols - 1 && i !== this.row) this.colNeighbors.push(sudoku.getSpot(i, this.col))
         });
     }
 
     setRowNeighbors(sudoku) {
         range(sudoku.rows).forEach((x, j) => {
-            if (j <= 8 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
+            if (j <= sudoku.rows - 1 && j !== this.col) this.rowNeighbors.push(sudoku.getSpot(this.row, j))
         });
     }
 
@@ -1190,14 +1245,15 @@ class Spot {
         return !neighbors.some((n) => n.value === value);
     }
 
+    setValueAndState(value = 0, state = "possible"){
+        this.value = value
+        this.state = state
+    }
 
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Spot;
 
 
-/*module.exports = { //Remove this at working with p5
-  Spot
-}*/
 
 /***/ }),
 
@@ -1233,38 +1289,47 @@ class Sudoku {
 		this.grid[i][j].value = value
 	}
 
-	setSpot(i, j, value, def = true) {
+	setSpot(i, j, value, state = "default") {
 		this.grid[i][j].value = value;
-		this.grid[i][j].default = def;
+		this.grid[i][j].state = state;
+	}
+
+	setValueAndState(i, j, value, state){
+		this.grid[i][j].setValueAndState(value, state)
 	}
 
 	clean() {
 		this.grid.forEach((x, i) => {
 			x.forEach((elem, j) => {
 				elem.value = 0;
-				elem.default = false;
+				elem.state = "possible";
 			})
 		});
 	}
 
 	load(sudoku) {
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
-			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) ? sudoku[i][j].value //For Saved Matches
-																											  : sudoku[i][j])) //For JSON Sudoku
+			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => 
+				this.grid[i][j] = new __WEBPACK_IMPORTED_MODULE_0__spot__["a" /* Spot */](i, j, (sudoku[i][j].value != undefined) 
+				? sudoku[i][j].value //For Saved Matches
+				: sudoku[i][j])) //For Sudokus loaded by simple JSONS
 		});
 		Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.rows).map((x, i) => {
 			Object(__WEBPACK_IMPORTED_MODULE_1__utils__["range"])(this.cols).map((y, j) => {
-				this.grid[i][j].default = (sudoku[i][j].default != undefined) ? sudoku[i][j].default //For Saved Matches
-																			  : sudoku[i][j] ? true : false //For JSON Sudoku
+				this.grid[i][j].state = (sudoku[i][j].state != undefined) 
+				? sudoku[i][j].state //For Saved Matches
+				: sudoku[i][j] ? "default" : "possible" //For Sudokus loaded by simple JSONS
 			})
 		});
 	}
 
-	fillGrid(obj){
-    	this.grid.forEach( (x, i) => { x.forEach( (spot, j) => {
-        	spot.value = obj[i][j].value;
-        	spot.default = obj[i][j].default;
-   		 } )} );		
+	fillGrid(obj) {
+		this.grid.forEach((x, i) => {
+			x.forEach((spot, j) => {
+				spot.value = obj[i][j].value;
+				spot.state = obj[i][j].state;
+			})
+		});
 	}
 
 }
@@ -1302,18 +1367,17 @@ class SudokuGenerator {
             while (options.length) { //Mientras exista alguna opción sin probar
                 let o = options[Math.floor(Math.random() * options.length)]; //Elije aleatoriamente una opción del array
                 if (currentSpot.isValidOption(o)) { //Si es valida (No esta en la fila, columna o submatriz)
-                    sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor      
+                    currentSpot.setValueAndState(o, "heuristic") //The value was set by an algorithm     
                     if (this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
                         return true; //Si llega hasta aca es que lo soluciono
                 }
                 options = options.filter(x => x != o); //Elimina del array la opción ya que no fue válida
             }
-            sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+            currentSpot.value = 0 //BACKTRACK
         }
-        return false; //Este return permite romper la recursion, sino la pila se llenaria
+        return false; //This return breaks recursion
     }
 
-	//Pasar a funcional. -Listo
     hasEmptyValues(sudoku){ //Auxiliar to see if sudoku is solved, this should be in sudoku helper
         return sudoku.grid.some( x => x.some( y => y.value === 0) )
 	}
@@ -1326,11 +1390,10 @@ class SudokuGenerator {
         //Para que asigne sólo 17 casillas por default
         Object(__WEBPACK_IMPORTED_MODULE_2__utils__["range"])(17).forEach( i => {
             let row = Math.floor(Math.random() * 8);
-            let col = Math.floor(Math.random() * 8);
+            let col = Math.floor(Math.random() * 8);            
             let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
-            if (!sudoku.getValue(row, col)) { //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
+            if (!sudoku.getValue(row, col)) //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
-            }
         })
     }
 }
@@ -1343,7 +1406,9 @@ class SudokuGenerator {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class SudokuHelper { //This class will help in some operations, to separate basic logic from other logic
+/* This class will help in some operations, to separate basic logic */
+
+class SudokuHelper { 
 
     constructor() {
         this.subMatrix = [];
@@ -1352,27 +1417,32 @@ class SudokuHelper { //This class will help in some operations, to separate basi
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
+        grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
     }
 
-    resetSudoku(sudoku) {
+    resetSudoku(sudoku, fun = z => z == "possible" || z == "heuristic") {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
-                if (!sudoku.getSpot(i, j).default)
-                    sudoku.setValue(i, j);
+                if (fun(sudoku.getSpot(i, j).state))
+                    sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
         });
     }
 
-    nextEmpty(sudoku) {
+    
+    gridToMatrix(grid) {
+        return grid.map(x => x.map(y => y.value));
+    }
+
+    nextEmpty(sudoku) { //Please pass this to reduce
         let grid = sudoku.grid;
         let result = {};
         grid.forEach((x, i) => {
             x.forEach((elem, j) => {
                 if (!sudoku.getValue(i, j)) result = { row: i, col: j }
             })
-        });
-        return result;
+        })
+        return result
     }
 
     findInSubMatrix(spot) {
@@ -1418,10 +1488,21 @@ class SudokuHelper { //This class will help in some operations, to separate basi
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) {
+        if (current) 
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
-        }
     }
+
+    compareGrids(oldGrid, newGrid){
+        let result = true;
+        oldGrid.forEach((x, i) => x.forEach((y, j) => {
+          if (y != newGrid[i][j].value) result = false;
+        }));
+        return result
+    }
+
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku has empty values
+        return sudoku.grid.some( x => x.some( y => !y.value) )
+	}
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking
         let cols = current.colNeighbors.some(x => x.value == value);
@@ -1435,8 +1516,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
             return "columnException";
         }
         if (rows) {
-            return (subm) ? "rowMatrixException"
-                          : "rowException";
+            return (subm) ? "rowMatrixException" :
+                "rowException";
         }
         if (subm) return "subMatrixException";
     }
@@ -1467,12 +1548,12 @@ class SudokuSolver {
 
 				for(let o = 1; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-						sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
+						currentSpot.setValueAndState(o, "heuristic") //Value is set by the algorithm
 						if(this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
 							return true; //Si llega hasta aca es que lo soluciono
 					}
 				}
-				sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+				currentSpot.value = 0//BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
 			}
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
 	}
@@ -1520,14 +1601,14 @@ class SudokuSolverStep {
                 }
                 for( ; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-                        sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
-                            this.stack.push({last: currentSpot, value : o})
-                            return false
+                        currentSpot.setValueAndState(o, "heuristic")
+                        this.stack.push({last: currentSpot, value : o})
+                        return false
 					}
                 }
                 let lastSpot = this.lastInStack().last
-                sudoku.setValue(lastSpot.row, lastSpot.col);
-                this.backtrack = true
+                sudoku.setValue(lastSpot.row, lastSpot.col) //Puts to zero
+                this.backtrack = true //Backtrack needed
 			}
     }
 

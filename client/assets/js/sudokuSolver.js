@@ -14,12 +14,12 @@ export class SudokuSolver {
 
 				for(let o = 1; o <= 9; o++){ //Para cada posibilidad
 					if(currentSpot.isValidOption(o)){ //Si es valida (No esta en la fila, columna o submatriz)
-						sudoku.setValue(currentSpot.row, currentSpot.col, o); //Le metemos el valor
+						currentSpot.setValueAndState(o, "heuristic") //Value is set by the algorithm
 						if(this.solve(sudoku)) //Vuelva a ejecutar este algoritmo (Note que en la proxima llamada este spot ya no sera empty)
 							return true; //Si llega hasta aca es que lo soluciono
 					}
 				}
-				sudoku.setValue(currentSpot.row, currentSpot.col); //BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
+				currentSpot.value = 0//BACKTRACK Si llega aca es por que hubo backtrack, borra el current ya que la opcion escogida no era correcta
 			}
 		return false; //Este return permite romper la recursion, sino la pila se llenaria
 	}

@@ -5,7 +5,7 @@ export class Painter { //This class wil be in charge of paint in the matrix
         this.lib = lib;
     }
 
-  paintSudoku(sudoku){ //Make more elegant. -Done.
+  paintSudoku(sudoku){ 
     sudoku.grid.forEach( (x, i) => x.forEach( (y, j) => {
       this.lib.fill(255)
       this.lib.rect(i * this.dimension, j * this.dimension, this.dimension, this.dimension);
@@ -18,14 +18,23 @@ export class Painter { //This class wil be in charge of paint in the matrix
     for(let i = 0; i < sudoku.rows; i++)
       for(let j = 0; j < sudoku.cols; j++)
         if(sudoku.getValue(i, j) !== 0)
-          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).default);
+          this.paintNumber(sudoku.getValue(i, j), i, j, sudoku.getSpot(i, j).state);
   }
 
-  paintNumber(number, i, j, def = false) {
+  paintNumber(number, i, j, state = "possible") {
       this.lib.textSize(this.dimension - 10);
       this.lib.textFont("Comfortaa");
-      def ? this.lib.fill(0)
-          : this.lib.fill(255, 0, 0);
+      switch(state){
+          case "default" : 
+            this.lib.fill(0);
+            break;
+          case "possible" : 
+            this.lib.fill(0, 0, 255);
+            break;
+          case "heuristic" :
+            this.lib.fill(0, 255, 0);
+            break;
+      }
       this.lib.text(number, j * this.dimension + 20, (i + 1) * this.dimension - 10);
   }
 

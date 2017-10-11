@@ -21,7 +21,7 @@ class ServerSudoku {
         let obj = grid.map(x => x);
         let result = Array.from(new Array(9), (x, i) => {
             return Array.from(new Array(9), (x, j) => {
-                return { value: obj[i][j].value, default: obj[i][j].default }
+                return { value: obj[i][j].value, state: obj[i][j].state }
             })
         })
         return result;

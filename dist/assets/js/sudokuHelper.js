@@ -1,4 +1,6 @@
-export class SudokuHelper { //This class will help in some operations, to separate basic logic from other logic
+/* This class will help in some operations, to separate basic logic */
+
+export class SudokuHelper { 
 
     constructor() {
         this.subMatrix = [];
@@ -7,27 +9,32 @@ export class SudokuHelper { //This class will help in some operations, to separa
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
+        grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
     }
 
-    resetSudoku(sudoku) {
+    resetSudoku(sudoku, fun = z => z == "possible" || z == "heuristic") {
         sudoku.grid.forEach((row, i) => {
             row.forEach((spot, j) => {
-                if (!sudoku.getSpot(i, j).default)
-                    sudoku.setValue(i, j);
+                if (fun(sudoku.getSpot(i, j).state))
+                    sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
         });
     }
 
-    nextEmpty(sudoku) {
+    
+    gridToMatrix(grid) {
+        return grid.map(x => x.map(y => y.value));
+    }
+
+    nextEmpty(sudoku) { //Please pass this to reduce
         let grid = sudoku.grid;
         let result = {};
         grid.forEach((x, i) => {
             x.forEach((elem, j) => {
                 if (!sudoku.getValue(i, j)) result = { row: i, col: j }
             })
-        });
-        return result;
+        })
+        return result
     }
 
     findInSubMatrix(spot) {
@@ -73,10 +80,21 @@ export class SudokuHelper { //This class will help in some operations, to separa
 
     validOption({ sudoku, row, col, value }) {
         let current = sudoku.getSpot(row, col)
-        if (current) {
+        if (current) 
             return current.isValidOption(value) ? "allowed" : this.handleException(current, value)
-        }
     }
+
+    compareGrids(oldGrid, newGrid){
+        let result = true;
+        oldGrid.forEach((x, i) => x.forEach((y, j) => {
+          if (y != newGrid[i][j].value) result = false;
+        }));
+        return result
+    }
+
+    hasEmptyValues(sudoku){ //Auxiliar to see if sudoku has empty values
+        return sudoku.grid.some( x => x.some( y => !y.value) )
+	}
 
     handleException(current, value) { //Returns if the row or column or subMatrix is blocking
         let cols = current.colNeighbors.some(x => x.value == value);
@@ -90,8 +108,8 @@ export class SudokuHelper { //This class will help in some operations, to separa
             return "columnException";
         }
         if (rows) {
-            return (subm) ? "rowMatrixException"
-                          : "rowException";
+            return (subm) ? "rowMatrixException" :
+                "rowException";
         }
         if (subm) return "subMatrixException";
     }
