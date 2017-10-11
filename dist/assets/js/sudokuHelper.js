@@ -7,7 +7,7 @@ export class SudokuHelper { //This class will help in some operations, to separa
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
+        grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
     }
 
     resetSudoku(sudoku) {
@@ -17,6 +17,10 @@ export class SudokuHelper { //This class will help in some operations, to separa
                     sudoku.setValue(i, j);
             })
         });
+    }
+
+    gridToMatrix(grid) {
+        return grid.map(x => x.map(y => y.value));
     }
 
     nextEmpty(sudoku) {
@@ -90,8 +94,8 @@ export class SudokuHelper { //This class will help in some operations, to separa
             return "columnException";
         }
         if (rows) {
-            return (subm) ? "rowMatrixException"
-                          : "rowException";
+            return (subm) ? "rowMatrixException" :
+                "rowException";
         }
         if (subm) return "subMatrixException";
     }

@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { CommunicationService } from '../../services/communication.service';
-import { SudokuService }        from '../../services/sudoku.service';
-import { LoadSudokuService }  from '../../services/load-sudoku.service';
-import { SaveSudokuService }  from '../../services/save-sudoku.service';
+import { SudokuService } from '../../services/sudoku.service';
+import { LoadSudokuService } from '../../services/load-sudoku.service';
+import { SaveSudokuService } from '../../services/save-sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -33,22 +33,30 @@ export class SudokuComponent implements OnInit {
   sudokuGenerator: SudokuGenerator
   nakedSingleSolver: NakedSingleSolver
   sudokuSolverStep: SudokuSolverStep
-  hiddenSingleSolver : HiddenSingleSolver
+  hiddenSingleSolver: HiddenSingleSolver
   canvas: any
   jsonSudoku: any
-  
+
   solveBySteps: any
 
   public modalRef: BsModalRef;
 
+  @ViewChild('errorModal')
+  private errorModal: TemplateRef<any>;
+
+  @ViewChild('storeModal')
+  private storeModal: TemplateRef<any>;
+
+  @ViewChild('saveModal')
+  private saveModal: TemplateRef<any>;
 
   constructor(private sudokuService: SudokuService,
-              private saveSudokuService: SaveSudokuService,
-              private loadSudokuService: LoadSudokuService, 
-              private communicationService: CommunicationService,
-              private modalService: BsModalService){
+    private saveSudokuService: SaveSudokuService,
+    private loadSudokuService: LoadSudokuService,
+    private communicationService: CommunicationService,
+    private modalService: BsModalService) {
 
-     
+
     this.sudoku = new Sudoku(9, 9);
     this.sudokuSolver = new SudokuSolver();
     this.sudokuHelper = new SudokuHelper();
@@ -57,7 +65,7 @@ export class SudokuComponent implements OnInit {
     this.nakedSingleSolver = new NakedSingleSolver();
     this.hiddenSingleSolver = new HiddenSingleSolver()
     this.communicationService.solve$.subscribe(() => this.solve());
-    this.communicationService.solveStepByStep$.subscribe( () => this.solveStepByStep())
+    this.communicationService.solveStepByStep$.subscribe(() => this.solveStepByStep())
     this.communicationService.reset$.subscribe(() => this.reset());
     this.communicationService.solveByNakedSingle$.subscribe(() => this.solveByNakedSingle());
     this.communicationService.solveByHiddenSingle$.subscribe(() => this.solveByHiddenSingle());
@@ -71,8 +79,7 @@ export class SudokuComponent implements OnInit {
 
   }
 
-  @ViewChild('storeModal') 
-  private storeModal: TemplateRef<any>;
+
 
   ngOnInit() {
 
@@ -85,7 +92,7 @@ export class SudokuComponent implements OnInit {
 
       p.preload = () => {
         Promise.resolve(this.changeDifficulty('easy'))
-        .then(() => this.showStorageModal());
+          .then(() => this.showStorageModal());
       }
 
       p.setup = () => {
@@ -101,7 +108,7 @@ export class SudokuComponent implements OnInit {
         p.background(179, 182, 165);
         this.painter.paintSudoku(this.sudoku); //Paints every 60fps
         drawOptions();
-        if(this.solveBySteps)
+        if (this.solveBySteps)
           this.solveBySteps = !this.sudokuSolverStep.solve(this.sudoku)
       }
 
@@ -142,12 +149,12 @@ export class SudokuComponent implements OnInit {
         let current = this.sudoku.getSpot(mapY, mapX)
         !current.default ? current.value = 0 : current
       }
-      
+
       p.mousePressed = () => {
         let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9))
         let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9))
-        if(range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
-          if (!this.sudoku.getSpot(mapY, mapX).default) 
+        if (range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
+          if (!this.sudoku.getSpot(mapY, mapX).default)
             this.sudoku.setValue(mapY, mapX)
       }
 
@@ -156,12 +163,12 @@ export class SudokuComponent implements OnInit {
     let myP5 = new p5(sketch);
   }
 
-  showStorageModal(){
-    if(this.loadSudokuService.retriveSudoku())
-      this.modalRef = this.modalService.show(this.storeModal); 
+  showStorageModal() {
+    if (this.loadSudokuService.retriveSudoku())
+      this.modalRef = this.modalService.show(this.storeModal);
   }
 
-  loadStorageGame(){
+  loadStorageGame() {
     let grid = this.loadSudokuService.retriveSudoku()
     this.sudoku.fillGrid(grid)
     this.modalRef.hide()
@@ -170,28 +177,43 @@ export class SudokuComponent implements OnInit {
   solve() {
     //this will become a promise, so it will use .then and .catch
     (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-                        : this.sudokuService.getSolution(this.sudoku, (err, res) => {
-                            err ? this.sudokuSolver.solve(this.sudoku)
-                                : this.sudoku.load(JSON.parse(res._body).grid)
-                          });
+      : this.sudokuService.getSolution(this.sudoku, (err, res) => {
+        err ? this.sudokuSolver.solve(this.sudoku)
+          : this.sudoku.load(JSON.parse(res._body).grid)
+      });
     //return this.sudokuSolver.solve(this.sudoku);
   }
 
-  solveStepByStep(){
+  solveStepByStep() {
     this.solveBySteps = true
   }
 
+  compareGrids(oldGrid, newGrid) {
+    let result = true;
+    oldGrid.forEach((x, i) => x.forEach((y, j) => {
+      if (y != newGrid[i][j].value) result = false;
+    }));
+    if (result)
+      this.showError("The sudoku couldn't be solved by Naked Single. Try another option.");
+  }
+
   solveByNakedSingle() {
+    let oldGrid = this.sudokuHelper.gridToMatrix(this.sudoku.grid);
     let interval = setInterval(() => {
-      if (this.nakedSingleSolver.solve(this.sudoku))
-        clearInterval(interval)
-    }, 1000)
+      if (this.nakedSingleSolver.solve(this.sudoku)) {
+        clearInterval(interval);
+        this.compareGrids(oldGrid, this.sudoku.grid);
+      }
+    }, 1000);
   }
 
   solveByHiddenSingle() {
+    let oldGrid = this.sudokuHelper.gridToMatrix(this.sudoku);
     let interval = setInterval(() => {
-    if (this.hiddenSingleSolver.solve(this.sudoku))
-      clearInterval(interval)
+      if (this.hiddenSingleSolver.solve(this.sudoku)) {
+        clearInterval(interval);
+        this.compareGrids(oldGrid, this.sudoku.grid);
+      }
     }, 1000)
   }
 
@@ -224,48 +246,49 @@ export class SudokuComponent implements OnInit {
   }
 
   saveSudoku(user) {
-    this.sudokuService.saveSudoku(user, this.sudoku)
+    this.sudokuService.saveSudoku(user, this.sudoku, (err, res) => {
+      err ? this.showError("There was an error saving the match.")
+        : this.showGameSaved(user)
+    })
+  }
+
+  showGameSaved(user) {
+    this.modalRef = this.modalService.show(this.saveModal);
+    $("#messageSave").text(user + "'s match saved successfully.");
+  }
+
+  showError(message) {
+    this.modalRef = this.modalService.show(this.errorModal);
+    $("#messageError").text(message);
   }
 
 
-  @ViewChild('errorModal')
-  private errorModal: TemplateRef<any>;
   public openErrorModal(result) {
-    this.modalRef = this.modalService.show(this.errorModal);
     switch (result) {
       case "rowException":
-        $("#messageError").text("The number already exists in that row.");
+        this.showError("The number already exists in that row.");
         break;
       case "columnException":
-        $("#messageError").text("The number already exists in that column.");
+        this.showError("The number already exists in that column.");
         break;
       case "subMatrixException":
-        $("#messageError").text("The number already exists in that sub-grid.");
+        this.showError("The number already exists in that sub-grid.");
         break;
       case "rowMatrixException":
-        $("#messageError").text("The number already exists in that row and sub-grid.");
+        this.showError("The number already exists in that row and sub-grid.");
         break;
       case "colMatrixException":
-        $("#messageError").text("The number already exists in that column and sub-grid.");
+        this.showError("The number already exists in that column and sub-grid.");
         break;
       case "rowColException":
-        $("#messageError").text("The number already exists in that row and column.");
+        this.showError("The number already exists in that row and column.");
         break;
       case "allException":
-        $("#messageError").text("The number already exists in that row, column and sub-grid.");
+        this.showError("The number already exists in that row, column and sub-grid.");
         break;
       default:
-        $("#messageError").text("Invalid space.")
+        this.showError("Invalid space.")
         break;
     }
   }
-
-
-  @ViewChild('waitModal')
-  private waitModal: TemplateRef<any>;
-  public openWaitModal(result) {
-    this.modalRef = this.modalService.show(this.waitModal);
-    $("#messageWait").text(result);
-  }
-
 }

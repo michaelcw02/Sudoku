@@ -155,7 +155,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#saveHeader,\r\n#loadHeader,\r\n#resignHeader {\r\n    background-color: #337AB7;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#howToHeader {\r\n    background-color: #0A9BD8;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\nbutton {\r\n    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);\r\n    font-family: 'Comfortaa', cursive;\r\n}\r\n\r\nselect {\r\n    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);\r\n}", ""]);
+exports.push([module.i, "#saveHeader,\r\n#loadHeader,\r\n#resignHeader {\r\n    background-color: #337AB7;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#howToHeader {\r\n    background-color: #0A9BD8;\r\n    color: #FFFFFF;\r\n    text-align: center;\r\n}\r\n\r\n#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#bodyError,\r\n#games {\r\n    text-align: center;\r\n}\r\n\r\nbutton {\r\n    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);\r\n    font-family: 'Comfortaa', cursive;\r\n}\r\n\r\nselect {\r\n    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);\r\n}", ""]);
 
 // exports
 
@@ -168,7 +168,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/options/options.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--<app-timer></app-timer>-->\r\n<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \"> SOLVE BY BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Double-click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>"
+module.exports = "<!--<app-timer></app-timer>-->\r\n<div id=\"howToPlay\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showHowToPlay\" (click)=\"openModal(howToPlayModal)\"> HOW TO PLAY </button>\r\n</div>\r\n<br>\r\n\r\n<div class=\"input-group\">\r\n    <select class=\"form-control \" id=\"difficulty\">\r\n                            <option selected>Easy</option>\r\n                            <option>Medium</option>\r\n                            <option>Hard</option>\r\n                        </select>\r\n    <div id=\"level \">\r\n        <button class=\"btn btn-primary btn-block \" id=\"selectDifficulty\" (click)=\"openModal(resignModal)\"> SELECT DIFFICULTY </button>\r\n    </div>\r\n</div>\r\n<br>\r\n\r\n<div id=\"save\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"saveGame\" (click)=\"openModal(template)\"> SAVE GAME <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"load\">\r\n    <button class=\"btn btn-primary btn-block\" id=\"loadGame\" (click)=\"openModal(loadModal)\"> LOAD GAME <span class=\"glyphicon glyphicon-open\"></span></button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"generate\">\r\n    <button class=\"btn btn-warning btn-block\" id=\"generateGame\" (click)=\"generate() \"> GENERATE NEW GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"reset\">\r\n    <button class=\"btn btn-danger btn-block\" id=\"resetGame\" (click)=\"reset() \"> RESET GAME </button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solution \">\r\n    <button class=\"btn btn-success btn-block \" id=\"showSolution \" (click)=\"solve() \"> SOLVE BY BACKTRACK</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"solutionStepByStep\">\r\n    <button class=\"btn btn-info btn-block \" id=\"showSolutionStepByStep \" (click)=\"solveStepByStep() \">BACKTRACK STEP BY STEP</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"nakedSingle\">\r\n    <button class=\"btn btn-danger btn-block \" id=\"showNakedSingleSolution \" (click)=\"solveByNakedSingle() \"> SOLVE BY NAKED SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<div id=\"hiddenSingle\">\r\n    <button class=\"btn btn-warning btn-block \" id=\"showHiddenSingleSolution \" (click)=\"solveByHiddenSingle() \"> SOLVE BY HIDDEN SINGLE</button>\r\n</div>\r\n<br>\r\n\r\n<!-- *********************************************\r\n                    MODALS\r\n    **********************************************-->\r\n\r\n<!--  HOW TO PLAY  -->\r\n<ng-template #howToPlayModal>\r\n    <div class=\"modal-header\" id=\"howToHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-question-circle\"></i> HOW TO PLAY</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"howToBody\">\r\n        <ul>\r\n            <li>\r\n                <h4>Drag and drop the numbers from the right pane into the grid.</h4>\r\n            </li>\r\n            <li>\r\n                <h4>Click in the number to delete it.</h4>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  SAVE  -->\r\n<ng-template #template>\r\n    <div class=\"modal-header\" id=\"saveHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-floppy-disk\"></span> SAVE THIS GAME</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"saveBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formSaveGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <h4><label for=\"username\">User name:</label></h4>\r\n                <input type=\"text\" class=\"form-control\" id=\"username\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"send\" (click)=\"saveSudoku()\">SAVE <span class=\"glyphicon glyphicon-floppy-disk\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  RESIGN  -->\r\n<ng-template #resignModal>\r\n    <div class=\"modal-header\" id=\"resignHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\">ARE YOU SURE YOU WANT TO RESIGN?</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"resignBody\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"changeDifficulty()\">Yes, I want to resign</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I will keep struggling</button>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<!--  LOAD  -->\r\n<ng-template #loadModal>\r\n    <div class=\"modal-header\" id=\"loadHeader\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><span class=\"glyphicon glyphicon-open\"></span> LOAD YOUR GAMES</h3>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"loadBody\">\r\n        <form role=\"form\" onsubmit=\"return false;\" id=\"formLoadGame\">\r\n            <div class=\"form-group\" id=\"groupUsername\">\r\n                <label for=\"loadUserName\">User name:</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"loadUserName\" autofocus=\"true\" placeholder=\"Your name\" maxlength=\"30\" required/>\r\n            </div>\r\n\r\n            <div class=\"form-group\" id=\"games\">\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <button type=\"submit\" class=\"btn btn-primary\" id=\"load\" (click)=\"loadGames()\">LOAD GAMES <span class=\"glyphicon glyphicon-open\"></span></button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -234,7 +234,8 @@ var OptionsComponent = (function () {
         var _this = this;
         var userName = __WEBPACK_IMPORTED_MODULE_4_jquery__('#loadUserName').val();
         this.sudokuService.getGames(userName, function (err, data) {
-            _this.renderGames(JSON.parse(data._body).matches);
+            err ? __WEBPACK_IMPORTED_MODULE_4_jquery__("#games").text("User " + userName + " has no saved matches.")
+                : _this.renderGames(JSON.parse(data._body).matches);
         });
     };
     OptionsComponent.prototype.renderGames = function (data) {
@@ -248,6 +249,31 @@ var OptionsComponent = (function () {
         date = new Date(date);
         return date ? " " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ""
             : "Date not available";
+    };
+    OptionsComponent.prototype.solveOptions = function () {
+        var selected = __WEBPACK_IMPORTED_MODULE_4_jquery__('#solveBySel option:selected').val();
+        switch (selected) {
+            case "BACKTRACK":
+                this.communicationService.callSolve();
+                break;
+            case "BACKTRACK STEP BY STEP":
+                this.communicationService.callSolveStepByStep();
+                break;
+            case "NAKED SINGLE":
+                this.communicationService.callSolveByNakedSingle();
+                break;
+            case "HIDDEN SINGLE":
+                this.communicationService.callSolveByHiddenSingle();
+                break;
+            case "SOLVE BY...":
+                this.modalRef = this.modalService.show(this.errorModal);
+                __WEBPACK_IMPORTED_MODULE_4_jquery__("#messageError").text("Please, select a valid option to solve the game.");
+                break;
+            default:
+                this.modalRef = this.modalService.show(this.errorModal);
+                __WEBPACK_IMPORTED_MODULE_4_jquery__("#messageError").text("Please, select a valid option to solve the game.");
+                break;
+        }
     };
     OptionsComponent.prototype.renderSavedGame = function (grid) {
         this.communicationService.callRenderGame(grid);
@@ -267,16 +293,20 @@ var OptionsComponent = (function () {
     };
     return OptionsComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('errorModal'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
+], OptionsComponent.prototype, "errorModal", void 0);
 OptionsComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'app-options',
         template: __webpack_require__("../../../../../client/app/components/options/options.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/options/options.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_communication_service__["a" /* CommunicationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_sudoku_service__["a" /* SudokuService */]) === "function" && _d || Object])
 ], OptionsComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=options.component.js.map
 
 /***/ }),
@@ -289,7 +319,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerWait {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
+exports.push([module.i, "#headerError {\r\n    background-color: #c60000;\r\n    color: #FFFFFF;\r\n}\r\n\r\n#headerWait,\r\n#headerSave {\r\n    background-color: #2f9b14;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.modal-body {\r\n    text-align: center;\r\n}\r\n\r\n#sudoku {\r\n    box-shadow: 10px 10px 5px #888888;\r\n}\r\n\r\nbody {\r\n    font-family: 'Comfortaa', cursive;\r\n}", ""]);
 
 // exports
 
@@ -302,7 +332,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../client/app/components/sudoku/sudoku.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #waitModal id=\"waitModal\">\r\n    <div class=\"modal-header\" id=\"headerWait\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Wait...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageWait\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\"  class=\"btn btn-warning\"  (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
+module.exports = "<div id=\"sudoku\">{{jsonSudoku}}</div>\r\n\r\n<ng-template #errorModal id=\"modalError\">\r\n    <div class=\"modal-header\" id=\"headerError\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"><i class=\"fa fa-warning\"></i> Error</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageError\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #saveModal id=\"modalSave\">\r\n    <div class=\"modal-header\" id=\"headerSave\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Saving...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageSave\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #waitModal id=\"waitModal\">\r\n    <div class=\"modal-header\" id=\"headerWait\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h3 class=\"modal-title\" id=\"myModalTitle\"> Wait...</h3>\r\n    </div>\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <br>\r\n        <h4 id=\"messageWait\"></h4>\r\n        <br>\r\n    </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #storeModal>\r\n    <div class=\"modal-header\">\r\n        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">&times;</button>\r\n        <h4 class=\"modal-title\" id=\"myModalTitle\">THERE IS A GAME SAVED IN LOCAL STORAGE, DO YOU WANT TO LOAD IT?</h4>\r\n    </div>\r\n\r\n    <div class=\"modal-body\" id=\"myModalMessage\">\r\n        <button id=\"btnConfirm\" class=\"btn btn-primary\" (click)=\"loadStorageGame()\">Yes, I want to load it</button>\r\n        <button id=\"btnCancel\" class=\"btn btn-warning\" (click)=\"modalRef.hide()\">No, I want another game</button>\r\n    </div>\r\n</ng-template>"
 
 /***/ }),
 
@@ -474,18 +504,33 @@ var SudokuComponent = (function () {
     SudokuComponent.prototype.solveStepByStep = function () {
         this.solveBySteps = true;
     };
+    SudokuComponent.prototype.compareGrids = function (oldGrid, newGrid) {
+        var result = true;
+        oldGrid.forEach(function (x, i) { return x.forEach(function (y, j) {
+            if (y != newGrid[i][j].value)
+                result = false;
+        }); });
+        if (result)
+            this.showError("The sudoku couldn't be solved by Naked Single. Try another option.");
+    };
     SudokuComponent.prototype.solveByNakedSingle = function () {
         var _this = this;
+        var oldGrid = this.sudokuHelper.gridToMatrix(this.sudoku.grid);
         var interval = setInterval(function () {
-            if (_this.nakedSingleSolver.solve(_this.sudoku))
+            if (_this.nakedSingleSolver.solve(_this.sudoku)) {
                 clearInterval(interval);
+                _this.compareGrids(oldGrid, _this.sudoku.grid);
+            }
         }, 1000);
     };
     SudokuComponent.prototype.solveByHiddenSingle = function () {
         var _this = this;
+        var oldGrid = this.sudokuHelper.gridToMatrix(this.sudoku);
         var interval = setInterval(function () {
-            if (_this.hiddenSingleSolver.solve(_this.sudoku))
+            if (_this.hiddenSingleSolver.solve(_this.sudoku)) {
                 clearInterval(interval);
+                _this.compareGrids(oldGrid, _this.sudoku.grid);
+            }
         }, 1000);
     };
     SudokuComponent.prototype.generate = function () {
@@ -513,34 +558,45 @@ var SudokuComponent = (function () {
         this.painter.paintSudoku(this.sudoku);
     };
     SudokuComponent.prototype.saveSudoku = function (user) {
-        this.sudokuService.saveSudoku(user, this.sudoku);
+        var _this = this;
+        this.sudokuService.saveSudoku(user, this.sudoku, function (err, res) {
+            err ? _this.showError("There was an error saving the match.")
+                : _this.gameSaved(user);
+        });
+    };
+    SudokuComponent.prototype.gameSaved = function (user) {
+        this.modalRef = this.modalService.show(this.saveModal);
+        $("#messageSave").text(user + "'s match saved successfully.");
+    };
+    SudokuComponent.prototype.showError = function (message) {
+        this.modalRef = this.modalService.show(this.errorModal);
+        $("#messageError").text(message);
     };
     SudokuComponent.prototype.openErrorModal = function (result) {
-        this.modalRef = this.modalService.show(this.errorModal);
         switch (result) {
             case "rowException":
-                $("#messageError").text("The number already exists in that row.");
+                this.showError("The number already exists in that row.");
                 break;
             case "columnException":
-                $("#messageError").text("The number already exists in that column.");
+                this.showError("The number already exists in that column.");
                 break;
             case "subMatrixException":
-                $("#messageError").text("The number already exists in that sub-grid.");
+                this.showError("The number already exists in that sub-grid.");
                 break;
             case "rowMatrixException":
-                $("#messageError").text("The number already exists in that row and sub-grid.");
+                this.showError("The number already exists in that row and sub-grid.");
                 break;
             case "colMatrixException":
-                $("#messageError").text("The number already exists in that column and sub-grid.");
+                this.showError("The number already exists in that column and sub-grid.");
                 break;
             case "rowColException":
-                $("#messageError").text("The number already exists in that row and column.");
+                this.showError("The number already exists in that row and column.");
                 break;
             case "allException":
-                $("#messageError").text("The number already exists in that row, column and sub-grid.");
+                this.showError("The number already exists in that row, column and sub-grid.");
                 break;
             default:
-                $("#messageError").text("Invalid space.");
+                this.showError("Invalid space.");
                 break;
         }
     };
@@ -551,16 +607,20 @@ var SudokuComponent = (function () {
     return SudokuComponent;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('storeModal'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
-], SudokuComponent.prototype, "storeModal", void 0);
-__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('errorModal'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _b || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _a || Object)
 ], SudokuComponent.prototype, "errorModal", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('waitModal'),
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('storeModal'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _b || Object)
+], SudokuComponent.prototype, "storeModal", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('saveModal'),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _c || Object)
+], SudokuComponent.prototype, "saveModal", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_12" /* ViewChild */])('waitModal'),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* TemplateRef */]) === "function" && _d || Object)
 ], SudokuComponent.prototype, "waitModal", void 0);
 SudokuComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -568,10 +628,10 @@ SudokuComponent = __decorate([
         template: __webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.html"),
         styles: [__webpack_require__("../../../../../client/app/components/sudoku/sudoku.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_sudoku_service__["a" /* SudokuService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_save_sudoku_service__["a" /* SaveSudokuService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_load_sudoku_service__["a" /* LoadSudokuService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_communication_service__["a" /* CommunicationService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _j || Object])
 ], SudokuComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=sudoku.component.js.map
 
 /***/ }),
@@ -882,12 +942,12 @@ var SudokuService = (function () {
         console.log('Sudoku Service is up');
     }
     //Saving
-    SudokuService.prototype.saveSudoku = function (user, sudoku) {
+    SudokuService.prototype.saveSudoku = function (user, sudoku, callback) {
         console.log("Trying to save from save-sudoku.service.ts");
         var gridmin = this.minifyJsonGrid(sudoku.grid);
         var data = { name: user, grid: gridmin, level: sudoku.level };
         this.http.post("api/sudoku", data)
-            .subscribe(function (res) { return console.log(res); }, function (err) { return console.log(err); });
+            .subscribe(function (res) { callback(undefined, res); console.log(res); }, function (err) { callback(err); console.log(err); });
     };
     //Loading
     SudokuService.prototype.getSudoku = function (level, callback) {
@@ -1352,7 +1412,7 @@ class SudokuHelper { //This class will help in some operations, to separate basi
     generateNeighbors(sudoku) {
         this.generateSubMatrix(sudoku);
         let grid = sudoku.grid;
-        grid.forEach( x => x.forEach( elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem)) ))
+        grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
     }
 
     resetSudoku(sudoku) {
@@ -1362,6 +1422,10 @@ class SudokuHelper { //This class will help in some operations, to separate basi
                     sudoku.setValue(i, j);
             })
         });
+    }
+
+    gridToMatrix(grid) {
+        return grid.map(x => x.map(y => y.value));
     }
 
     nextEmpty(sudoku) {
@@ -1435,8 +1499,8 @@ class SudokuHelper { //This class will help in some operations, to separate basi
             return "columnException";
         }
         if (rows) {
-            return (subm) ? "rowMatrixException"
-                          : "rowException";
+            return (subm) ? "rowMatrixException" :
+                "rowException";
         }
         if (subm) return "subMatrixException";
     }
