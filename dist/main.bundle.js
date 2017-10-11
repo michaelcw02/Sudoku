@@ -395,27 +395,28 @@ var SudokuComponent = (function () {
     }
     SudokuComponent.prototype.ngOnInit = function () {
         var _this = this;
-        window.onunload = function () { return _this.saveSudokuService.storeSudoku(_this.sudoku); };
+        window.onunload = function () { return _this.saveSudokuService.storeSudoku(_this.sudoku); }; //Local Storage
         var sketch = function (p) {
             _this.painter = new __WEBPACK_IMPORTED_MODULE_8__assets_js_painter__["a" /* Painter */](60, p);
             var clicked = false;
-            var options = [];
+            var options = []; //The options of the "right pane" of the canvas
             p.preload = function () {
-                Promise.resolve(_this.changeDifficulty('easy'))
-                    .then(function () { return _this.showStorageModal(); });
+                Promise.resolve(_this.changeDifficulty('easy')) //We search for a random easy sudoku in our db
+                    .then(function () { return _this.showStorageModal(); }); //Ask to the user if wants to retrieve the match saved in local storage
             };
             p.setup = function () {
                 _this.canvas = p.createCanvas(700, 545);
-                _this.canvas.parent('screen');
+                _this.canvas.parent('screen'); //For centering the canvas
                 p.background(220);
                 _this.painter.paintSudoku(_this.sudoku);
-                for (var i = 1; i <= _this.sudoku.rows; i++)
+                Object(__WEBPACK_IMPORTED_MODULE_15__assets_js_utils__["range"])(1, 10).forEach(function (i) {
                     options.push(new __WEBPACK_IMPORTED_MODULE_7__assets_js_option__["a" /* Option */](p.width - 80, i * 60 - 30, i, p));
+                });
             };
             p.draw = function () {
                 p.background(179, 182, 165);
                 _this.painter.paintSudoku(_this.sudoku); //Paints every 60fps
-                drawOptions();
+                drawOptions(); //Options at the right
                 if (_this.solveBySteps)
                     _this.solveBySteps = !_this.sudokuSolverStep.solve(_this.sudoku);
             };
@@ -423,11 +424,12 @@ var SudokuComponent = (function () {
                 options.forEach(function (x) { return x.show(); });
             }
             p.mouseDragged = function () {
-                for (var i = 0; i < options.length; i++)
-                    if (options[i].collides(p.mouseX, p.mouseY)) {
-                        options[i].x = p.mouseX;
-                        options[i].y = p.mouseY;
+                options.forEach(function (e, i) {
+                    if (e.collides(p.mouseX, p.mouseY)) {
+                        e.x = p.mouseX;
+                        e.y = p.mouseY;
                     }
+                });
             };
             p.mouseReleased = function () {
                 options.forEach(function (x) {
@@ -469,7 +471,6 @@ var SudokuComponent = (function () {
     };
     SudokuComponent.prototype.solve = function () {
         var _this = this;
-        //this will become a promise, so it will use .then and .catch
         this.loading = true;
         (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
             : this.sudokuService.getSolution(this.sudoku)
