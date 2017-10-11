@@ -63,7 +63,7 @@ export class OptionsComponent implements OnInit {
     let userName = $('#loadUserName').val()
     this.sudokuService.getGames(userName, (err, data) => {
       err ? $("#games").text("User " + userName + " has no saved matches.")
-        : this.renderGames(JSON.parse(data._body).matches);
+          : this.renderGames(JSON.parse(data._body).matches);
     })
   }
 

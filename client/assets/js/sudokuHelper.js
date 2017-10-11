@@ -3,12 +3,14 @@
 export class SudokuHelper { 
 
     constructor() {
-        this.subMatrix = [];
+        this.subMatrix = []
     }
 
-    generateNeighbors(sudoku) {
-        this.generateSubMatrix(sudoku);
-        let grid = sudoku.grid;
+    /* Generates row, column and subMatrix neighbors for each spot */
+
+    generateNeighbors(sudoku) { 
+        this.generateSubMatrix(sudoku)
+        let grid = sudoku.grid
         grid.forEach(x => x.forEach(elem => elem.setNeighbors(sudoku, this.findInSubMatrix(elem))))
     }
 
@@ -18,23 +20,19 @@ export class SudokuHelper {
                 if (fun(sudoku.getSpot(i, j).state))
                     sudoku.setValueAndState(i, j, 0, "possible") //Sets to zero
             })
-        });
+        })
     }
 
     
-    gridToMatrix(grid) {
-        return grid.map(x => x.map(y => y.value));
+    gridToMatrix(grid) { //Grid of spots to a grid with only integers
+        return grid.map(x => x.map(y => y.value))
     }
 
-    nextEmpty(sudoku) { //Please pass this to reduce
-        let grid = sudoku.grid;
-        let result = {};
-        grid.forEach((x, i) => {
-            x.forEach((elem, j) => {
-                if (!sudoku.getValue(i, j)) result = { row: i, col: j }
-            })
-        })
-        return result
+    nextEmpty(sudoku) { //Gives the coordinates of the next empty spot
+        let grid = sudoku.grid
+        return grid.reduce( (z, x, i) => 
+               x.reduce( (acum, e, j) => !sudoku.getValue(i, j) ? {row: i, col: j} : acum,z)
+        , {})
     }
 
     findInSubMatrix(spot) {
@@ -49,21 +47,14 @@ export class SudokuHelper {
             .filter(x => x.value == 0)
     }
 
-    generateSubMatrix(sudoku) { //Cambiar por generadores, que acepten intervalos
-        //Chen como cambiaria usted esto?
-        //range(1, sudoku.rows, 3).forEach( (x, i) => { range(1, sudoku.cols, 3).forEach( (elem, j) => this.subMatrix.push( this.getSubMatrix(sudoku,i, j) ) ) } );
-        for (let i = 1; i < sudoku.rows; i += 3)
-            for (let j = 1; j < sudoku.cols; j += 3)
-                this.subMatrix.push(this.getSubMatrix(sudoku, i, j));
+    generateSubMatrix(sudoku) { 
+        range(1, sudoku.rows, 3).forEach( row => {
+            range(1, sudoku.cols, 3).forEach( col => {
+                this.subMatrix.push(this.getSubMatrix(sudoku, row, col))
+            })
+        })
     }
 
-    /**
-     * Creates an array of the submatrix by adding 9 spots, requires a centered i & j
-     * @param {*} sudoku 
-     * @param {*} i 
-     * @param {*} j 
-     * @return {[]} subMatrix
-     */
     getSubMatrix(sudoku, i, j) {
         let subMatrix = [];
         subMatrix.push(sudoku.getSpot(i, j));
@@ -85,11 +76,11 @@ export class SudokuHelper {
     }
 
     compareGrids(oldGrid, newGrid){
-        let result = true;
-        oldGrid.forEach((x, i) => x.forEach((y, j) => {
-          if (y != newGrid[i][j].value) result = false;
-        }));
-        return result
+        return oldGrid.reduce( (z, x, i) => 
+            x.reduce( (acum, e, j) => 
+                e != newGrid[i][j].value ? false : acum
+            , z)
+        , true)
     }
 
     hasEmptyValues(sudoku){ //Auxiliar to see if sudoku has empty values
