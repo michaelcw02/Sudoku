@@ -187,6 +187,7 @@ export class SudokuComponent implements OnInit {
     this.cleanUserInput()
     let interval = setInterval(() => {
       if (this.nakedSingleSolver.solve(this.sudoku)) {
+        clearInterval(interval)
         this.sudokuHelper.hasEmptyValues(this.sudoku) ? 
         this.showError("The sudoku couldn't be solved by NakedSingle. Try another option.") :
         this.showError("THE SUDOKU IS SOLVED")

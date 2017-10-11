@@ -10,11 +10,10 @@ export class NakedSingleSolver {
 		if(!this.hasEmptyValues(sudoku)) //Si ya todos los spots tienen un numero es que esta solucionado
             return true;
         else{
+			let oldGrid = this.sudokuHelper.gridToMatrix(sudoku.grid)
             let uniques = this.sudokuHelper.getSpotsWithOnePossibility(sudoku) //Only spots who has one possibility available
-            if(!uniques.length) //Ya no se puede seguir usando naked single
-                return true
             uniques.forEach( x => x.setValueAndState(x.getPossibilities().shift(), "heuristic"))
-            return false;
+            return this.sudokuHelper.compareGrids(oldGrid, sudoku.grid)
         }
 	}
 
