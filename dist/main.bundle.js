@@ -512,12 +512,14 @@ var SudokuComponent = (function () {
         }, 1000);
     };
     SudokuComponent.prototype.generate = function () {
+        this.sudokuHelper.resetSudoku(this.sudoku);
         this.sudokuGenerator.generate(this.sudoku);
         this.sudokuHelper.generateNeighbors(this.sudoku);
     };
     SudokuComponent.prototype.reset = function () {
         this.solveBySteps = false;
         this.sudokuHelper.resetSudoku(this.sudoku);
+        this.sudokuHelper.resetNeighbors(this.sudoku);
         this.sudokuHelper.generateNeighbors(this.sudoku);
     };
     SudokuComponent.prototype.getDifficulty = function () {
@@ -1205,16 +1207,16 @@ class Spot {
 
     constructor(row, col, value = 0) {
 
-        this.value = value; //The idea is when a spot has value 0 will be a empty square
+        this.value = value //The idea is when a spot has value 0 will be a empty square
 
-        this.row = row; //Row position at the matrix
-        this.col = col; //Column position at the matrix
+        this.row = row //Row position at the matrix
+        this.col = col //Column position at the matrix
 
-        this.rowNeighbors = []; // Row neigbors
-        this.colNeighbors = []; // Column neigbors
-        this.subMatrixNeighbors = []; //The subsquare neighbors
+        this.rowNeighbors = [] // Row neigbors
+        this.colNeighbors = [] // Column neigbors
+        this.subMatrixNeighbors = [] //The subsquare neighbors
 
-        this.state = "possible";
+        this.state = "possible"
 
         /* Three possible states:
            1- Default : The user can not change it
@@ -1225,9 +1227,9 @@ class Spot {
     }
 
     getAllNeighbors() {
-        let neighbors = [];
-        neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors);
-        return neighbors;
+        let neighbors = []
+        neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors)
+        return neighbors
     }
 
     getPossibilities() {
@@ -1243,9 +1245,9 @@ class Spot {
 
 
     setNeighbors(sudoku, subMatrix) {
-        this.setRowNeighbors(sudoku);
-        this.setColNeighbors(sudoku);
-        this.setSubMatrixNeighbors(subMatrix);
+        this.setRowNeighbors(sudoku)
+        this.setColNeighbors(sudoku)
+        this.setSubMatrixNeighbors(subMatrix)
     }
 
 
@@ -1269,12 +1271,18 @@ class Spot {
 
     isValidOption(value) {
         let neighbors = this.getAllNeighbors();
-        return !neighbors.some((n) => n.value === value);
+        return !neighbors.some((n) => n.value === value)
     }
 
     setValueAndState(value = 0, state = "possible"){
         this.value = value
         this.state = state
+    }
+
+    cleanNeighbors(){
+        this.rowNeighbors = [] 
+        this.colNeighbors = []
+        this.subMatrixNeighbors = [] 
     }
 
 }
@@ -1406,18 +1414,22 @@ class SudokuGenerator {
     }
 
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
-        //HACER FUNCIONAL
-        let newSudoku = new __WEBPACK_IMPORTED_MODULE_0__sudoku__["a" /* Sudoku */](9, 9); // Se crea un sudoku vacío
+        this.sudokuHelper.resetNeighbors(sudoku)
+        this.sudokuHelper.resetSudoku(sudoku)
+        console.log("count", this.sudokuHelper.countValues(sudoku))
+        let newSudoku = new __WEBPACK_IMPORTED_MODULE_0__sudoku__["a" /* Sudoku */](9, 9) // Se crea un sudoku vacío
         this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
         this.solve(newSudoku); //Se resuelve el newSudoku por completo
         //Para que asigne sólo 17 casillas por default
-        Object(__WEBPACK_IMPORTED_MODULE_2__utils__["range"])(17).forEach( i => {
-            let row = Math.floor(Math.random() * 8);
-            let col = Math.floor(Math.random() * 8);            
-            let value = newSudoku.getValue(row, col); //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
+        let spotsWithValues = Math.floor(Math.random() * 5) + 17 //17 to 23 spots
+        while(spotsWithValues > this.sudokuHelper.countValues(sudoku)){
+            let row = Math.floor(Math.random() * 8)
+            let col = Math.floor(Math.random() * 8)           
+            let value = newSudoku.getValue(row, col) //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
             if (!sudoku.getValue(row, col)) //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
-                sudoku.setSpot(row, col, value); // Asigna el valor en el spot del sudoku (parámetro)
-        })
+                sudoku.setSpot(row, col, value) // Asigna el valor en el spot del sudoku (parámetro)
+        }
+        console.log("after", sudoku.grid, "count", this.sudokuHelper.countValues(sudoku))
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuGenerator;
@@ -1520,6 +1532,7 @@ class SudokuHelper {
         let rows = current.rowNeighbors.some(x => x.value == value);
         let subm = current.subMatrixNeighbors.some(x => x.value == value);
 
+<<<<<<< HEAD
         switch (cols || rows || subm) {
             case cols && rows && subm:
                 return "allException";
@@ -1538,6 +1551,29 @@ class SudokuHelper {
             default:
                 break;
         }
+=======
+        if (cols && rows && subm) return "allException";
+        if (cols) {
+            if (rows) return "rowColException";
+            if (subm) return "colMatrixException";
+            return "columnException";
+        }
+        if (rows)
+            return (subm) ? "rowMatrixException" : "rowException"
+
+        if (subm) return "subMatrixException";
+>>>>>>> AndreyValidaciones
+    }
+
+    /* Counts how many spots have values different than zero */
+    countValues(sudoku){
+        let grid = sudoku.grid
+        return grid.reduce( (z, x) => x.reduce( (acum, e) => e.value ? ++acum : acum, z),0)
+    }
+
+    resetNeighbors(sudoku){
+        let grid = sudoku.grid
+        grid.forEach( x => x.forEach( s => s.cleanNeighbors()))
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuHelper;

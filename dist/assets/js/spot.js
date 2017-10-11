@@ -2,16 +2,16 @@ export class Spot {
 
     constructor(row, col, value = 0) {
 
-        this.value = value; //The idea is when a spot has value 0 will be a empty square
+        this.value = value //The idea is when a spot has value 0 will be a empty square
 
-        this.row = row; //Row position at the matrix
-        this.col = col; //Column position at the matrix
+        this.row = row //Row position at the matrix
+        this.col = col //Column position at the matrix
 
-        this.rowNeighbors = []; // Row neigbors
-        this.colNeighbors = []; // Column neigbors
-        this.subMatrixNeighbors = []; //The subsquare neighbors
+        this.rowNeighbors = [] // Row neigbors
+        this.colNeighbors = [] // Column neigbors
+        this.subMatrixNeighbors = [] //The subsquare neighbors
 
-        this.state = "possible";
+        this.state = "possible"
 
         /* Three possible states:
            1- Default : The user can not change it
@@ -22,9 +22,9 @@ export class Spot {
     }
 
     getAllNeighbors() {
-        let neighbors = [];
-        neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors);
-        return neighbors;
+        let neighbors = []
+        neighbors = neighbors.concat(this.rowNeighbors, this.colNeighbors, this.subMatrixNeighbors)
+        return neighbors
     }
 
     getPossibilities() {
@@ -40,9 +40,9 @@ export class Spot {
 
 
     setNeighbors(sudoku, subMatrix) {
-        this.setRowNeighbors(sudoku);
-        this.setColNeighbors(sudoku);
-        this.setSubMatrixNeighbors(subMatrix);
+        this.setRowNeighbors(sudoku)
+        this.setColNeighbors(sudoku)
+        this.setSubMatrixNeighbors(subMatrix)
     }
 
 
@@ -66,12 +66,18 @@ export class Spot {
 
     isValidOption(value) {
         let neighbors = this.getAllNeighbors();
-        return !neighbors.some((n) => n.value === value);
+        return !neighbors.some((n) => n.value === value)
     }
 
     setValueAndState(value = 0, state = "possible"){
         this.value = value
         this.state = state
+    }
+
+    cleanNeighbors(){
+        this.rowNeighbors = [] 
+        this.colNeighbors = []
+        this.subMatrixNeighbors = [] 
     }
 
 }
