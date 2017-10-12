@@ -1,7 +1,15 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 export class Option {
 
     constructor(x, y, value, lib) {
-        this.value = value 
+        this.value = value
         this.x = x
         this.y = y
         this.original = { x: this.x, y: this.y }
@@ -23,16 +31,15 @@ export class Option {
         this.y = this.original.y;
     }
 
-    update(mouseX, mouseY){
-        if(this.selected){
+    update(mouseX, mouseY) {
+        if (this.selected) {
             this.x = mouseX
             this.y = mouseY
-        }
-        else
+        } else
             this.restart()
     }
 
-    collides(x, y){ 
+    collides(x, y) {
         return (this.lib.dist(this.x, this.y, x, y) < 40) //40px is the ratio of the cirlce of the option
     }
 

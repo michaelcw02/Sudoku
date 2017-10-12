@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 import { BrowserModule }          from '@angular/platform-browser';
 import { NgModule }               from '@angular/core';
 import { HttpModule }             from '@angular/http';

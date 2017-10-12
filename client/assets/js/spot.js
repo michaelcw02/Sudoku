@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 export class Spot {
 
     constructor(row, col, value = 0) {
@@ -69,15 +77,15 @@ export class Spot {
         return !neighbors.some((n) => n.value === value)
     }
 
-    setValueAndState(value = 0, state = "possible"){
+    setValueAndState(value = 0, state = "possible") {
         this.value = value
         this.state = state
     }
 
-    cleanNeighbors(){
-        this.rowNeighbors = [] 
+    cleanNeighbors() {
+        this.rowNeighbors = []
         this.colNeighbors = []
-        this.subMatrixNeighbors = [] 
+        this.subMatrixNeighbors = []
     }
 
 }

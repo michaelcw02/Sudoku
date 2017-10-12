@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import 'rxjs/add/operator/map'
 

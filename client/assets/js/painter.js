@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 import { range } from './utils'
 
 export class Painter { //This class wil be in charge of paint the sudoku every 60fps

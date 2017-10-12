@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
 import { Observable, Subscription } from 'rxjs/Rx'
