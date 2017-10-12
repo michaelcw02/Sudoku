@@ -176,6 +176,7 @@ export class SudokuComponent implements OnInit {
   }
 
   serverSolve() {
+    this.cleanUserInput()
     this.sudokuService.getSolution(this.sudoku)
         .subscribe(
           res => {
