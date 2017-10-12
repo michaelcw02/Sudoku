@@ -12,7 +12,7 @@ export class Option {
     show() {
         this.lib.textSize(24)
         this.lib.textFont("Comfortaa")
-        this.selected ? this.lib.fill(0, 102, 153) : this.lib.fill(255, 0, 0)
+        this.selected ? this.lib.fill(217, 83, 79) : this.lib.fill(0, 102, 153)
         this.lib.ellipse(this.x, this.y, 50, 50)
         this.lib.fill(255)
         this.lib.text(this.value, this.x - 5, this.y + 10)
