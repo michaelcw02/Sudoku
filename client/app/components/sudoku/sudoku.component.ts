@@ -3,8 +3,6 @@ import 'rxjs/add/operator/map'
 
 import { CommunicationService } from '../../services/communication.service';
 import { SudokuService } from '../../services/sudoku.service';
-import { LoadSudokuService } from '../../services/load-sudoku.service';
-import { SaveSudokuService } from '../../services/save-sudoku.service';
 
 import { Sudoku } from '../../../assets/js/sudoku';
 import { Option } from '../../../assets/js/option';
@@ -53,8 +51,6 @@ export class SudokuComponent implements OnInit {
   private successModal: TemplateRef<any>;
 
   constructor(private sudokuService: SudokuService,
-    private saveSudokuService: SaveSudokuService,
-    private loadSudokuService: LoadSudokuService,
     private communicationService: CommunicationService,
     private modalService: BsModalService) {
 
@@ -81,11 +77,9 @@ export class SudokuComponent implements OnInit {
 
   }
 
-
-
   ngOnInit() {
 
-    window.onunload = () => this.saveSudokuService.storeSudoku(this.sudoku) //Local Storage
+    window.onunload = () => this.sudokuService.storeSudoku(this.sudoku) //Local Storage
 
     const sketch = (p) => {
       this.painter = new Painter(60, p);
@@ -140,12 +134,12 @@ export class SudokuComponent implements OnInit {
   }
 
   showStorageModal() {
-    if (this.loadSudokuService.retriveSudoku())
+    if (this.sudokuService.retriveSudoku())
       this.modalRef = this.modalService.show(this.storeModal)
   }
 
   loadStorageGame() {
-    let grid = this.loadSudokuService.retriveSudoku()
+    let grid = this.sudokuService.retriveSudoku()
     this.sudoku.fillGrid(grid)
     this.modalRef.hide()
   }

@@ -10,10 +10,8 @@ import { LoadingModule,
 import { AppComponent }           from './app.component';
 import { SudokuComponent }        from './components/sudoku/sudoku.component';
 import { OptionsComponent }       from './components/options/options.component';
-import { TimerComponent } from './components/timer/timer.component';
+import { TimerComponent }         from './components/timer/timer.component';
 
-import { LoadSudokuService }      from './services/load-sudoku.service';
-import { SaveSudokuService }      from './services/save-sudoku.service';
 import { CommunicationService }   from './services/communication.service';
 import { SudokuService }          from './services/sudoku.service';
 
@@ -41,9 +39,7 @@ import { SudokuService }          from './services/sudoku.service';
   ],
   providers: [
     CommunicationService,
-    SudokuService,
-    SaveSudokuService,
-    LoadSudokuService
+    SudokuService
   ],
   bootstrap: [
     AppComponent
