@@ -470,18 +470,24 @@ var SudokuComponent = (function () {
         this.modalRef.hide();
     };
     SudokuComponent.prototype.solve = function () {
-        var _this = this;
         this.loading = true;
-        (!navigator.onLine) ? this.sudokuSolver.solve(this.sudoku)
-            : this.sudokuService.getSolution(this.sudoku)
-                .subscribe(function (res) {
-                _this.loading = false;
-                _this.sudoku.load(res.grid);
-            }, function (err) {
-                _this.loading = false;
-                _this.sudokuSolver.solve(_this.sudoku);
-            });
-        //return this.sudokuSolver.solve(this.sudoku);
+        (!navigator.onLine) ? this.localSolve()
+            : this.serverSolve();
+    };
+    SudokuComponent.prototype.localSolve = function () {
+        this.loading = false;
+        this.sudokuSolver.solve(this.sudoku);
+    };
+    SudokuComponent.prototype.serverSolve = function () {
+        var _this = this;
+        this.sudokuService.getSolution(this.sudoku)
+            .subscribe(function (res) {
+            _this.loading = false;
+            _this.sudoku.load(res.grid);
+        }, function (err) {
+            _this.loading = false;
+            _this.sudokuSolver.solve(_this.sudoku);
+        });
     };
     SudokuComponent.prototype.solveStepByStep = function () {
         this.cleanUserInput();
@@ -681,7 +687,6 @@ var TimerComponent = (function () {
             if (this.worker == null) {
                 this.worker = new Worker("../../assets/js/timer.js");
             }
-            this.worker.postMessage({ minutes: this.minutes, seconds: this.seconds });
             this.worker.onmessage = function (e) {
                 _this.minutes = e.data.minutes;
                 _this.seconds = e.data.seconds;
@@ -1416,11 +1421,9 @@ class SudokuGenerator {
     generate(sudoku) { //Este sudoku por parámetro ingresa vacío pero sale con sólo 17 spots de la solución
         this.sudokuHelper.resetNeighbors(sudoku)
         this.sudokuHelper.resetSudoku(sudoku)
-        console.log("count", this.sudokuHelper.countValues(sudoku))
         let newSudoku = new __WEBPACK_IMPORTED_MODULE_0__sudoku__["a" /* Sudoku */](9, 9) // Se crea un sudoku vacío
         this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
-        this.solve(newSudoku); //Se resuelve el newSudoku por completo
-        //Para que asigne sólo 17 casillas por default
+        this.solve(newSudoku); //Solves newsudoku entirely
         let spotsWithValues = Math.floor(Math.random() * 5) + 17 //17 to 23 spots
         while(spotsWithValues > this.sudokuHelper.countValues(sudoku)){
             let row = Math.floor(Math.random() * 8)
@@ -1429,7 +1432,6 @@ class SudokuGenerator {
             if (!sudoku.getValue(row, col)) //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value) // Asigna el valor en el spot del sudoku (parámetro)
         }
-        console.log("after", sudoku.grid, "count", this.sudokuHelper.countValues(sudoku))
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SudokuGenerator;
@@ -1532,7 +1534,6 @@ class SudokuHelper {
         let rows = current.rowNeighbors.some(x => x.value == value);
         let subm = current.subMatrixNeighbors.some(x => x.value == value);
 
-<<<<<<< HEAD
         switch (cols || rows || subm) {
             case cols && rows && subm:
                 return "allException";
@@ -1551,18 +1552,6 @@ class SudokuHelper {
             default:
                 break;
         }
-=======
-        if (cols && rows && subm) return "allException";
-        if (cols) {
-            if (rows) return "rowColException";
-            if (subm) return "colMatrixException";
-            return "columnException";
-        }
-        if (rows)
-            return (subm) ? "rowMatrixException" : "rowException"
-
-        if (subm) return "subMatrixException";
->>>>>>> AndreyValidaciones
     }
 
     /* Counts how many spots have values different than zero */
