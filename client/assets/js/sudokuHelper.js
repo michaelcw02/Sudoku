@@ -1,3 +1,11 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 /* This class will help in some operations, to separate basic logic */
 
 export class SudokuHelper {
@@ -110,13 +118,13 @@ export class SudokuHelper {
     }
 
     /* Counts how many spots have values different than zero */
-    countValues(sudoku){
+    countValues(sudoku) {
         let grid = sudoku.grid
-        return grid.reduce( (z, x) => x.reduce( (acum, e) => e.value ? ++acum : acum, z),0)
+        return grid.reduce((z, x) => x.reduce((acum, e) => e.value ? ++acum : acum, z), 0)
     }
 
-    resetNeighbors(sudoku){
+    resetNeighbors(sudoku) {
         let grid = sudoku.grid
-        grid.forEach( x => x.forEach( s => s.cleanNeighbors()))
+        grid.forEach(x => x.forEach(s => s.cleanNeighbors()))
     }
 }

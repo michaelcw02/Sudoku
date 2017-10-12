@@ -1,6 +1,14 @@
-import { Sudoku }           from './sudoku';
-import { SudokuHelper }     from './sudokuHelper';
-import { range }            from './utils'
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
+import { Sudoku } from './sudoku';
+import { SudokuHelper } from './sudokuHelper';
+import { range } from './utils'
 
 export class SudokuGenerator {
     constructor() {
@@ -35,9 +43,9 @@ export class SudokuGenerator {
         this.sudokuHelper.generateNeighbors(newSudoku); // Se le asignan los vecinos
         this.solve(newSudoku); //Solves newsudoku entirely
         let spotsWithValues = Math.floor(Math.random() * 5) + 17 //17 to 23 spots
-        while(spotsWithValues > this.sudokuHelper.countValues(sudoku)){
+        while (spotsWithValues > this.sudokuHelper.countValues(sudoku)) {
             let row = Math.floor(Math.random() * 9)
-            let col = Math.floor(Math.random() * 9)           
+            let col = Math.floor(Math.random() * 9)
             let value = newSudoku.getValue(row, col) //Se obtiene el valor de un spot aleatorio del newSudoku (resuelto)
             if (!sudoku.getValue(row, col)) //Verifica que ese spot en el sudoku (parámetro) no tenga valor (o sea que sea igual a 0)
                 sudoku.setSpot(row, col, value) // Asigna el valor en el spot del sudoku (parámetro)

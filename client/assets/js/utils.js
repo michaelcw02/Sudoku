@@ -1,8 +1,16 @@
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
+
 /**
  * This method was copied from Underscore.js
  * http://underscorejs.org/
  */
-range = function (start, stop, step) {
+range = function(start, stop, step) {
     if (stop == null) {
         stop = start || 0;
         start = 0;
