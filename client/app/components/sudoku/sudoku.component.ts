@@ -49,8 +49,8 @@ export class SudokuComponent implements OnInit {
   @ViewChild('storeModal')
   private storeModal: TemplateRef<any>;
 
-  @ViewChild('saveModal')
-  private saveModal: TemplateRef<any>;
+  @ViewChild('successModal')
+  private successModal: TemplateRef<any>;
 
   constructor(private sudokuService: SudokuService,
     private saveSudokuService: SaveSudokuService,
@@ -207,7 +207,7 @@ export class SudokuComponent implements OnInit {
         clearInterval(interval)
         this.sudokuHelper.hasEmptyValues(this.sudoku) ? 
         this.showError("The sudoku couldn't be solved by NakedSingle. Try another option.") :
-        this.showError("THE SUDOKU IS SOLVED")
+        this.showSuccess("Solved", "The sudoku was solved")
       }
     }, 1000)
   }
@@ -219,7 +219,7 @@ export class SudokuComponent implements OnInit {
         clearInterval(interval);
         this.sudokuHelper.hasEmptyValues(this.sudoku) ? 
         this.showError("The sudoku couldn't be solved by HiddenSingle. Try another option.") :
-        this.showError("THE SUDOKU IS SOLVED")
+        this.showSuccess("Solved", "The sudoku was solved")
       }
     }, 1000)
   }
@@ -258,7 +258,7 @@ export class SudokuComponent implements OnInit {
   saveSudoku(user) {
     this.sudokuService.saveSudoku(user, this.sudoku, (err, res) => {
       err ? this.showError("There was an error saving the match.")
-        : this.showGameSaved(user)
+        : this.showSuccess("Saved", "Match saved successfully.");
     })
   }
 
@@ -268,9 +268,10 @@ export class SudokuComponent implements OnInit {
     this.sudokuHelper.resetSudoku(this.sudoku, z => z == "possible")
   }
 
-  showGameSaved(user) {
-    this.modalRef = this.modalService.show(this.saveModal);
-    $("#messageSave").text(user + "'s match saved successfully.")
+  showSuccess(title, message) {
+    this.modalRef = this.modalService.show(this.successModal);
+    $("#titleSuccess").text(title);
+    $("#messageSuccess").text(message);
   }
 
   showError(message) {

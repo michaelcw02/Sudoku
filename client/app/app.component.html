@@ -1,11 +1,16 @@
 <div class="container">
     <br>
-    <h1 id="title">SUDOKU</h1>
+    <div class="col-sm-4" id="timerDiv"><br><br>
+        <app-timer></app-timer>
+    </div>
+    <div class="col-sm-5">
+        <h1 id="title">SUDOKU</h1>
+    </div>
+    <div class="col-sm-3"></div>
 </div>
 <div class="container-fluid" id="sudokuBox">
     <div class="row">
         <div class="col-sm-3" id="options">
-            <app-timer></app-timer> 
             <app-options></app-options>
         </div>
         <div class="col-sm-9" id="divPrincipal">
@@ -14,4 +19,7 @@
             </div>
         </div>
     </div>
+</div>
+<div id="infoWebSudoku">
+    Difficulty levels taken from <a href="http://es.websudoku.com/">WebSudoku</a>
 </div>
