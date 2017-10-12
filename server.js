@@ -1,6 +1,10 @@
-/**
- * Main Server
- */
+/*
+Authors:
+	Andrey Arguedas Espinoza
+	Daniela Armas Sánchez
+	Michael Chen Wang
+	Kimberly Olivas Delgado
+*/
 const express      = require('express')
 const bodyParser   = require('body-parser')
 const morgan       = require('morgan')
