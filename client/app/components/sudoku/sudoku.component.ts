@@ -119,42 +119,20 @@ export class SudokuComponent implements OnInit {
         options.forEach( x => x.show());
       }
 
-      p.mouseDragged = () => {
-        options.forEach( (e, i) => {
-          if(e.collides(p.mouseX, p.mouseY)){
-            e.x = p.mouseX
-            e.y = p.mouseY
-          } 
-        })
-      }
-
-      p.mouseReleased = () => {
-        options.forEach(x => {
-          if (x.collides(p.mouseX, p.mouseY)) {
-            let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9))
-            let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9))
-            let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: x.value }
-            let result = this.sudokuHelper.validOption(data)
-            if (result == "allowed") { //Valid to put number there
-              if (this.sudoku.getSpot(mapY, mapX).state == "possible")
-                this.sudoku.setValue(mapY, mapX, x.value)
-              else result == undefined ? result : this.openErrorModal(result) //Modal-Alert if is not valid
-            }
-            else
-              result == undefined ? result : this.openErrorModal(result) //Modal-Alert if is not valid
-            x.restart()
-          }
-        })
-      }
-
-      
-      p.mousePressed = () => { //For deleting an option choosed by the user
+      p.mouseClicked = () => {
         let mapX = Math.floor(p.map(p.mouseX, 0, 545, 0, 9))
         let mapY = Math.floor(p.map(p.mouseY, 0, p.height, 0, 9))
-        if(range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
-          if (this.sudoku.getSpot(mapY, mapX).state == "possible") 
-            this.sudoku.setValue(mapY, mapX)
+        this.handleErase(mapX, mapY, options) //Erase if is necessary
+        options.forEach( (e, i) => {
+          if(e.collides(p.mouseX, p.mouseY)) 
+            e.selected ? this.handleSelection(e, mapX, mapY) : e.selected = true              
+        })
       }
+
+      p.mouseMoved = () => {
+        options.filter( x => x.selected)
+        options.forEach( x => x.update(p.mouseX, p.mouseY))
+      } 
 
     }
 
@@ -181,6 +159,26 @@ export class SudokuComponent implements OnInit {
   localSolve() {
     this.loading = false;
     this.sudokuSolver.solve(this.sudoku);
+  }
+
+  handleSelection(option, mapX, mapY) {
+    let data = { sudoku: this.sudoku, row: mapY, col: mapX, value: option.value }
+    let result = this.sudokuHelper.validOption(data)
+    if (result == "allowed") { //Valid to put number there
+      if (this.sudoku.getSpot(mapY, mapX).state == "possible")
+        this.sudoku.setValue(mapY, mapX, option.value)
+      else result == undefined ? result : this.openErrorModal(result) //Modal-Alert if is not valid
+    }
+    else
+      result == undefined ? result : this.openErrorModal(result) //Modal-Alert if is not valid
+    option.selected = false
+    option.restart()
+  }
+
+  handleErase(mapX, mapY, options){
+    if(range(this.sudoku.rows).includes(mapY) && range(this.sudoku.cols).includes(mapX))
+      if (this.sudoku.getSpot(mapY, mapX).state == "possible" && options.every( x => !x.selected)) 
+        this.sudoku.setValue(mapY, mapX) //Puts to zero
   }
 
   serverSolve() {
