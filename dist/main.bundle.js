@@ -437,6 +437,7 @@ var SudokuComponent = (function () {
         this.modalRef.hide();
     };
     SudokuComponent.prototype.solve = function () {
+        this.cleanUserInput();
         this.loading = true;
         (!navigator.onLine) ? this.localSolve()
             : this.serverSolve();

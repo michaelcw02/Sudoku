@@ -145,7 +145,7 @@ export class SudokuComponent implements OnInit {
   }
 
   solve() {
-    this.cleanUserInput()
+    this.cleanUserInput();
     this.loading = true;
     (!navigator.onLine) ? this.localSolve()
                         : this.serverSolve()
