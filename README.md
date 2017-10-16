@@ -38,5 +38,9 @@ Optional:
     npm run build
     npm start
 
+## Find our game at 
+
+    [http://paradigmas-sudoku2017.herokuapp.com/](http://paradigmas-sudoku2017.herokuapp.com/)
+
 ![alt tag](http://forthebadge.com/images/badges/built-with-love.svg) 
 ![alt tag](http://forthebadge.com/images/badges/built-by-developers.svg)
