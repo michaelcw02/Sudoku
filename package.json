@@ -2,6 +2,10 @@
   "name": "sudoku",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "8.0.0",
+    "npm": "5.0.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "node -r @std/esm server.js",
