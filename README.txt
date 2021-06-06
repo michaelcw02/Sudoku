@@ -18,6 +18,6 @@ You can import and export data with the bats file located in server/db
 
 If you want to run locally remember do mongodb
 
-Github : https://github.com/AndreyArguedas/Sudoku  
+Github : https://github.com/michaelcw02/Sudoku  
 
 Heroku : https://sheltered-citadel-25618.herokuapp.com/    --AndreyArguedas instance
