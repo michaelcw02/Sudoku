@@ -59,18 +59,11 @@
     "codelyzer": "~3.1.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
-    "karma": "~1.7.0",
-    "karma-chrome-launcher": "~2.1.1",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "^1.2.1",
-    "karma-jasmine": "~1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3"
   },
   "description": "To develop a Sudoku game having the following specifications:\r * Use of Functional Programming at 100%\r * SPA using MEAN (MongoDB, Express, Angular 4, NodeJS)\r * RESTful API\r * Have an algorithm to solve the Sudoku game",
-  "main": "karma.conf.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/michaelcw02/Sudoku.git"
