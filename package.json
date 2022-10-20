@@ -39,7 +39,7 @@
     "express-favicon": "^2.0.0",
     "jquery": "^3.2.1",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.11.8",
+    "mongoose": "^4.13.21",
     "mongoose-simple-random": "^0.4.1",
     "morgan": "^1.8.2",
     "ngx-bootstrap": "^1.9.1",
